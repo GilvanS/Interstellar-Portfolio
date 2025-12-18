@@ -4,7 +4,8 @@ import React from 'react';
 const technologies = [
   { 
     name: 'Playwright', 
-    icon: 'https://www.vectorlogo.zone/logos/playwright/playwright-icon.svg',
+    icon: 'https://logo.svgcdn.com/devicon/playwright-original.svg',
+    fallback: 'https://playwright.dev/img/playwright-logo.svg',
     scale: 'scale-100' 
   },
   { 
@@ -87,6 +88,41 @@ const Technologies: React.FC = () => {
                     alt={tech.name} 
                     className="max-w-full max-h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.7)] transition-all duration-500"
                     loading="lazy"
+                    onError={(e) => {
+                      // Fallback para ícones que não carregam
+                      const target = e.currentTarget;
+                      const techItem = technologies.find(t => t.icon === tech.icon || t.name === tech.name);
+                      
+                      // Se tiver fallback definido, tentar usar
+                      if (techItem && (techItem as any).fallback && target.src !== (techItem as any).fallback) {
+                        target.src = (techItem as any).fallback;
+                        return;
+                      }
+                      
+                      // Se for Playwright e ainda falhar, tentar outras alternativas
+                      if (tech.name === 'Playwright') {
+                        const alternatives = [
+                          'https://playwright.dev/img/playwright-logo.svg',
+                          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg'
+                        ];
+                        const currentSrc = target.src;
+                        const altIndex = alternatives.findIndex(alt => currentSrc.includes(alt.split('/').pop() || ''));
+                        const nextAlt = alternatives[altIndex + 1];
+                        
+                        if (nextAlt && !currentSrc.includes(nextAlt)) {
+                          target.src = nextAlt;
+                          return;
+                        }
+                      }
+                      
+                      // Último recurso: mostrar inicial do nome
+                      target.style.display = 'none';
+                      if (!target.parentElement?.querySelector('.icon-fallback')) {
+                        target.parentElement?.insertAdjacentHTML('beforeend', 
+                          `<div class="icon-fallback w-full h-full flex items-center justify-center text-primary text-xl md:text-2xl font-bold">${tech.name.charAt(0)}</div>`
+                        );
+                      }
+                    }}
                   />
                   
                   {/* Brilho radial no hover para dar profundidade espacial */}
