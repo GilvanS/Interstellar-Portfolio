@@ -3,62 +3,62 @@ import React from 'react';
 
 const technologies = [
   { 
-    name: 'Playwright', 
-    icon: 'https://raw.githubusercontent.com/microsoft/playwright-mcp/main/extension/icons/icon-128.png',
-    fallback: 'https://playwright.dev/img/playwright-logo.svg',
-    scale: 'scale-100' 
-  },
-  { 
-    name: 'Cypress', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Cypress.svg',
-    fallback: 'https://skillicons.dev/icons?i=cypress'
-  },
-  { 
-    name: 'Appium', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Appium.svg',
-    scale: 'scale-110',
-    fallback: 'https://www.vectorlogo.zone/logos/appium/appium-icon.svg'
+    name: 'Java', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Java.svg'
   },
   { 
     name: 'JavaScript', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Javascript.svg',
-    fallback: 'https://skillicons.dev/icons?i=js'
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Javascript.svg'
   },
   { 
-    name: 'GitHub', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Github.svg',
-    fallback: 'https://skillicons.dev/icons?i=github'
-  },
-  { 
-    name: 'Docker', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Docker.svg',
-    scale: 'scale-100',
-    fallback: 'https://www.vectorlogo.zone/logos/docker/docker-icon.svg'
-  },
-  { 
-    name: 'HTML5', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/HTML5.svg',
-    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/HTML.svg'
-  },
-  { 
-    name: 'CSS3', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/CSS3.svg',
-    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/CSS.svg'
-  },
-  { 
-    name: 'SQL', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Postgresql.svg',
-    fallback: 'https://skillicons.dev/icons?i=postgres'
-  },
-  { 
-    name: 'Java', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Java.svg',
-    fallback: 'https://skillicons.dev/icons?i=java'
+    name: 'Cypress', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cypressio/cypressio-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Cypress.svg'
   },
   { 
     name: 'Selenium', 
-    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Selenium.svg',
-    fallback: 'https://skillicons.dev/icons?i=selenium'
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Selenium.svg'
+  },
+  { 
+    name: 'Playwright', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg',
+    fallback: 'https://raw.githubusercontent.com/microsoft/playwright-mcp/main/extension/icons/icon-128.png',
+    scale: 'scale-100' 
+  },
+  { 
+    name: 'Appium', 
+    icon: 'https://www.vectorlogo.zone/logos/appium/appium-icon.svg',
+    scale: 'scale-110',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Android.svg'
+  },
+  { 
+    name: 'GitHub', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Github.svg'
+  },
+  { 
+    name: 'Docker', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original-wordmark.svg',
+    scale: 'scale-100',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Docker.svg'
+  },
+  { 
+    name: 'HTML5', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/HTML5.svg'
+  },
+  { 
+    name: 'CSS3', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/CSS3.svg'
+  },
+  { 
+    name: 'SQL', 
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Postgresql.svg'
   },
 ];
 
