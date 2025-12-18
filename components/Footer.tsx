@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
             <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
               <i className="fab fa-github"></i>
             </a>
-            <a href="#" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
+            <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
               <i className="fab fa-linkedin"></i>
             </a>
             <a href="https://wa.me/5511982371339" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">

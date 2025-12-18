@@ -58,7 +58,7 @@ const Contact: React.FC = () => {
               <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
                 <i className="fab fa-github text-2xl"></i>
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
+              <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
                 <i className="fab fa-linkedin-in text-2xl"></i>
               </a>
             </div>
