@@ -54,6 +54,19 @@
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Melhorias para Mobile */
+        @media (max-width: 640px) {
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            button, a {
+                touch-action: manipulation;
+            }
         }
 
         /* Estilos do Menu Animado */

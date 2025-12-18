@@ -11,37 +11,38 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="min-h-[85vh] flex flex-col lg:flex-row items-center justify-center gap-12 py-20 relative">
-      <div className="lg:w-2/3 space-y-10 text-center lg:text-left z-10">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black leading-[1.1] text-white tracking-tight uppercase">
+    <section className="min-h-[85vh] flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 py-12 md:py-20 px-4 relative">
+      <div className="lg:w-2/3 space-y-6 md:space-y-10 text-center lg:text-left z-10">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-black leading-[1.1] text-white tracking-tight uppercase px-2">
           PRECISÃO. <br /> QUALIDADE. <br />
           <span className="text-primary">CONFIABILIDADE.</span>
         </h1>
-        <div className="space-y-4">
-          <h2 className="text-lg md:text-2xl font-display text-primary tracking-[0.2em] uppercase">
+        <div className="space-y-3 md:space-y-4">
+          <h2 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-display text-primary tracking-[0.15em] md:tracking-[0.2em] uppercase px-2">
             GILVAN SOUSA — ANALISTA DE TESTES SÊNIOR
           </h2>
-          <p className="text-lg md:text-xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body px-2">
             Garantindo a integridade dos sistemas através de testes rigorosos e especialização em meios de pagamento. Onde a qualidade encontra a perfeição técnica.
           </p>
         </div>
         
-        <div className="flex flex-wrap justify-center lg:justify-start gap-6 pt-4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-4 md:gap-6 pt-2 md:pt-4 px-2">
           <button 
             onClick={scrollToProjects}
-            className="group relative px-8 py-4 bg-primary text-black font-display font-bold tracking-widest text-xs rounded-full transition-all hover:scale-105 shadow-[0_0_20px_rgba(102,126,234,0.4)] flex items-center gap-3 cursor-pointer"
+            className="group relative px-6 md:px-8 py-3 md:py-4 bg-primary text-black font-display font-bold tracking-widest text-[10px] md:text-xs rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(102,126,234,0.4)] flex items-center justify-center gap-2 md:gap-3 cursor-pointer w-full sm:w-auto"
           >
             VER PROJETOS
             <i className="fas fa-chevron-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
           </button>
           
           <a 
-            href="./Gilvan_Sousa_QA_Resume.pdf" 
-            download="Gilvan_Sousa_QA_Resume.pdf"
-            className="px-8 py-4 border border-secondary/60 text-secondary font-display font-bold tracking-widest text-xs rounded-full hover:bg-secondary hover:text-black transition-all flex items-center gap-3 cursor-pointer"
+            href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 md:px-8 py-3 md:py-4 border border-secondary/60 text-secondary font-display font-bold tracking-widest text-[10px] md:text-xs rounded-full hover:bg-secondary hover:text-black transition-all active:scale-95 flex items-center justify-center gap-2 md:gap-3 cursor-pointer w-full sm:w-auto"
           >
             BAIXAR CURRÍCULO
-            <i className="fas fa-download"></i>
+            <i className="fab fa-linkedin"></i>
           </a>
         </div>
       </div>

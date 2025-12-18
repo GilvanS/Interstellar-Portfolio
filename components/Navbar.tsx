@@ -13,6 +13,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const ulRef = useRef<HTMLUListElement>(null);
   const activeElementRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { label: 'INÍCIO', id: 'top' },
@@ -166,6 +167,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
         setTimeout(() => element.scrollIntoView({ behavior: 'smooth' }), 100);
       }
     }
+    
+    // Fechar menu mobile após clicar
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -198,10 +202,34 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
         </ul>
 
         <div className="flex items-center gap-4">
-          <button className="lg:hidden text-white">
-            <i className="fas fa-bars text-xl"></i>
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-white p-2 hover:text-primary transition-colors"
+            aria-label="Toggle menu"
+          >
+            <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+      </div>
+      
+      {/* Mobile Menu */}
+      <div className={`lg:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/5 transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <ul className="flex flex-col py-4">
+          {menuItems.map((item, idx) => (
+            <li key={item.id}>
+              <button 
+                onClick={() => handleNavClick(idx, item.id)}
+                className={`w-full text-left px-6 py-4 text-sm font-display font-bold tracking-widest uppercase transition-all ${
+                  activeIndex === idx 
+                    ? 'text-primary bg-primary/10 border-l-4 border-primary' 
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );

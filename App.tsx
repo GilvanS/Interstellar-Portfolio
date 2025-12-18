@@ -52,14 +52,14 @@ const App: React.FC = () => {
         {/* TOGGLE BUTTON */}
         <button 
           onClick={() => setShowControls(!showControls)}
-          className={`absolute top-24 right-8 w-12 h-12 rounded-full glass-panel pointer-events-auto flex items-center justify-center text-white transition-all duration-500 hover:scale-110 active:scale-95 ${showControls ? 'rotate-90 border-primary/50 text-primary' : ''}`}
+          className={`absolute top-20 md:top-24 right-4 md:right-8 w-10 h-10 md:w-12 md:h-12 rounded-full glass-panel pointer-events-auto flex items-center justify-center text-white transition-all duration-500 hover:scale-110 active:scale-95 ${showControls ? 'rotate-90 border-primary/50 text-primary' : ''}`}
           title="Configurações Visuais"
         >
-          <i className={`fas ${showControls ? 'fa-times' : 'fa-sliders'}`}></i>
+          <i className={`fas ${showControls ? 'fa-times' : 'fa-sliders'} text-sm md:text-base`}></i>
         </button>
 
         {/* PAINEL LATERAL RETRÁTIL */}
-        <div className={`absolute top-40 right-8 w-[260px] p-6 glass-panel pointer-events-auto flex flex-col gap-6 transition-all duration-500 ease-out ${showControls ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12 pointer-events-none'}`}>
+        <div className={`absolute top-32 md:top-40 right-4 md:right-8 w-[calc(100vw-2rem)] max-w-[280px] md:w-[260px] p-4 md:p-6 glass-panel pointer-events-auto flex flex-col gap-4 md:gap-6 transition-all duration-500 ease-out ${showControls ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full md:translate-x-12 pointer-events-none'}`}>
           <div>
             <div className="text-[10px] uppercase tracking-[3px] text-slate-400 font-black mb-4 font-display">Neural Core</div>
             <div className="grid grid-cols-3 gap-3">
@@ -121,7 +121,7 @@ const App: React.FC = () => {
 
       <div className="relative z-10">
         <Navbar scrolled={scrolled} />
-        <main className="container mx-auto px-4 max-w-7xl pt-20">
+        <main className="container mx-auto px-4 max-w-7xl pt-16 md:pt-20">
           <Hero />
           <About />
           <Technologies />

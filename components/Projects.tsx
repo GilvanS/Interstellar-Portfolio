@@ -53,13 +53,13 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-24 scroll-mt-32">
-      <div className="flex items-center gap-6 mb-16">
-        <h3 className="text-3xl md:text-5xl font-display font-bold text-white tracking-wider uppercase">PROJETOS</h3>
+    <section id="projects" className="py-12 md:py-24 scroll-mt-20 md:scroll-mt-32 px-4">
+      <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-16">
+        <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white tracking-wider uppercase">PROJETOS</h3>
         <div className="h-[2px] flex-grow bg-gradient-to-r from-primary/50 to-transparent"></div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
         {projects.map((p) => (
           <div key={p.id} className="group relative bg-black/95 backdrop-blur-3xl rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30">
             
@@ -75,34 +75,34 @@ const Projects: React.FC = () => {
             </div>
             
             {/* Conteúdo do Card */}
-            <div className="p-8 space-y-5 flex-grow flex flex-col relative">
-              <div className={`inline-block w-fit px-4 py-1.5 rounded-full border font-display font-bold text-[10px] tracking-[0.2em] ${colorMap[p.color]}`}>
+            <div className="p-6 md:p-8 space-y-4 md:space-y-5 flex-grow flex flex-col relative">
+              <div className={`inline-block w-fit px-3 md:px-4 py-1 md:py-1.5 rounded-full border font-display font-bold text-[9px] md:text-[10px] tracking-[0.15em] md:tracking-[0.2em] ${colorMap[p.color]}`}>
                 {p.tech}
               </div>
               
-              <h4 className="text-2xl font-display font-bold text-white group-hover:text-primary transition-colors uppercase tracking-tight">
+              <h4 className="text-xl md:text-2xl font-display font-bold text-white group-hover:text-primary transition-colors uppercase tracking-tight">
                 {p.title}
               </h4>
               
-              <p className="text-slate-300 text-base font-body leading-relaxed flex-grow">
+              <p className="text-slate-300 text-sm md:text-base font-body leading-relaxed flex-grow">
                 {p.description}
               </p>
               
               {/* Botões de Ação Padronizados */}
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4">
                 <a 
                   href={p.github} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex-1 py-3 text-xs font-bold font-display border border-white/10 text-white hover:bg-white/10 text-center rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 md:py-3 text-[10px] md:text-xs font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
                 >
-                  <i className="fab fa-github"></i> CODE
+                  <i className="fab fa-github text-sm md:text-base"></i> CODE
                 </a>
                 <a 
                   href={p.demo} 
-                  className={`flex-1 py-3 text-xs font-bold font-display border text-center rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 ${buttonColorMap[p.color]}`}
+                  className={`flex-1 py-2.5 md:py-3 text-[10px] md:text-xs font-bold font-display border text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 ${buttonColorMap[p.color]}`}
                 >
-                  DEMO <i className="fas fa-external-link-alt text-[10px]"></i>
+                  DEMO <i className="fas fa-external-link-alt text-[9px] md:text-[10px]"></i>
                 </a>
               </div>
             </div>
