@@ -4,15 +4,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
-    
-    // Base path para GitHub Pages
-    // Para repositório de projeto: '/nome-do-repositorio/'
-    // Para username.github.io: '/'
-    // Use './' para desenvolvimento local e ajuste para produção se necessário
-    const base = process.env.VITE_BASE_PATH || '/Interstellar-Portfolio/';
-    
     return {
-      base: base,
       server: {
         port: 3000,
         host: '0.0.0.0',
@@ -26,11 +18,6 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      },
-      build: {
-        outDir: 'dist',
-        assetsDir: 'assets',
-        sourcemap: false
       }
     };
 });

@@ -53,76 +53,10 @@ O projeto vai além de um site estático. Ele incorpora uma experiência imersiv
    ```env
    API_KEY=sua_chave_aqui
    ```
-3. Configure sua chave de API no arquivo de ambiente:
-   Crie um arquivo `.env` na raiz e adicione:
-   ```env
-   GEMINI_API_KEY=sua_chave_aqui
-   ```
-   > **Nota:** O nome correto da variável é `GEMINI_API_KEY`, não `API_KEY`
-
 4. Inicie o servidor de desenvolvimento:
    ```bash
-   npm run dev
+   npm start
    ```
-   > **Nota:** O comando correto é `npm run dev`, não `npm start`
-
----
-
-## 🚀 Deploy no GitHub Pages
-
-### Método Automático (Recomendado - GitHub Actions)
-
-O projeto está configurado com GitHub Actions para deploy automático:
-
-1. **Configure o GitHub Pages:**
-   - Vá em `Settings` > `Pages` no seu repositório
-   - Em `Source`, selecione `GitHub Actions`
-
-2. **Configure a chave da API (Opcional):**
-   - Vá em `Settings` > `Secrets and variables` > `Actions`
-   - Adicione um novo secret chamado `GEMINI_API_KEY` com sua chave da API
-   - Isso permitirá que o AI Lab funcione no site publicado
-
-3. **Faça push para a branch main/master:**
-   ```bash
-   git add .
-   git commit -m "Deploy: Configuração para GitHub Pages"
-   git push origin main
-   ```
-
-4. **Aguarde o deploy:**
-   - O GitHub Actions irá automaticamente fazer build e deploy
-   - Acompanhe o progresso em `Actions` > `Deploy to GitHub Pages`
-   - O site estará disponível em: `https://seu-usuario.github.io/nome-do-repositorio/`
-
-### Método Manual (gh-pages)
-
-Se preferir fazer deploy manualmente:
-
-1. **Instale as dependências** (já incluído):
-   ```bash
-   npm install
-   ```
-
-2. **Configure o base path** (se necessário):
-   - Edite `vite.config.ts` e ajuste o `base` para o nome do seu repositório:
-   ```typescript
-   base: '/nome-do-repositorio/'
-   ```
-
-3. **Faça o build e deploy:**
-   ```bash
-   npm run build
-   npm run deploy
-   ```
-
-### ⚠️ Importante - Base Path
-
-- **Repositório de projeto** (ex: `portfolio-interstellar`): Use `base: '/portfolio-interstellar/'` no `vite.config.ts`
-- **Repositório username.github.io**: Use `base: '/'` no `vite.config.ts`
-- **Desenvolvimento local**: Use `base: './'` (já configurado)
-
-Para ajustar, edite a variável `base` em `vite.config.ts` ou defina `VITE_BASE_PATH` no arquivo `.env`.
 
 ---
 

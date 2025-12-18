@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
         </h1>
         <div className="space-y-4">
           <h2 className="text-lg md:text-2xl font-display text-primary tracking-[0.2em] uppercase">
-            GILVAN SOUSA — SENIOR QA ENGINEER
+            GILVAN SOUSA — ANALISTA DE TESTES SÊNIOR
           </h2>
           <p className="text-lg md:text-xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body">
             Garantindo a integridade dos sistemas através de testes rigorosos e especialização em meios de pagamento. Onde a qualidade encontra a perfeição técnica.

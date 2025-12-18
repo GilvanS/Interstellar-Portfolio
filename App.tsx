@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Technologies from './components/Technologies';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -123,6 +124,7 @@ const App: React.FC = () => {
         <main className="container mx-auto px-4 max-w-7xl pt-20">
           <Hero />
           <About />
+          <Technologies />
           <Projects />
           <Contact />
           <Footer />
