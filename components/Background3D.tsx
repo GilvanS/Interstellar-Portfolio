@@ -41,11 +41,11 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
     };
 
     const palette = [
-      new THREE.Color(0x00c3ff), // Primary Blue
+      new THREE.Color(0x00c3ff), // Azul Gilvan
       new THREE.Color(0x0077ff),
-      new THREE.Color(0x764ba2), // Purple hint
+      new THREE.Color(0x764ba2), 
       new THREE.Color(0x00ffff),
-      new THREE.Color(0xffd700)  // Secondary Gold highlight
+      new THREE.Color(0xffd700)
     ];
 
     const scene = new THREE.Scene();
@@ -64,7 +64,7 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x050b14, 1);
 
-    // Starfield Implementation
+    // Starfield
     const createStarfield = () => {
       const count = 6000;
       const pos = [], cols = [], sizes = [];
@@ -218,6 +218,7 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }`,
       fragmentShader: `
+        uniform float uTime; // DECLARAÇÃO ADICIONADA AQUI PARA CORREÇÃO
         varying vec3 vColor; varying float vPulse; varying float vT;
         void main() {
           float flow = sin(vT * 10.0 - uTime * 5.0) * 0.5 + 0.5;
