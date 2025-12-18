@@ -1,0 +1,7 @@
+{
+  "name": "Gilvan Sousa | Interstellar Portfolio",
+  "description": "A futuristic sci-fi portfolio for Gilvan Sousa, Quality Assurance & Test Analyst featuring a Gemini-powered AI Image Laboratory.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

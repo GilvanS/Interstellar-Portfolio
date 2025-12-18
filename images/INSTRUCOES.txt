@@ -1,0 +1,54 @@
+
+============================================================
+   GUIA DEFINITIVO: PERSONALIZAÇÃO DE IMAGENS (QA SÊNIOR)
+============================================================
+
+Para que seu portfólio funcione perfeitamente, siga estas especificações
+técnicas para cada imagem. Como QA, sabemos que a precisão é tudo!
+
+LOCALIZAÇÃO DOS ARQUIVOS:
+Seu projeto está configurado para buscar as imagens na pasta:
+/public/images/ (no seu computador) ou simplesmente /images/ no código.
+
+------------------------------------------------------------
+1. FOTO DE PERFIL (Seção Sobre)
+------------------------------------------------------------
+- Arquivo: profile.jpg
+- Tamanho Recomendado: 400x400 pixels (Proporção 1:1 - Quadrada)
+- Formato: .jpg (preferencial) ou .png
+- Dica: A imagem será cortada em um círculo automaticamente pelo CSS. 
+  Certifique-se de que seu rosto esteja centralizado.
+
+------------------------------------------------------------
+2. IMAGEM DA NEBULOSA (Topo / Hero)
+------------------------------------------------------------
+- Arquivo: nebula.jpg
+- Tamanho Recomendado: 800x800 pixels (Proporção 1:1)
+- Formato: .jpg ou .webp
+- Estilo: Escolha imagens de nebulosas com fundo preto. O código 
+  aplica um efeito de "blend" para misturar com o fundo do site.
+
+------------------------------------------------------------
+3. IMAGEM DO CELULAR (Seção Contato)
+------------------------------------------------------------
+- Arquivo: blackhole.jpg
+- Tamanho Recomendado: 1080x1920 pixels (Proporção 9:16 - Vertical)
+- Formato: .jpg ou .png
+- Dica: Esta imagem aparecerá como o papel de parede do celular 
+  flutuante. Imagens verticais de alta resolução ficam melhores.
+
+------------------------------------------------------------
+SOLUÇÃO DE PROBLEMAS (TROUBLESHOOTING):
+------------------------------------------------------------
+1. IMAGEM NÃO APARECE? 
+   - Verifique se o nome está exatamente igual (ex: profile.jpg e não Profile.JPG).
+   - Verifique se a extensão é .jpg. Se sua foto for .png, você pode renomeá-la 
+     para .jpg ou alterar o caminho no código (About.tsx).
+   
+2. CAMINHO NO CÓDIGO:
+   O código agora utiliza o caminho absoluto "/images/arquivo.jpg" para 
+   garantir compatibilidade com diferentes servidores.
+
+============================================================
+Garantia de Qualidade — Gilvan Sousa
+============================================================
