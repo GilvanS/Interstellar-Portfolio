@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     // Para repositório de projeto: '/nome-do-repositorio/'
     // Para username.github.io: '/'
     // Use './' para desenvolvimento local e ajuste para produção se necessário
-    const base = process.env.VITE_BASE_PATH || './';
+    const base = process.env.VITE_BASE_PATH || '/Interstellar-Portfolio/';
     
     return {
       base: base,
