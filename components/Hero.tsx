@@ -34,16 +34,6 @@ const Hero: React.FC = () => {
             VER PROJETOS
             <i className="fas fa-chevron-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
           </button>
-          
-          <a 
-            href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 md:px-8 py-3 md:py-4 border border-secondary/60 text-secondary font-display font-bold tracking-widest text-[10px] md:text-xs rounded-full hover:bg-secondary hover:text-black transition-all active:scale-95 flex items-center justify-center gap-2 md:gap-3 cursor-pointer w-full sm:w-auto"
-          >
-            BAIXAR CURRÍCULO
-            <i className="fab fa-linkedin"></i>
-          </a>
         </div>
       </div>
       
