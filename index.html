@@ -18,7 +18,7 @@
                         primary: "#667eea",
                         secondary: "#ffd700",
                         accent: "#c084fc",
-                        background: "#050508",
+                        background: "#000000",
                         neonGreen: "#a3ff00"
                     },
                     fontFamily: {
@@ -32,29 +32,91 @@
     </script>
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-highlight: rgba(255, 255, 255, 0.2);
-            --text-main: rgba(255, 255, 255, 0.9);
-            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-highlight: rgba(255, 255, 255, 0.1);
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: rgba(255, 255, 255, 0.7);
             --val: 100%;
         }
 
         body {
-            background-color: #050508;
+            background-color: #000000;
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
         }
 
+        /* Estilos do Menu Animado */
+        nav .active-element {
+            --active-element-scale-x: 1;
+            --active-element-scale-y: 1;
+            --active-element-show: 0;
+            --active-element-opacity: 0;
+            --active-element-width: 0px;
+            --active-element-strike-x: 0%;
+            --active-element-mask-position: 0%;
+            position: absolute;
+            left: 0;
+            top: 38px;
+            height: 2px;
+            width: 32px;
+            border-radius: 2px;
+            background-color: #667eea;
+            opacity: var(--active-element-show);
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+
+        nav .active-element > svg,
+        nav .active-element .strike {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: var(--active-element-opacity);
+            width: var(--active-element-width);
+            mix-blend-mode: screen;
+        }
+
+        nav .active-element > svg {
+            display: block;
+            overflow: visible;
+            height: 5px;
+            filter: blur(0.5px) drop-shadow(2px 0px 8px rgba(102, 126, 234, 0.6));
+        }
+
+        nav .active-element .strike {
+            padding: 24px 0;
+            -webkit-mask-image: linear-gradient(to right, transparent calc(0% + var(--active-element-mask-position)), black calc(15% + var(--active-element-mask-position)), black 80%, transparent);
+            mask-image: linear-gradient(to right, transparent calc(0% + var(--active-element-mask-position)), black calc(15% + var(--active-element-mask-position)), black 80%, transparent);
+        }
+
+        nav .active-element .strike svg {
+            display: block;
+            overflow: visible;
+            height: 12px;
+            width: calc(var(--active-element-width) * 2);
+            transform: translate(var(--active-element-strike-x), 30%) scale(var(--active-element-scale-x), var(--active-element-scale-y));
+        }
+
+        nav .active-element .strike svg:last-child {
+            transform: translate(var(--active-element-strike-x), -30%) scale(-1);
+        }
+
+        nav.before .active-element {
+            transform: rotateY(180deg);
+        }
+
+        /* Utilidades Base */
         .glass-panel {
-            backdrop-filter: blur(24px) saturate(120%);
-            -webkit-backdrop-filter: blur(24px) saturate(120%);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-highlight);
             border-left: 1px solid var(--glass-highlight);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.01);
             border-radius: 24px;
         }
 
@@ -66,7 +128,7 @@
             cursor: pointer;
             position: relative;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.4);
         }
         #theme-1 { background: radial-gradient(circle at 30% 30%, #a78bfa, #4c1d95); }
         #theme-2 { background: radial-gradient(circle at 30% 30%, #fb7185, #9f1239); }
@@ -84,12 +146,11 @@
         }
         .theme-button.active::after { opacity: 1; transform: scale(1); }
 
-        /* DENSITY SLIDER BEAUTIFICATION */
         .density-slider {
             -webkit-appearance: none;
             width: 100%;
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             outline: none;
             margin: 15px 0;
@@ -98,7 +159,7 @@
         .density-slider::-webkit-slider-runnable-track {
             width: 100%;
             height: 4px;
-            background: linear-gradient(to right, #667eea var(--val), rgba(255, 255, 255, 0.1) var(--val));
+            background: linear-gradient(to right, #667eea var(--val), rgba(255, 255, 255, 0.05) var(--val));
             border-radius: 2px;
         }
 
@@ -115,16 +176,11 @@
             transition: all 0.2s ease;
         }
 
-        .density-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
-        }
-
         .control-button {
-            backdrop-filter: blur(20px) saturate(140%);
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(25px) saturate(160%);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
             padding: 12px 24px;
             border-radius: 50px;
@@ -140,11 +196,6 @@
             justify-content: center;
             gap: 8px;
         }
-        .control-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
     </style>
 <script type="importmap">
 {
@@ -152,12 +203,15 @@
     "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3"
+    "react": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
+<!-- GSAP Engine -->
+<script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
 </head>
 <body class="selection:bg-primary/30">
     <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>

@@ -15,8 +15,8 @@ export interface Background3DRef {
 
 interface Background3DProps {
   theme?: 'light' | 'dark';
-  density?: number; // 30 a 100
-  paletteIndex?: number; // 0, 1, 2
+  density?: number;
+  paletteIndex?: number;
 }
 
 const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = 'dark', density = 100, paletteIndex = 0 }, ref) => {
@@ -24,34 +24,16 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
-  const starsRef = useRef<THREE.Points | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   
   const currentFormationRef = useRef(0);
   const buildVizRef = useRef<((f: number, d: number) => void) | null>(null);
   const pausedRef = useRef(false);
 
   const colorPalettes = [
-    [
-      new THREE.Color(0x00c3ff),
-      new THREE.Color(0x764ba2),
-      new THREE.Color(0x00ffff),
-      new THREE.Color(0x0077ff),
-      new THREE.Color(0x6e48aa)
-    ],
-    [
-      new THREE.Color(0xf857a6),
-      new THREE.Color(0xff5858),
-      new THREE.Color(0xfeca57),
-      new THREE.Color(0xff6348),
-      new THREE.Color(0xff9068)
-    ],
-    [
-      new THREE.Color(0x4facfe),
-      new THREE.Color(0x00f2fe),
-      new THREE.Color(0x43e97b),
-      new THREE.Color(0x38f9d7),
-      new THREE.Color(0x4484ce)
-    ]
+    [new THREE.Color(0x00c3ff), new THREE.Color(0x764ba2), new THREE.Color(0x00ffff), new THREE.Color(0x0077ff), new THREE.Color(0x6e48aa)],
+    [new THREE.Color(0xf857a6), new THREE.Color(0xff5858), new THREE.Color(0xfeca57), new THREE.Color(0xff6348), new THREE.Color(0xff9068)],
+    [new THREE.Color(0x4facfe), new THREE.Color(0x00f2fe), new THREE.Color(0x43e97b), new THREE.Color(0x38f9d7), new THREE.Color(0x4484ce)]
   ];
 
   useImperativeHandle(ref, () => ({
@@ -64,12 +46,10 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
       return pausedRef.current;
     },
     resetCamera: () => {
-      // Logic for reset handled internally by OrbitControls in main effect
       window.dispatchEvent(new CustomEvent('reset-3d-camera'));
     },
   }));
 
-  // Re-build viz when density or palette changes
   useEffect(() => {
     if (buildVizRef.current) {
       buildVizRef.current(currentFormationRef.current, density / 100);
@@ -124,8 +104,8 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
       uPulsePositions: { value: [new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0)] },
       uPulseTimes: { value: [-1e4, -1e4, -1e4] },
       uPulseColors: { value: [new THREE.Color(1,1,1), new THREE.Color(1,1,1), new THREE.Color(1,1,1)] },
-      uPulseSpeed: { value: 18.0 },
-      uBaseNodeSize: { value: 0.65 }
+      uPulseSpeed: { value: 22.0 },
+      uBaseNodeSize: { value: 0.7 }
     };
 
     const nodeMat = new THREE.ShaderMaterial({
@@ -142,12 +122,12 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
           for(int i=0; i<3; i++) {
             float d = distance(wPos, uPulsePositions[i]);
             float r = (uTime - uPulseTimes[i]) * uPulseSpeed;
-            pulse += smoothstep(3.0, 0.0, abs(d - r)) * smoothstep(4.0, 0.0, uTime - uPulseTimes[i]);
+            pulse += smoothstep(4.0, 0.0, abs(d - r)) * smoothstep(5.0, 0.0, uTime - uPulseTimes[i]);
           }
           vPulse = pulse;
-          float breathe = sin(uTime * 0.7 + distFromRoot * 0.2) * 0.15 + 0.85;
+          float breathe = sin(uTime * 0.8 + distFromRoot * 0.15) * 0.2 + 0.8;
           vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = nodeSize * uBaseNodeSize * breathe * (1.0 + pulse * 2.5) * (1000.0 / -mvPos.z);
+          gl_PointSize = nodeSize * uBaseNodeSize * breathe * (1.0 + pulse * 3.0) * (1200.0 / -mvPos.z);
           gl_Position = projectionMatrix * mvPos;
         }`,
       fragmentShader: `
@@ -155,8 +135,8 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
         void main() {
           float d = length(gl_PointCoord - 0.5);
           if (d > 0.5) discard;
-          vec3 color = mix(vColor, vec3(1.0), vPulse * 0.8);
-          gl_FragColor = vec4(color, (1.0 - d * 2.0) * 0.9);
+          vec3 color = mix(vColor, vec3(1.0), vPulse * 0.9);
+          gl_FragColor = vec4(color, (1.0 - d * 2.0) * (0.85 + vPulse * 0.15));
         }`,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
     });
@@ -176,7 +156,7 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
           for(int i=0; i<3; i++) {
             float d = distance(wPos, uPulsePositions[i]);
             float r = (uTime - uPulseTimes[i]) * uPulseSpeed;
-            pulse += smoothstep(3.0, 0.0, abs(d - r)) * smoothstep(4.0, 0.0, uTime - uPulseTimes[i]);
+            pulse += smoothstep(4.0, 0.0, abs(d - r)) * smoothstep(5.0, 0.0, uTime - uPulseTimes[i]);
           }
           vPulse = pulse;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -185,20 +165,21 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
         uniform float uTime;
         varying vec3 vColor; varying float vPulse; varying float vT;
         void main() {
-          float flow = sin(vT * 10.0 - uTime * 5.0) * 0.5 + 0.5;
-          vec3 color = mix(vColor, vec3(1.0), vPulse * 0.6);
-          gl_FragColor = vec4(color, 0.3 + flow * 0.2 + vPulse * 0.5);
+          float flow = sin(vT * 12.0 - uTime * 6.0) * 0.5 + 0.5;
+          vec3 color = mix(vColor, vec3(1.0), vPulse * 0.7);
+          gl_FragColor = vec4(color, 0.15 + flow * 0.15 + vPulse * 0.5);
         }`,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
     });
 
     const scene = new THREE.Scene();
     sceneRef.current = scene;
-    const bgColor = 0x050508;
-    scene.fog = new THREE.FogExp2(bgColor, 0.0015);
+    const bgColor = 0x000000;
+    scene.fog = new THREE.FogExp2(bgColor, 0.0018);
 
-    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 5, 45);
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1500);
+    camera.position.set(0, 5, 60);
+    cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
@@ -211,54 +192,49 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(bgColor, 1);
 
-    const createStarfield = () => {
-      const count = 6000;
-      const pos = [], cols = [], sizes = [];
-      for (let i = 0; i < count; i++) {
-        const r = THREE.MathUtils.randFloat(60, 200);
-        const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
-        const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
-        pos.push(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
-        cols.push(1.0, 1.0, 1.0);
-        sizes.push(THREE.MathUtils.randFloat(0.1, 0.3));
-      }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
-      geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-      const stars = new THREE.Points(geo, new THREE.ShaderMaterial({
-        uniforms: { uTime: { value: 0 } },
-        vertexShader: `
-          attribute float size; attribute vec3 color; varying vec3 vColor; uniform float uTime;
-          void main() {
-            vColor = color;
-            vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-            float blink = sin(uTime * 1.2 + position.x * 10.0) * 0.4 + 0.6;
-            gl_PointSize = size * blink * (300.0 / -mvPos.z);
-            gl_Position = projectionMatrix * mvPos;
-          }`,
-        fragmentShader: `
-          varying vec3 vColor;
-          void main() {
-            if (length(gl_PointCoord - 0.5) > 0.5) discard;
-            gl_FragColor = vec4(vColor, 0.7);
-          }`,
-        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
-      }));
-      starsRef.current = stars;
-      return stars;
-    };
-    scene.add(createStarfield());
-
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.4;
-    controls.enableZoom = false;
+    controls.enableZoom = true;
+    controls.minDistance = 30;
+    controls.maxDistance = 250;
+
+    // --- CORREÇÃO DO STARFIELD (Float32Array nativo) ---
+    const starsCount = 12000;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starsCount * 3);
+    const starSizes = new Float32Array(starsCount);
+
+    for (let i = 0; i < starsCount; i++) {
+      const i3 = i * 3;
+      const r = 200 + Math.random() * 800;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      
+      starPos[i3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i3 + 2] = r * Math.cos(phi);
+      
+      starSizes[i] = Math.random() * 2.5;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+
+    const starMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.7,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true
+    });
+    const starField = new THREE.Points(starGeo, starMat);
+    scene.add(starField);
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.8);
+    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 0.4, 0.8);
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
 
@@ -274,33 +250,53 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
       const root = { pos: new THREE.Vector3(0,0,0), level: 0, connections: [] as any[] };
       nodes.push(root);
 
-      if (f === 0) { // Sphere
+      if (f === 0) {
         for(let l=1; l<=4; l++) {
-          const count = Math.floor(l * 12 * d);
+          const count = Math.floor(l * 15 * d);
           for(let i=0; i<count; i++) {
             const phi = Math.acos(1 - 2 * (i+0.5)/count);
             const theta = 2 * Math.PI * i / 1.618;
-            const n = { pos: new THREE.Vector3().setFromSphericalCoords(l*6, phi, theta), level: l, connections: [] as any[] };
+            const n = { pos: new THREE.Vector3().setFromSphericalCoords(l*8, phi, theta), level: l, connections: [] as any[] };
             nodes.push(n);
             const parent = nodes[Math.floor(Math.random() * (nodes.length-1))];
             parent.connections.push({ node: n });
           }
         }
-      } else if (f === 1) { // Helix
-        const count = Math.floor(120 * d);
+      } else if (f === 1) {
+        const count = Math.floor(180 * d);
         for(let i=0; i<count; i++) {
           const t = i / count;
-          const n = { pos: new THREE.Vector3(Math.cos(t*25)*10, (t-0.5)*40, Math.sin(t*25)*10), level: Math.floor(t*5), connections: [] as any[] };
+          const angle = t * Math.PI * 30;
+          const radius = 12 + Math.sin(t * 10) * 4;
+          const n = { 
+            pos: new THREE.Vector3(
+              Math.cos(angle) * radius, 
+              (t - 0.5) * 120,
+              Math.sin(angle) * radius
+            ), 
+            level: Math.floor(t * 5), 
+            connections: [] as any[] 
+          };
           nodes.push(n);
           if (i > 0) nodes[i-1].connections.push({ node: n });
+          if (i > 10 && Math.random() > 0.85) nodes[i-10].connections.push({ node: n });
         }
-      } else { // Web
+      } else {
         const grow = (p: any, depth: number) => {
           if (depth > 3) return;
           const subBranches = Math.ceil(3 * d);
           for(let i=0; i<subBranches; i++) {
-            const n = { pos: p.pos.clone().add(new THREE.Vector3(THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15))), level: depth, connections: [] as any[] };
-            nodes.push(n); p.connections.push({ node: n });
+            const n = { 
+              pos: p.pos.clone().add(new THREE.Vector3(
+                THREE.MathUtils.randFloatSpread(25),
+                THREE.MathUtils.randFloatSpread(25),
+                THREE.MathUtils.randFloatSpread(25)
+              )), 
+              level: depth, 
+              connections: [] as any[] 
+            };
+            nodes.push(n); 
+            p.connections.push({ node: n });
             grow(n, depth+1);
           }
         };
@@ -311,7 +307,7 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
       const pos: number[] = [], sizes: number[] = [], colors: number[] = [], dists: number[] = [];
       nodes.forEach(n => {
         pos.push(n.pos.x, n.pos.y, n.pos.z);
-        sizes.push(n.level === 0 ? 2.5 : 1.2);
+        sizes.push(n.level === 0 ? 3.0 : 1.5);
         const c = palette[n.level % palette.length];
         colors.push(c.r, c.g, c.b);
         dists.push(n.pos.length());
@@ -349,14 +345,15 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
     buildViz(currentFormationRef.current, density / 100);
 
     const clock = new THREE.Clock();
-    let lastPulse = 0;
     const animate = () => {
       const t = clock.getElapsedTime();
       if (!pausedRef.current) {
         pulseUniforms.uTime.value = t;
-        if (starsRef.current) starsRef.current.material.uniforms.uTime.value = t;
-        if (currentNetworkMesh) currentNetworkMesh.rotation.y = t * 0.05;
-        if (currentConnMesh) currentConnMesh.rotation.y = t * 0.05;
+        if (currentNetworkMesh) currentNetworkMesh.rotation.y = t * 0.08;
+        if (currentConnMesh) currentConnMesh.rotation.y = t * 0.08;
+        
+        starField.rotation.y = t * 0.01;
+        starField.rotation.z = t * 0.005;
       }
       controls.update();
       composer.render();
@@ -372,17 +369,31 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
       const plane = new THREE.Plane(new THREE.Vector3(0,0,1).applyQuaternion(camera.quaternion), 0);
       const intersect = new THREE.Vector3();
       if (ray.ray.intersectPlane(plane, intersect)) {
-        const i = lastPulse % 3;
+        const currentTime = clock.getElapsedTime();
+        const i = Math.floor(currentTime * 10) % 3;
         pulseUniforms.uPulsePositions.value[i].copy(intersect);
-        pulseUniforms.uPulseTimes.value[i] = clock.getElapsedTime();
+        pulseUniforms.uPulseTimes.value[i] = currentTime;
         pulseUniforms.uPulseColors.value[i].copy(colorPalettes[paletteIndex][Math.floor(Math.random() * colorPalettes[paletteIndex].length)]);
-        lastPulse++;
       }
     };
 
-    const onResetCamera = () => controls.reset();
+    const handleScroll = () => {
+      if (!cameraRef.current) return;
+      const scrollY = window.scrollY;
+      const scrollRatio = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      const targetZ = 60 - scrollRatio * 35;
+      cameraRef.current.position.z = THREE.MathUtils.lerp(cameraRef.current.position.z, targetZ, 0.1);
+    };
+
+    const onResetCamera = () => {
+      controls.reset();
+      camera.position.set(0, 5, 60);
+    };
+
     window.addEventListener('reset-3d-camera', onResetCamera);
     window.addEventListener('click', triggerPulse);
+    window.addEventListener('scroll', handleScroll);
+    
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -394,15 +405,16 @@ const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = '
     return () => {
       window.removeEventListener('click', triggerPulse);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('reset-3d-camera', onResetCamera);
       renderer.dispose();
     };
   }, [paletteIndex]); 
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-0 transition-colors duration-500">
+    <div ref={containerRef} className="fixed inset-0 z-0 bg-black">
       <canvas ref={canvasRef} className="w-full h-full block" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none"></div>
     </div>
   );
 });

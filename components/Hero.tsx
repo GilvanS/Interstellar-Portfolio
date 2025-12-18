@@ -48,22 +48,22 @@ const Hero: React.FC = () => {
       
       <div className="lg:w-1/3 relative hidden lg:block">
         <div className="relative w-full aspect-square max-w-[450px]">
-          <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>
+          <div className="absolute inset-0 bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
           
-          <div className="relative w-full h-full rounded-full border border-white/10 overflow-hidden shadow-[0_0_60px_rgba(102,126,234,0.2)]">
+          <div className="relative w-full h-full rounded-full border border-white/5 overflow-hidden shadow-[0_0_60px_rgba(102,126,234,0.15)]">
             <img 
               src="/images/nebula.jpg" 
               alt="Interstellar Visualization" 
-              className="w-full h-full object-cover opacity-80 mix-blend-screen scale-110"
-              style={{ maskImage: 'radial-gradient(circle, black 45%, transparent 75%)', WebkitMaskImage: 'radial-gradient(circle, black 45%, transparent 75%)' }}
+              className="w-full h-full object-cover opacity-50 mix-blend-lighten scale-110 saturate-50 contrast-125"
+              style={{ maskImage: 'radial-gradient(circle, black 35%, transparent 70%)', WebkitMaskImage: 'radial-gradient(circle, black 35%, transparent 70%)' }}
               onError={(e) => {
                 e.currentTarget.src = "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800&h=800";
               }}
             />
           </div>
           
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-primary/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-dashed border-white/5 rounded-full animate-[spin_30s_linear_infinite_reverse]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-primary/10 rounded-full animate-[spin_25s_linear_infinite]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-dashed border-white/5 rounded-full animate-[spin_35s_linear_infinite_reverse]"></div>
         </div>
       </div>
     </section>

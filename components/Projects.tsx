@@ -39,6 +39,19 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
+  // Helpers para mapear as cores das classes do Tailwind
+  const colorMap: Record<string, string> = {
+    primary: 'text-primary border-primary/40 bg-primary/10',
+    secondary: 'text-secondary border-secondary/40 bg-secondary/10',
+    accent: 'text-accent border-accent/40 bg-accent/10',
+  };
+
+  const buttonColorMap: Record<string, string> = {
+    primary: 'bg-primary/20 text-primary border-primary/40 hover:bg-primary hover:text-black',
+    secondary: 'bg-secondary/20 text-secondary border-secondary/40 hover:bg-secondary hover:text-black',
+    accent: 'bg-accent/20 text-accent border-accent/40 hover:bg-accent hover:text-black',
+  };
+
   return (
     <section id="projects" className="py-24 scroll-mt-32">
       <div className="flex items-center gap-6 mb-16">
@@ -48,37 +61,54 @@ const Projects: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {projects.map((p) => (
-          <div key={p.id} className="group relative bg-[#101a2d]/40 backdrop-blur-md rounded-2xl overflow-hidden transition-all hover:bg-[#101a2d]/60 flex flex-col shadow-2xl border border-white/5">
-            <div className={`absolute inset-0 bg-${p.color}/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`}></div>
+          <div key={p.id} className="group relative bg-black/95 backdrop-blur-3xl rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30">
             
-            <div className="relative h-56 overflow-hidden">
-              <div className="absolute inset-0 bg-primary/10 mix-blend-overlay group-hover:opacity-0 transition-opacity"></div>
-              <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#101a2d]/80 via-transparent to-transparent"></div>
+            {/* Imagem do Projeto com Overlay */}
+            <div className="relative h-64 overflow-hidden">
+              <div className="absolute inset-0 bg-black/40 z-10 group-hover:bg-transparent transition-all duration-500"></div>
+              <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-20"></div>
               
-              <div className={`absolute top-4 right-4 w-12 h-12 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-${p.color} group-hover:scale-110 transition-transform`}>
-                <i className={`${p.icon} text-xl`}></i>
+              <div className={`absolute top-6 right-6 w-14 h-14 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-2xl z-30 transition-all group-hover:border-primary/50 shadow-xl`}>
+                <i className={`${p.icon} ${p.color === 'primary' ? 'text-primary' : p.color === 'secondary' ? 'text-secondary' : 'text-accent'}`}></i>
               </div>
             </div>
             
-            <div className="p-8 space-y-4 flex-grow flex flex-col relative z-10">
-              <div className={`inline-block w-fit px-3 py-1 bg-${p.color}/20 border border-${p.color}/40 text-${p.color} font-display font-bold text-[10px] tracking-[0.2em] rounded`}>
+            {/* Conteúdo do Card */}
+            <div className="p-8 space-y-5 flex-grow flex flex-col relative">
+              <div className={`inline-block w-fit px-4 py-1.5 rounded-full border font-display font-bold text-[10px] tracking-[0.2em] ${colorMap[p.color]}`}>
                 {p.tech}
               </div>
-              <h4 className="text-2xl font-display font-bold text-white group-hover:text-primary transition-colors uppercase">{p.title}</h4>
-              <p className="text-slate-200 text-sm leading-relaxed flex-grow">
+              
+              <h4 className="text-2xl font-display font-bold text-white group-hover:text-primary transition-colors uppercase tracking-tight">
+                {p.title}
+              </h4>
+              
+              <p className="text-slate-300 text-base font-body leading-relaxed flex-grow">
                 {p.description}
               </p>
               
+              {/* Botões de Ação Padronizados */}
               <div className="flex gap-4 pt-4">
-                <a href={p.github} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 text-[10px] font-bold font-display border border-white/20 text-white hover:bg-white/20 text-center rounded-xl transition-all uppercase tracking-widest">
-                  <i className="fab fa-github mr-2"></i> Code
+                <a 
+                  href={p.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex-1 py-3 text-xs font-bold font-display border border-white/10 text-white hover:bg-white/10 text-center rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                >
+                  <i className="fab fa-github"></i> CODE
                 </a>
-                <a href={p.demo} className={`flex-1 py-3 text-[10px] font-bold font-display bg-${p.color}/20 border border-${p.color}/40 text-${p.color} hover:bg-${p.color} hover:text-black text-center rounded-xl transition-all uppercase tracking-widest`}>
-                  Live Demo <i className="fas fa-arrow-right ml-1"></i>
+                <a 
+                  href={p.demo} 
+                  className={`flex-1 py-3 text-xs font-bold font-display border text-center rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 ${buttonColorMap[p.color]}`}
+                >
+                  DEMO <i className="fas fa-external-link-alt text-[10px]"></i>
                 </a>
               </div>
             </div>
+
+            {/* Brilho sutil no hover */}
+            <div className="absolute -inset-px bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
           </div>
         ))}
       </div>
