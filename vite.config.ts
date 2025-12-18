@@ -6,24 +6,34 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     
     // Base path para GitHub Pages
-    // Para repositório de projeto: '/nome-do-repositorio/'
-    // Para username.github.io: '/'
-    // Em produção (GitHub Actions), detectar automaticamente o nome do repositório
+    // IMPORTANTE: Para repositório de projeto, use '/Interstellar-Portfolio/'
+    // Para username.github.io, use '/'
     const getBasePath = () => {
-      // Se estiver no GitHub Actions, usar a variável de ambiente
+      // Prioridade 1: Variável de ambiente explícita (permite override)
+      if (process.env.VITE_BASE_PATH) {
+        return process.env.VITE_BASE_PATH;
+      }
+      
+      // Prioridade 2: Detectar do GitHub Actions (se disponível)
       if (process.env.GITHUB_REPOSITORY) {
-        const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
-        return `/${repoName}/`;
+        const parts = process.env.GITHUB_REPOSITORY.split('/');
+        if (parts.length === 2) {
+          const repoName = parts[1];
+          return `/${repoName}/`;
+        }
       }
-      // Se for username.github.io, usar raiz
-      if (process.env.VITE_BASE_PATH === '/') {
-        return '/';
-      }
-      // Padrão para repositório de projeto
-      return process.env.VITE_BASE_PATH || '/Interstellar-Portfolio/';
+      
+      // Prioridade 3: Padrão fixo para este repositório
+      // Este é o nome do repositório: Interstellar-Portfolio
+      return '/Interstellar-Portfolio/';
     };
     
     const base = getBasePath();
+    
+    // Log para debug durante o build
+    console.log(`[Vite Config] Base path: ${base}`);
+    console.log(`[Vite Config] GITHUB_REPOSITORY: ${process.env.GITHUB_REPOSITORY || 'não definido'}`);
+    console.log(`[Vite Config] VITE_BASE_PATH: ${process.env.VITE_BASE_PATH || 'não definido'}`);
     
     return {
       base: base,

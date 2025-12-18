@@ -9,7 +9,51 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Font Awesome - CDN principal com fallback -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <link id="fontawesome-link" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        // Fallback automático para Font Awesome se o CDN principal falhar
+        (function() {
+            const fontAwesomeLink = document.getElementById('fontawesome-link');
+            if (fontAwesomeLink) {
+                fontAwesomeLink.onerror = function() {
+                    console.log('Font Awesome CDN principal falhou, tentando fallback...');
+                    this.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                    this.onerror = function() {
+                        console.log('Font Awesome CDN secundário falhou, tentando último fallback...');
+                        this.href = 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                    };
+                };
+                
+                // Verificar se carregou após 2 segundos
+                setTimeout(function() {
+                    const testIcon = document.createElement('i');
+                    testIcon.className = 'fas fa-check';
+                    testIcon.style.position = 'absolute';
+                    testIcon.style.visibility = 'hidden';
+                    document.body.appendChild(testIcon);
+                    
+                    const computedStyle = window.getComputedStyle(testIcon, ':before');
+                    const hasContent = computedStyle.content && computedStyle.content !== 'none' && computedStyle.content !== '""';
+                    
+                    if (!hasContent) {
+                        console.log('Font Awesome não detectado, carregando fallback...');
+                        const fallbackLink = document.createElement('link');
+                        fallbackLink.rel = 'stylesheet';
+                        fallbackLink.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                        fallbackLink.crossOrigin = 'anonymous';
+                        document.head.appendChild(fallbackLink);
+                    }
+                    
+                    document.body.removeChild(testIcon);
+                }, 2000);
+            }
+        })();
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -234,21 +278,37 @@
             gap: 8px;
         }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3/"
-  }
-}
-</script>
 <!-- GSAP Engine -->
 <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
+<!-- 
+  Nota: O import map foi removido porque o Vite gerencia as dependências automaticamente.
+  React e outras dependências são incluídas no bundle gerado pelo Vite.
+-->
 </head>
 <body class="selection:bg-primary/30">
-    <div id="root"></div>
+    <div id="root">
+        <!-- Fallback caso o React não carregue -->
+        <noscript>
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; color: white; text-align: center; padding: 2rem;">
+                <div>
+                    <h1 style="color: #667eea; font-size: 2rem; margin-bottom: 1rem;">JavaScript Necessário</h1>
+                    <p>Por favor, habilite o JavaScript no seu navegador para visualizar este portfólio.</p>
+                </div>
+            </div>
+        </noscript>
+    </div>
     <script type="module" src="index.tsx"></script>
+    <script>
+        // Fallback de erro - mostra mensagem se o React não carregar
+        window.addEventListener('error', function(e) {
+            if (e.message && e.message.includes('Failed to fetch dynamically imported module')) {
+                console.error('Erro ao carregar módulo:', e);
+                const root = document.getElementById('root');
+                if (root && !root.querySelector('.error-message')) {
+                    root.innerHTML = '<div class="error-message" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; color: white; text-align: center; padding: 2rem;"><div><h1 style="color: #667eea; font-size: 2rem; margin-bottom: 1rem;">Erro ao Carregar</h1><p>Por favor, recarregue a página ou verifique sua conexão.</p></div></div>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -32,12 +32,34 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug - Repository Info
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Repository Name: ${{ github.repository_owner }}/${{ github.event.repository.name }}"
+          echo "Base path será: /${{ github.event.repository.name }}/"
+
       - name: Build
         run: npm run build
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # GITHUB_REPOSITORY é automaticamente fornecido pelo GitHub Actions
-          # Formato: owner/repository-name
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          # GITHUB_REPOSITORY será usado pelo vite.config.ts para detectar o base path
+          # Formato: owner/repository-name (ex: gilvans/Interstellar-Portfolio)
+
+      - name: Verify Build Output
+        run: |
+          echo "Verificando arquivos gerados..."
+          ls -la dist/
+          echo ""
+          echo "Verificando index.html..."
+          if grep -q "/Interstellar-Portfolio/assets/" dist/index.html; then
+            echo "✅ Base path correto no index.html"
+          else
+            echo "❌ Base path NÃO encontrado no index.html"
+            echo "Conteúdo do index.html:"
+            grep -i "assets" dist/index.html || echo "Nenhum asset encontrado"
+            exit 1
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
