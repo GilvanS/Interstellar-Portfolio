@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
         <div className="col-span-1 md:col-span-2">
           <div className="text-2xl font-display font-bold tracking-widest text-white mb-6">
-            G. <span className="text-primary">SOUSA</span>
+            Gilvan <span className="text-primary">Sousa</span>
           </div>
           <p className="text-slate-500 text-sm leading-relaxed max-w-sm mb-8">
             Elevando os padrões de qualidade e garantindo a excelência em cada entrega digital. Focado em automação, performance e segurança.
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm">
             <li><button onClick={() => scrollToSection('top')} className="text-slate-500 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Início</button></li>
             <li><button onClick={() => scrollToSection('about')} className="text-slate-500 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Sobre Mim</button></li>
-            <li><button onClick={() => scrollToSection('projects')} className="text-slate-500 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Projetos</button></li>
+            <li><button onClick={() => scrollToSection('projects')} className="text-slate-500 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">PROJETOS</button></li>
             <li><button onClick={() => scrollToSection('contact')} className="text-slate-500 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Contato</button></li>
           </ul>
         </div>

@@ -1,7 +1,8 @@
-
 import { GoogleGenAI } from "@google/genai";
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Create a helper to get the AI instance.
+// Using process.env.API_KEY directly as per guidelines.
+const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const editImageWithAI = async (base64Image: string, prompt: string, mimeType: string): Promise<string | null> => {
   const ai = getAI();

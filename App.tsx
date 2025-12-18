@@ -11,6 +11,9 @@ import Background3D, { Background3DRef } from './components/Background3D';
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [density, setDensity] = useState(100);
+  const [paletteIndex, setPaletteIndex] = useState(0);
+
   const bgRef = useRef<Background3DRef>(null);
 
   useEffect(() => {
@@ -19,18 +22,92 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Update CSS Variable for the slider track fill
+  useEffect(() => {
+    document.documentElement.style.setProperty('--val', `${density}%`);
+  }, [density]);
+
   const handleMorph = () => bgRef.current?.morph();
   const handleTogglePause = () => {
-    if (bgRef.current) setIsPaused(bgRef.current.togglePause());
+    if (bgRef.current) {
+      const newState = bgRef.current.togglePause();
+      setIsPaused(newState);
+    }
   };
   const handleReset = () => bgRef.current?.resetCamera();
 
   return (
-    <div className="relative min-h-screen bg-[#050b14] overflow-x-hidden">
-      {/* Complete Quantum Background */}
-      <Background3D ref={bgRef} />
+    <div className="relative min-h-screen bg-[#050508]">
+      <Background3D 
+        ref={bgRef} 
+        theme="dark" 
+        density={density}
+        paletteIndex={paletteIndex}
+      />
       
-      {/* Main Content Overlay */}
+      {/* PAINÉIS FLUTUANTES ORIGINAIS - DESIGN CRYSTAL */}
+      <div className="fixed inset-0 pointer-events-none z-[60]">
+        
+        {/* Painel de Temas (Superior Direito) */}
+        <div className="absolute top-24 right-8 w-[240px] p-6 glass-panel pointer-events-auto hidden md:flex flex-col gap-6">
+          <div>
+            <div className="text-[10px] uppercase tracking-[2px] text-slate-400 font-bold mb-4 font-display">Neural Palette</div>
+            <div className="grid grid-cols-3 gap-3">
+              {[0, 1, 2].map((i) => (
+                <button
+                  key={i}
+                  id={`theme-${i + 1}`}
+                  onClick={() => setPaletteIndex(i)}
+                  className={`theme-button ${paletteIndex === i ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider font-display">
+              <span>Node Density</span>
+              <span className="text-primary bg-primary/10 px-2 py-0.5 rounded">{density}%</span>
+            </div>
+            <div className="relative pt-1">
+              <input 
+                type="range" 
+                min="30" 
+                max="100" 
+                step="1"
+                value={density}
+                onChange={(e) => setDensity(parseInt(e.target.value))}
+                className="density-slider"
+              />
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-white/5 flex flex-col gap-2">
+             <div className="text-[8px] text-slate-500 font-display tracking-widest uppercase">System Controls</div>
+             <div className="grid grid-cols-2 gap-2">
+                <button onClick={handleMorph} className="py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[9px] font-bold text-white uppercase tracking-tighter transition-all">Morph</button>
+                <button onClick={handleReset} className="py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[9px] font-bold text-white uppercase tracking-tighter transition-all">Reset</button>
+             </div>
+          </div>
+        </div>
+
+        {/* Painel de Ações (Base Central) */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 pointer-events-auto">
+          <button onClick={handleMorph} className="control-button group">
+            <i className="fas fa-microchip group-hover:rotate-45 transition-transform"></i>
+            <span>Morph</span>
+          </button>
+          <button onClick={handleTogglePause} className="control-button">
+            <i className={`fas ${isPaused ? 'fa-play' : 'fa-snowflake'}`}></i>
+            <span>{isPaused ? 'Play' : 'Freeze'}</span>
+          </button>
+          <button onClick={handleReset} className="control-button">
+            <i className="fas fa-sync-alt"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+
       <div className="relative z-10">
         <Navbar scrolled={scrolled} />
         <main className="container mx-auto px-4 max-w-7xl pt-20">
@@ -41,41 +118,6 @@ const App: React.FC = () => {
           <Footer />
         </main>
       </div>
-
-      {/* Quantum Control Panel */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex gap-4 p-2 bg-black/30 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl">
-        <button 
-          onClick={handleMorph}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 transition-all hover:scale-110 active:scale-95 group"
-          title="Morph Formation"
-        >
-          <span className="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">memory</span>
-        </button>
-        <button 
-          onClick={handleTogglePause}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 transition-all hover:scale-110 active:scale-95"
-          title={isPaused ? "Play" : "Freeze"}
-        >
-          <span className="material-symbols-outlined">{isPaused ? 'play_arrow' : 'ac_unit'}</span>
-        </button>
-        <button 
-          onClick={handleReset}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 transition-all hover:scale-110 active:scale-95"
-          title="Reset Camera"
-        >
-          <span className="material-symbols-outlined">restart_alt</span>
-        </button>
-      </div>
-
-      <style>{`
-        .grid-bg {
-          background-image: 
-            linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
-          background-size: 60px 60px;
-          mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
-        }
-      `}</style>
     </div>
   );
 };

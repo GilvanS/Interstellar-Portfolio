@@ -13,118 +13,73 @@ export interface Background3DRef {
   resetCamera: () => void;
 }
 
-const Background3D = forwardRef<Background3DRef>((_, ref) => {
+interface Background3DProps {
+  theme?: 'light' | 'dark';
+  density?: number; // 30 a 100
+  paletteIndex?: number; // 0, 1, 2
+}
+
+const Background3D = forwardRef<Background3DRef, Background3DProps>(({ theme = 'dark', density = 100, paletteIndex = 0 }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const internalRef = useRef<{
-    morph: () => void;
-    togglePause: () => boolean;
-    resetCamera: () => void;
-  } | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const starsRef = useRef<THREE.Points | null>(null);
+  
+  const currentFormationRef = useRef(0);
+  const buildVizRef = useRef<((f: number, d: number) => void) | null>(null);
+  const pausedRef = useRef(false);
+
+  const colorPalettes = [
+    [
+      new THREE.Color(0x00c3ff),
+      new THREE.Color(0x764ba2),
+      new THREE.Color(0x00ffff),
+      new THREE.Color(0x0077ff),
+      new THREE.Color(0x6e48aa)
+    ],
+    [
+      new THREE.Color(0xf857a6),
+      new THREE.Color(0xff5858),
+      new THREE.Color(0xfeca57),
+      new THREE.Color(0xff6348),
+      new THREE.Color(0xff9068)
+    ],
+    [
+      new THREE.Color(0x4facfe),
+      new THREE.Color(0x00f2fe),
+      new THREE.Color(0x43e97b),
+      new THREE.Color(0x38f9d7),
+      new THREE.Color(0x4484ce)
+    ]
+  ];
 
   useImperativeHandle(ref, () => ({
-    morph: () => internalRef.current?.morph(),
-    togglePause: () => internalRef.current?.togglePause() || false,
-    resetCamera: () => internalRef.current?.resetCamera(),
+    morph: () => {
+      currentFormationRef.current = (currentFormationRef.current + 1) % 3;
+      buildVizRef.current?.(currentFormationRef.current, density / 100);
+    },
+    togglePause: () => {
+      pausedRef.current = !pausedRef.current;
+      return pausedRef.current;
+    },
+    resetCamera: () => {
+      // Logic for reset handled internally by OrbitControls in main effect
+      window.dispatchEvent(new CustomEvent('reset-3d-camera'));
+    },
   }));
+
+  // Re-build viz when density or palette changes
+  useEffect(() => {
+    if (buildVizRef.current) {
+      buildVizRef.current(currentFormationRef.current, density / 100);
+    }
+  }, [density, paletteIndex]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const config = {
-      paused: false,
-      activePaletteIndex: 0,
-      currentFormation: 0,
-      numFormations: 3,
-      densityFactor: 1.0,
-      pulseSpeed: 18.0
-    };
-
-    const palette = [
-      new THREE.Color(0x00c3ff), // Azul Gilvan
-      new THREE.Color(0x0077ff),
-      new THREE.Color(0x764ba2), 
-      new THREE.Color(0x00ffff),
-      new THREE.Color(0xffd700)
-    ];
-
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.0015);
-
-    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 5, 45);
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
-      powerPreference: "high-performance",
-      alpha: true
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x050b14, 1);
-
-    // Starfield
-    const createStarfield = () => {
-      const count = 6000;
-      const pos = [], cols = [], sizes = [];
-      for (let i = 0; i < count; i++) {
-        const r = THREE.MathUtils.randFloat(60, 200);
-        const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
-        const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
-        pos.push(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
-        cols.push(0.6, 0.9, 1.0);
-        sizes.push(THREE.MathUtils.randFloat(0.1, 0.3));
-      }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
-      geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-      return new THREE.Points(geo, new THREE.ShaderMaterial({
-        uniforms: { uTime: { value: 0 } },
-        vertexShader: `
-          attribute float size; attribute vec3 color; varying vec3 vColor; uniform float uTime;
-          void main() {
-            vColor = color;
-            vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-            float blink = sin(uTime * 1.2 + position.x * 10.0) * 0.4 + 0.6;
-            gl_PointSize = size * blink * (300.0 / -mvPos.z);
-            gl_Position = projectionMatrix * mvPos;
-          }`,
-        fragmentShader: `
-          varying vec3 vColor;
-          void main() {
-            if (length(gl_PointCoord - 0.5) > 0.5) discard;
-            gl_FragColor = vec4(vColor, 0.7);
-          }`,
-        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
-      }));
-    };
-    const stars = createStarfield();
-    scene.add(stars);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.enableZoom = false;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.4;
-
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.4, 0.5, 0.8);
-    composer.addPass(bloom);
-    composer.addPass(new OutputPass());
-
-    const pulseUniforms = {
-      uTime: { value: 0.0 },
-      uPulsePositions: { value: [new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0)] },
-      uPulseTimes: { value: [-1e4, -1e4, -1e4] },
-      uPulseColors: { value: [new THREE.Color(1,1,1), new THREE.Color(1,1,1), new THREE.Color(1,1,1)] },
-      uPulseSpeed: { value: config.pulseSpeed },
-      uBaseNodeSize: { value: 0.65 }
-    };
-
-    const noiseShader = `
+    const noiseFunctions = `
       vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
       vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
       vec4 permute(vec4 x) { return mod289(((x * 34.0) + 1.0) * x); }
@@ -164,10 +119,19 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
       }
     `;
 
+    const pulseUniforms = {
+      uTime: { value: 0.0 },
+      uPulsePositions: { value: [new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0), new THREE.Vector3(1e4,0,0)] },
+      uPulseTimes: { value: [-1e4, -1e4, -1e4] },
+      uPulseColors: { value: [new THREE.Color(1,1,1), new THREE.Color(1,1,1), new THREE.Color(1,1,1)] },
+      uPulseSpeed: { value: 18.0 },
+      uBaseNodeSize: { value: 0.65 }
+    };
+
     const nodeMat = new THREE.ShaderMaterial({
       uniforms: pulseUniforms,
       vertexShader: `
-        ${noiseShader}
+        ${noiseFunctions}
         attribute float nodeSize; attribute vec3 nodeColor; attribute float distFromRoot;
         uniform float uTime; uniform vec3 uPulsePositions[3]; uniform float uPulseTimes[3]; uniform float uPulseSpeed; uniform float uBaseNodeSize;
         varying vec3 vColor; varying float vPulse;
@@ -200,8 +164,8 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
     const connMat = new THREE.ShaderMaterial({
       uniforms: pulseUniforms,
       vertexShader: `
-        ${noiseShader}
-        attribute vec3 start; attribute vec3 end; attribute vec3 connColor; attribute float strength;
+        ${noiseFunctions}
+        attribute vec3 start; attribute vec3 end; attribute vec3 connColor;
         uniform float uTime; uniform vec3 uPulsePositions[3]; uniform float uPulseTimes[3]; uniform float uPulseSpeed;
         varying vec3 vColor; varying float vPulse; varying float vT;
         void main() {
@@ -218,7 +182,7 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }`,
       fragmentShader: `
-        uniform float uTime; // DECLARAÇÃO ADICIONADA AQUI PARA CORREÇÃO
+        uniform float uTime;
         varying vec3 vColor; varying float vPulse; varying float vT;
         void main() {
           float flow = sin(vT * 10.0 - uTime * 5.0) * 0.5 + 0.5;
@@ -228,66 +192,130 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
     });
 
-    class Network {
-      nodes: any[] = [];
-      constructor(formation: number) { this.generate(formation); }
-      generate(f: number) {
-        this.nodes = [];
-        const root = { pos: new THREE.Vector3(0,0,0), level: 0, connections: [] as any[] };
-        this.nodes.push(root);
+    const scene = new THREE.Scene();
+    sceneRef.current = scene;
+    const bgColor = 0x050508;
+    scene.fog = new THREE.FogExp2(bgColor, 0.0015);
 
-        if (f === 0) { // Sphere
-          for(let l=1; l<=4; l++) {
-            const count = l * 12;
-            for(let i=0; i<count; i++) {
-              const phi = Math.acos(1 - 2 * (i+0.5)/count);
-              const theta = 2 * Math.PI * i / 1.618;
-              const n = { pos: new THREE.Vector3().setFromSphericalCoords(l*6, phi, theta), level: l, connections: [] as any[] };
-              this.nodes.push(n);
-              const parent = this.nodes[Math.floor(Math.random() * (this.nodes.length-1))];
-              parent.connections.push({ node: n, strength: 0.8 });
-            }
-          }
-        } else if (f === 1) { // Helix
-          for(let i=0; i<120; i++) {
-            const t = i / 120;
-            const n = { pos: new THREE.Vector3(Math.cos(t*25)*10, (t-0.5)*40, Math.sin(t*25)*10), level: Math.floor(t*5), connections: [] as any[] };
-            this.nodes.push(n);
-            if (i > 0) this.nodes[i-1].connections.push({ node: n, strength: 1.0 });
-          }
-        } else { // Web
-          const grow = (p: any, d: number) => {
-            if (d > 3) return;
-            for(let i=0; i<3; i++) {
-              const n = { pos: p.pos.clone().add(new THREE.Vector3(THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15))), level: d, connections: [] as any[] };
-              this.nodes.push(n); p.connections.push({ node: n, strength: 0.7 });
-              grow(n, d+1);
-            }
-          };
-          grow(root, 1);
-        }
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 5, 45);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef.current,
+      antialias: true,
+      powerPreference: "high-performance",
+      alpha: true
+    });
+    rendererRef.current = renderer;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(bgColor, 1);
+
+    const createStarfield = () => {
+      const count = 6000;
+      const pos = [], cols = [], sizes = [];
+      for (let i = 0; i < count; i++) {
+        const r = THREE.MathUtils.randFloat(60, 200);
+        const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
+        const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
+        pos.push(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
+        cols.push(1.0, 1.0, 1.0);
+        sizes.push(THREE.MathUtils.randFloat(0.1, 0.3));
       }
-    }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+      geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+      const stars = new THREE.Points(geo, new THREE.ShaderMaterial({
+        uniforms: { uTime: { value: 0 } },
+        vertexShader: `
+          attribute float size; attribute vec3 color; varying vec3 vColor; uniform float uTime;
+          void main() {
+            vColor = color;
+            vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+            float blink = sin(uTime * 1.2 + position.x * 10.0) * 0.4 + 0.6;
+            gl_PointSize = size * blink * (300.0 / -mvPos.z);
+            gl_Position = projectionMatrix * mvPos;
+          }`,
+        fragmentShader: `
+          varying vec3 vColor;
+          void main() {
+            if (length(gl_PointCoord - 0.5) > 0.5) discard;
+            gl_FragColor = vec4(vColor, 0.7);
+          }`,
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+      }));
+      starsRef.current = stars;
+      return stars;
+    };
+    scene.add(createStarfield());
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.4;
+    controls.enableZoom = false;
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.8);
+    composer.addPass(bloom);
+    composer.addPass(new OutputPass());
 
     let currentNetworkMesh: THREE.Points | null = null;
     let currentConnMesh: THREE.LineSegments | null = null;
 
-    const buildViz = (f: number) => {
+    const buildViz = (f: number, d: number) => {
       if (currentNetworkMesh) scene.remove(currentNetworkMesh);
       if (currentConnMesh) scene.remove(currentConnMesh);
 
-      const net = new Network(f);
+      const palette = colorPalettes[paletteIndex];
+      const nodes: any[] = [];
+      const root = { pos: new THREE.Vector3(0,0,0), level: 0, connections: [] as any[] };
+      nodes.push(root);
+
+      if (f === 0) { // Sphere
+        for(let l=1; l<=4; l++) {
+          const count = Math.floor(l * 12 * d);
+          for(let i=0; i<count; i++) {
+            const phi = Math.acos(1 - 2 * (i+0.5)/count);
+            const theta = 2 * Math.PI * i / 1.618;
+            const n = { pos: new THREE.Vector3().setFromSphericalCoords(l*6, phi, theta), level: l, connections: [] as any[] };
+            nodes.push(n);
+            const parent = nodes[Math.floor(Math.random() * (nodes.length-1))];
+            parent.connections.push({ node: n });
+          }
+        }
+      } else if (f === 1) { // Helix
+        const count = Math.floor(120 * d);
+        for(let i=0; i<count; i++) {
+          const t = i / count;
+          const n = { pos: new THREE.Vector3(Math.cos(t*25)*10, (t-0.5)*40, Math.sin(t*25)*10), level: Math.floor(t*5), connections: [] as any[] };
+          nodes.push(n);
+          if (i > 0) nodes[i-1].connections.push({ node: n });
+        }
+      } else { // Web
+        const grow = (p: any, depth: number) => {
+          if (depth > 3) return;
+          const subBranches = Math.ceil(3 * d);
+          for(let i=0; i<subBranches; i++) {
+            const n = { pos: p.pos.clone().add(new THREE.Vector3(THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15),THREE.MathUtils.randFloatSpread(15))), level: depth, connections: [] as any[] };
+            nodes.push(n); p.connections.push({ node: n });
+            grow(n, depth+1);
+          }
+        };
+        grow(root, 1);
+      }
+
       const nodeGeo = new THREE.BufferGeometry();
       const pos: number[] = [], sizes: number[] = [], colors: number[] = [], dists: number[] = [];
-      
-      net.nodes.forEach(n => {
+      nodes.forEach(n => {
         pos.push(n.pos.x, n.pos.y, n.pos.z);
         sizes.push(n.level === 0 ? 2.5 : 1.2);
         const c = palette[n.level % palette.length];
         colors.push(c.r, c.g, c.b);
         dists.push(n.pos.length());
       });
-
       nodeGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
       nodeGeo.setAttribute('nodeSize', new THREE.Float32BufferAttribute(sizes, 1));
       nodeGeo.setAttribute('nodeColor', new THREE.Float32BufferAttribute(colors, 3));
@@ -297,7 +325,7 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
 
       const connGeo = new THREE.BufferGeometry();
       const c_pos: number[] = [], c_start: number[] = [], c_end: number[] = [], c_colors: number[] = [];
-      net.nodes.forEach(n => {
+      nodes.forEach(n => {
         n.connections.forEach((c: any) => {
           for(let i=0; i<15; i++) {
             const t = i/14;
@@ -317,16 +345,16 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
       scene.add(currentConnMesh);
     };
 
-    buildViz(0);
+    buildVizRef.current = buildViz;
+    buildViz(currentFormationRef.current, density / 100);
 
     const clock = new THREE.Clock();
     let lastPulse = 0;
-
     const animate = () => {
       const t = clock.getElapsedTime();
-      if (!config.paused) {
+      if (!pausedRef.current) {
         pulseUniforms.uTime.value = t;
-        stars.material.uniforms.uTime.value = t;
+        if (starsRef.current) starsRef.current.material.uniforms.uTime.value = t;
         if (currentNetworkMesh) currentNetworkMesh.rotation.y = t * 0.05;
         if (currentConnMesh) currentConnMesh.rotation.y = t * 0.05;
       }
@@ -337,6 +365,7 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
     animate();
 
     const triggerPulse = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).closest('.z-50') || (e.target as HTMLElement).closest('.glass-panel')) return;
       const mouse = new THREE.Vector2((e.clientX/window.innerWidth)*2-1, -(e.clientY/window.innerHeight)*2+1);
       const ray = new THREE.Raycaster();
       ray.setFromCamera(mouse, camera);
@@ -346,11 +375,13 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
         const i = lastPulse % 3;
         pulseUniforms.uPulsePositions.value[i].copy(intersect);
         pulseUniforms.uPulseTimes.value[i] = clock.getElapsedTime();
-        pulseUniforms.uPulseColors.value[i].copy(palette[Math.floor(Math.random() * palette.length)]);
+        pulseUniforms.uPulseColors.value[i].copy(colorPalettes[paletteIndex][Math.floor(Math.random() * colorPalettes[paletteIndex].length)]);
         lastPulse++;
       }
     };
 
+    const onResetCamera = () => controls.reset();
+    window.addEventListener('reset-3d-camera', onResetCamera);
     window.addEventListener('click', triggerPulse);
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -360,30 +391,18 @@ const Background3D = forwardRef<Background3DRef>((_, ref) => {
     };
     window.addEventListener('resize', handleResize);
 
-    internalRef.current = {
-      morph: () => {
-        config.currentFormation = (config.currentFormation + 1) % config.numFormations;
-        buildViz(config.currentFormation);
-      },
-      togglePause: () => {
-        config.paused = !config.paused;
-        controls.autoRotate = !config.paused;
-        return config.paused;
-      },
-      resetCamera: () => controls.reset(),
-    };
-
     return () => {
       window.removeEventListener('click', triggerPulse);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('reset-3d-camera', onResetCamera);
       renderer.dispose();
     };
-  }, []);
+  }, [paletteIndex]); 
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-0 bg-[#050b14]">
+    <div ref={containerRef} className="fixed inset-0 z-0 transition-colors duration-500">
       <canvas ref={canvasRef} className="w-full h-full block" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background pointer-events-none"></div>
     </div>
   );
 });
