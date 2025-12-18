@@ -82,12 +82,13 @@ const Technologies: React.FC = () => {
                 className="flex flex-col items-center group/item cursor-pointer"
               >
                 {/* Container do ícone - Padding generoso para não cortar nada */}
-                <div className={`relative flex items-center justify-center w-24 h-24 md:w-36 md:h-36 p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''}`}>
+                <div className={`relative flex items-center justify-center w-24 h-24 md:w-36 md:h-36 p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''} ${tech.name === 'Playwright' ? 'overflow-visible' : ''}`}>
                   <img 
                     src={tech.icon} 
                     alt={tech.name} 
-                    className="max-w-full max-h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.7)] transition-all duration-500"
+                    className={`max-w-full max-h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.7)] transition-all duration-500 ${tech.name === 'Playwright' ? 'w-full h-full p-2' : ''}`}
                     loading="lazy"
+                    crossOrigin="anonymous"
                     onError={(e) => {
                       // Fallback para ícones que não carregam
                       const target = e.currentTarget;
@@ -103,14 +104,21 @@ const Technologies: React.FC = () => {
                       if (tech.name === 'Playwright') {
                         const alternatives = [
                           'https://playwright.dev/img/playwright-logo.svg',
-                          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg'
+                          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg',
+                          'https://raw.githubusercontent.com/devicons/devicon/master/icons/playwright/playwright-original.svg'
                         ];
                         const currentSrc = target.src;
-                        const altIndex = alternatives.findIndex(alt => currentSrc.includes(alt.split('/').pop() || ''));
-                        const nextAlt = alternatives[altIndex + 1];
+                        let triedCount = 0;
                         
-                        if (nextAlt && !currentSrc.includes(nextAlt)) {
-                          target.src = nextAlt;
+                        // Contar quantas tentativas já foram feitas
+                        alternatives.forEach(alt => {
+                          if (currentSrc.includes(alt.split('/').pop()?.split('.')[0] || '')) {
+                            triedCount++;
+                          }
+                        });
+                        
+                        if (triedCount < alternatives.length) {
+                          target.src = alternatives[triedCount];
                           return;
                         }
                       }
@@ -155,6 +163,24 @@ const Technologies: React.FC = () => {
         }
         .animate-marquee:hover {
           animation-play-state: paused;
+        }
+        
+        /* Estilos específicos para ícone do Playwright */
+        .animate-marquee img[alt="Playwright"] {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+          padding: 8px;
+          box-sizing: border-box;
+        }
+        
+        /* Garantir que SVGs sejam renderizados corretamente */
+        .animate-marquee img[src*="playwright"],
+        .animate-marquee img[src*="Playwright"] {
+          min-width: 0;
+          min-height: 0;
+          max-width: 100%;
+          max-height: 100%;
         }
       `}</style>
     </section>
