@@ -15,9 +15,9 @@ const technologies = [
   },
   { 
     name: 'Appium', 
-    icon: 'https://www.vectorlogo.zone/logos/appium/appium-icon.svg',
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Appium.svg',
     scale: 'scale-110',
-    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Android.svg'
+    fallback: 'https://www.vectorlogo.zone/logos/appium/appium-icon.svg'
   },
   { 
     name: 'JavaScript', 
