@@ -4,51 +4,61 @@ import React from 'react';
 const technologies = [
   { 
     name: 'Playwright', 
-    icon: 'https://logo.svgcdn.com/devicon/playwright-original.svg',
+    icon: 'https://raw.githubusercontent.com/microsoft/playwright-mcp/main/extension/icons/icon-128.png',
     fallback: 'https://playwright.dev/img/playwright-logo.svg',
     scale: 'scale-100' 
   },
   { 
     name: 'Cypress', 
-    icon: 'https://skillicons.dev/icons?i=cypress' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Cypress.svg',
+    fallback: 'https://skillicons.dev/icons?i=cypress'
   },
   { 
     name: 'Appium', 
     icon: 'https://www.vectorlogo.zone/logos/appium/appium-icon.svg',
-    scale: 'scale-110' 
+    scale: 'scale-110',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Android.svg'
   },
   { 
     name: 'JavaScript', 
-    icon: 'https://skillicons.dev/icons?i=js' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Javascript.svg',
+    fallback: 'https://skillicons.dev/icons?i=js'
   },
   { 
     name: 'GitHub', 
-    icon: 'https://skillicons.dev/icons?i=github' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Github.svg',
+    fallback: 'https://skillicons.dev/icons?i=github'
   },
   { 
     name: 'Docker', 
-    icon: 'https://www.vectorlogo.zone/logos/docker/docker-icon.svg',
-    scale: 'scale-100' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Docker.svg',
+    scale: 'scale-100',
+    fallback: 'https://www.vectorlogo.zone/logos/docker/docker-icon.svg'
   },
   { 
     name: 'HTML5', 
-    icon: 'https://skillicons.dev/icons?i=html' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/HTML5.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/HTML.svg'
   },
   { 
     name: 'CSS3', 
-    icon: 'https://skillicons.dev/icons?i=css' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/CSS3.svg',
+    fallback: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/CSS.svg'
   },
   { 
     name: 'SQL', 
-    icon: 'https://skillicons.dev/icons?i=postgres' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Postgresql.svg',
+    fallback: 'https://skillicons.dev/icons?i=postgres'
   },
   { 
     name: 'Java', 
-    icon: 'https://skillicons.dev/icons?i=java' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Java.svg',
+    fallback: 'https://skillicons.dev/icons?i=java'
   },
   { 
     name: 'Selenium', 
-    icon: 'https://skillicons.dev/icons?i=selenium' 
+    icon: 'https://raw.githubusercontent.com/gui-bus/TechIcons/main/Dark/Selenium.svg',
+    fallback: 'https://skillicons.dev/icons?i=selenium'
   },
 ];
 
@@ -104,8 +114,8 @@ const Technologies: React.FC = () => {
                       if (tech.name === 'Playwright') {
                         const alternatives = [
                           'https://playwright.dev/img/playwright-logo.svg',
-                          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg',
-                          'https://raw.githubusercontent.com/devicons/devicon/master/icons/playwright/playwright-original.svg'
+                          'https://raw.githubusercontent.com/microsoft/playwright-mcp/main/extension/icons/icon-128.png',
+                          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg'
                         ];
                         const currentSrc = target.src;
                         let triedCount = 0;
