@@ -119,9 +119,9 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 overflow-x-hidden w-full">
         <Navbar scrolled={scrolled} />
-        <main className="container mx-auto px-4 max-w-7xl pt-16 md:pt-20">
+        <main className="container mx-auto px-3 sm:px-4 max-w-7xl pt-16 md:pt-20 w-full overflow-x-hidden">
           <Hero />
           <About />
           <Technologies />
