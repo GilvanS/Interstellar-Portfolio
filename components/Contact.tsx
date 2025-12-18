@@ -18,12 +18,12 @@ const Contact: React.FC = () => {
           <div className="grid gap-6">
             {/* EMAIL CARD */}
             <div className="glass-panel p-6 flex items-center gap-6 hover:translate-x-2 transition-all duration-300">
-              <div className="w-16 h-16 rounded-2xl bg-black/40 flex items-center justify-center text-[#a3ff00] border border-[#a3ff00]/30 shadow-[0_0_20px_rgba(163,255,0,0.2)]">
+              <div className="w-16 h-16 rounded-2xl bg-black/40 flex items-center justify-center text-primary border border-primary/30 shadow-[0_0_20px_rgba(102,126,234,0.2)]">
                 <i className="fas fa-envelope text-3xl"></i>
               </div>
               <div className="space-y-1">
                 <p className="text-[10px] font-display font-bold text-slate-500 tracking-[0.3em] uppercase">E-mail Oficial</p>
-                <a href="mailto:gillvanjs@gmail.com" className="text-slate-200 text-xl md:text-2xl font-body hover:text-[#a3ff00] transition-colors">
+                <a href="mailto:gillvanjs@gmail.com" className="text-slate-200 text-xl md:text-2xl font-body hover:text-primary transition-colors">
                   gillvanjs@gmail.com
                 </a>
               </div>
@@ -31,12 +31,12 @@ const Contact: React.FC = () => {
 
             {/* PHONE CARD */}
             <div className="glass-panel p-6 flex items-center gap-6 hover:translate-x-2 transition-all duration-300">
-              <div className="w-16 h-16 rounded-2xl bg-black/40 flex items-center justify-center text-[#a3ff00] border border-[#a3ff00]/30 shadow-[0_0_20px_rgba(163,255,0,0.2)]">
+              <div className="w-16 h-16 rounded-2xl bg-black/40 flex items-center justify-center text-primary border border-primary/30 shadow-[0_0_20px_rgba(102,126,234,0.2)]">
                 <i className="fas fa-mobile-screen-button text-3xl"></i>
               </div>
               <div className="space-y-1">
                 <p className="text-[10px] font-display font-bold text-slate-500 tracking-[0.3em] uppercase">Telefone / Celular</p>
-                <a href="tel:+5511982371339" className="text-slate-200 text-xl md:text-2xl font-body hover:text-[#a3ff00] transition-colors">
+                <a href="tel:+5511982371339" className="text-slate-200 text-xl md:text-2xl font-body hover:text-primary transition-colors">
                   +55 11 98237-1339
                 </a>
               </div>
@@ -55,10 +55,10 @@ const Contact: React.FC = () => {
             </a>
 
             <div className="flex gap-4">
-              <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
+              <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-primary transition-all">
                 <i className="fab fa-github text-2xl"></i>
               </a>
-              <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
+              <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-primary transition-all">
                 <i className="fab fa-linkedin-in text-2xl"></i>
               </a>
             </div>
