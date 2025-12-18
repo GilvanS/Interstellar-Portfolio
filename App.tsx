@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [density, setDensity] = useState(100);
   const [paletteIndex, setPaletteIndex] = useState(0);
+  const [showControls, setShowControls] = useState(false);
 
   const bgRef = useRef<Background3DRef>(null);
 
@@ -44,11 +45,22 @@ const App: React.FC = () => {
         paletteIndex={paletteIndex}
       />
       
-      <div className="fixed inset-0 pointer-events-none z-[60]">
+      {/* HUD CONTROLS LAYER */}
+      <div className="fixed inset-0 pointer-events-none z-[70]">
         
-        <div className="absolute top-24 right-8 w-[240px] p-6 glass-panel pointer-events-auto hidden md:flex flex-col gap-6">
+        {/* TOGGLE BUTTON */}
+        <button 
+          onClick={() => setShowControls(!showControls)}
+          className={`absolute top-24 right-8 w-12 h-12 rounded-full glass-panel pointer-events-auto flex items-center justify-center text-white transition-all duration-500 hover:scale-110 active:scale-95 ${showControls ? 'rotate-90 border-primary/50 text-primary' : ''}`}
+          title="Configurações Visuais"
+        >
+          <i className={`fas ${showControls ? 'fa-times' : 'fa-sliders'}`}></i>
+        </button>
+
+        {/* PAINEL LATERAL RETRÁTIL */}
+        <div className={`absolute top-40 right-8 w-[260px] p-6 glass-panel pointer-events-auto flex flex-col gap-6 transition-all duration-500 ease-out ${showControls ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12 pointer-events-none'}`}>
           <div>
-            <div className="text-[10px] uppercase tracking-[2px] text-slate-400 font-bold mb-4 font-display">Neural Palette</div>
+            <div className="text-[10px] uppercase tracking-[3px] text-slate-400 font-black mb-4 font-display">Neural Core</div>
             <div className="grid grid-cols-3 gap-3">
               {[0, 1, 2].map((i) => (
                 <button
@@ -63,8 +75,8 @@ const App: React.FC = () => {
           
           <div className="space-y-3">
             <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider font-display">
-              <span>System Density</span>
-              <span className="text-primary bg-primary/10 px-2 py-0.5 rounded">{density}%</span>
+              <span>Density Sync</span>
+              <span className="text-primary bg-primary/10 px-2 py-0.5 rounded font-black">{density}%</span>
             </div>
             <div className="relative pt-1">
               <input 
@@ -79,34 +91,30 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-white/5 flex flex-col gap-4">
-             <div className="text-[8px] text-slate-500 font-display tracking-widest uppercase">Visualization Engine</div>
-             
-             <div className="grid grid-cols-2 gap-2">
+          <div className="pt-4 border-t border-white/5 flex flex-col gap-3">
+             <div className="text-[8px] text-slate-500 font-display tracking-[0.3em] uppercase font-black">Control Protocols</div>
+             <div className="grid grid-cols-1 gap-2">
                 <button 
                   onClick={handleMorph} 
-                  className="py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[9px] font-bold text-white uppercase tracking-tighter transition-all"
+                  className="w-full py-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl text-[10px] font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-transparent hover:border-primary/30"
                 >
-                  Morph
+                  <i className="fas fa-microchip"></i> Morph Grid
                 </button>
-                <button onClick={handleReset} className="py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[9px] font-bold text-white uppercase tracking-tighter transition-all">Reset</button>
+                <button 
+                  onClick={handleTogglePause} 
+                  className={`w-full py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 border ${isPaused ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-transparent text-white hover:bg-white/10'}`}
+                >
+                  <i className={`fas ${isPaused ? 'fa-play' : 'fa-snowflake'}`}></i> 
+                  {isPaused ? 'Resume Motion' : 'Freeze Flux'}
+                </button>
+                <button 
+                  onClick={handleReset} 
+                  className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                >
+                  <i className="fas fa-sync-alt"></i> Reset Camera
+                </button>
              </div>
           </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 pointer-events-auto">
-          <button onClick={handleMorph} className="control-button group">
-            <i className="fas fa-microchip group-hover:rotate-45 transition-transform"></i>
-            <span>Morph</span>
-          </button>
-          <button onClick={handleTogglePause} className="control-button">
-            <i className={`fas ${isPaused ? 'fa-play' : 'fa-snowflake'}`}></i>
-            <span>{isPaused ? 'Play' : 'Freeze'}</span>
-          </button>
-          <button onClick={handleReset} className="control-button">
-            <i className="fas fa-sync-alt"></i>
-            <span>Reset</span>
-          </button>
         </div>
       </div>
 
