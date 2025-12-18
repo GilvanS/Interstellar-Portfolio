@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
           <h2 className="text-lg md:text-2xl font-display text-primary tracking-[0.2em] uppercase">
             GILVAN SOUSA — ANALISTA DE TESTES SÊNIOR
           </h2>
-          <p className="text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body">
+          <p className="text-lg md:text-xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body">
             Garantindo a integridade dos sistemas através de testes rigorosos e especialização em meios de pagamento. Onde a qualidade encontra a perfeição técnica.
           </p>
         </div>
@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
           <a 
             href="./Gilvan_Sousa_QA_Resume.pdf" 
             download="Gilvan_Sousa_QA_Resume.pdf"
-            className="px-8 py-4 border border-secondary/40 text-secondary font-display font-bold tracking-widest text-xs rounded-full hover:bg-secondary hover:text-black transition-all flex items-center gap-3 cursor-pointer"
+            className="px-8 py-4 border border-secondary/60 text-secondary font-display font-bold tracking-widest text-xs rounded-full hover:bg-secondary hover:text-black transition-all flex items-center gap-3 cursor-pointer"
           >
             BAIXAR CURRÍCULO
             <i className="fas fa-download"></i>

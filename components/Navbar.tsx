@@ -33,9 +33,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
           <button onClick={() => scrollToSection('contact')} className="text-slate-400 hover:text-primary transition-all uppercase">CONTATO</button>
         </div>
 
-        {/* SOCIAL LINKS (RIGHT - Substituindo o Tema) */}
+        {/* SOCIAL LINKS (RIGHT) */}
         <div className="flex items-center gap-4">
-          <a href="https://github.com/Gilvan-Sousa" target="_blank" rel="noopener noreferrer" className="text-white hover:text-primary transition-all">
+          <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="text-white hover:text-primary transition-all">
             <i className="fab fa-github text-xl"></i>
           </a>
           <button className="lg:hidden text-white">

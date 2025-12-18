@@ -55,7 +55,7 @@ const Contact: React.FC = () => {
             </a>
 
             <div className="flex gap-4">
-              <a href="https://github.com/Gilvan-Sousa" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
+              <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
                 <i className="fab fa-github text-2xl"></i>
               </a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all">
