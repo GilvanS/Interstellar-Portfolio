@@ -39,7 +39,7 @@ const About: React.FC = () => {
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-black border border-primary/40 px-6 py-2 rounded-full whitespace-nowrap shadow-xl z-30">
                 <span className="text-primary font-display text-[10px] font-bold tracking-[0.3em] uppercase flex items-center gap-2">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
-                  QA SENIOR PILOT
+                  QA SENIOR
                 </span>
               </div>
             </div>
