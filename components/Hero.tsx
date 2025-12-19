@@ -40,9 +40,27 @@ const Hero: React.FC = () => {
       
       <div className="lg:w-1/3 relative hidden lg:block">
         <div className="relative w-full aspect-square max-w-[450px]">
-          <div className="absolute inset-0 bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+          {/* Efeito de nebulosa/galáxia ao redor da foto do perfil */}
+          <div 
+            className="absolute inset-0 rounded-full blur-[100px] animate-pulse opacity-60"
+            style={{
+              background: 'radial-gradient(circle, rgba(102,126,234,0.2) 0%, rgba(102,126,234,0.1) 40%, transparent 70%)'
+            }}
+          ></div>
+          <div 
+            className="absolute -inset-8 rounded-full blur-[80px] opacity-40 animate-[spin_20s_linear_infinite]"
+            style={{
+              background: 'radial-gradient(circle, rgba(102,126,234,0.15) 0%, transparent 60%)'
+            }}
+          ></div>
+          <div 
+            className="absolute -inset-12 rounded-full blur-[60px] opacity-30 animate-[spin_30s_linear_infinite_reverse]"
+            style={{
+              background: 'radial-gradient(circle, rgba(192,132,252,0.1) 0%, transparent 50%)'
+            }}
+          ></div>
           
-          <div className="relative w-full h-full rounded-full border border-white/5 overflow-hidden shadow-[0_0_60px_rgba(102,126,234,0.15)]">
+          <div className="relative w-full h-full rounded-full border border-white/5 overflow-hidden shadow-[0_0_60px_rgba(102,126,234,0.15)] z-10">
             <img 
               src="/images/nebula.jpg" 
               alt="Interstellar Visualization" 
@@ -54,8 +72,8 @@ const Hero: React.FC = () => {
             />
           </div>
           
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-primary/10 rounded-full animate-[spin_25s_linear_infinite]"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-dashed border-white/5 rounded-full animate-[spin_35s_linear_infinite_reverse]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-primary/10 rounded-full animate-[spin_25s_linear_infinite] z-20"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-dashed border-white/5 rounded-full animate-[spin_35s_linear_infinite_reverse] z-20"></div>
         </div>
       </div>
     </section>
