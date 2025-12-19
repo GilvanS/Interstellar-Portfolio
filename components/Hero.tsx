@@ -19,10 +19,10 @@ const Hero: React.FC = () => {
           <span className="block text-primary">CONFIABILIDADE.</span>
         </h1>
         <div className="space-y-2 md:space-y-3 lg:space-y-4 w-full">
-          <h2 className="text-[11px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-display text-primary tracking-[0.05em] sm:tracking-[0.08em] md:tracking-[0.12em] lg:tracking-[0.15em] xl:tracking-[0.2em] uppercase break-words overflow-wrap-anywhere w-full">
+          <h2 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-display text-primary tracking-[0.05em] sm:tracking-[0.08em] md:tracking-[0.12em] lg:tracking-[0.15em] xl:tracking-[0.2em] uppercase break-words overflow-wrap-anywhere w-full">
             GILVAN SOUSA — ANALISTA DE TESTES SÊNIOR
           </h2>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body break-words overflow-wrap-anywhere w-full">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white max-w-2xl leading-relaxed mx-auto lg:mx-0 font-body break-words overflow-wrap-anywhere w-full">
             Garantindo a integridade dos sistemas através de testes rigorosos e especialização em meios de pagamento. Onde a qualidade encontra a perfeição técnica.
           </p>
         </div>
@@ -30,10 +30,10 @@ const Hero: React.FC = () => {
         <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 md:gap-4 lg:gap-6 pt-2 md:pt-4 w-full">
           <button 
             onClick={scrollToProjects}
-            className="group relative px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-primary text-black font-display font-bold tracking-widest text-[9px] sm:text-[10px] md:text-xs rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(102,126,234,0.4)] flex items-center justify-center gap-2 md:gap-3 cursor-pointer w-full sm:w-auto"
+            className="group relative px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-primary text-black font-display font-bold tracking-widest text-xs sm:text-sm md:text-base rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(102,126,234,0.4)] flex items-center justify-center gap-2 md:gap-3 cursor-pointer w-full sm:w-auto"
           >
             VER PROJETOS
-            <i className="fas fa-chevron-right text-[9px] sm:text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            <i className="fas fa-chevron-right text-xs sm:text-sm group-hover:translate-x-1 transition-transform"></i>
           </button>
         </div>
       </div>

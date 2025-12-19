@@ -61,7 +61,7 @@ const App: React.FC = () => {
         {/* PAINEL LATERAL RETRÁTIL */}
         <div className={`absolute top-32 md:top-40 right-4 md:right-8 w-[calc(100vw-2rem)] max-w-[280px] md:w-[260px] p-4 md:p-6 glass-panel pointer-events-auto flex flex-col gap-4 md:gap-6 transition-all duration-500 ease-out ${showControls ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full md:translate-x-12 pointer-events-none'}`}>
           <div>
-            <div className="text-[10px] uppercase tracking-[3px] text-slate-400 font-black mb-4 font-display">Neural Core</div>
+            <div className="text-xs md:text-sm uppercase tracking-[3px] text-slate-400 font-black mb-4 font-display">Neural Core</div>
             <div className="grid grid-cols-3 gap-3">
               {[0, 1, 2].map((i) => (
                 <button
@@ -75,7 +75,7 @@ const App: React.FC = () => {
           </div>
           
           <div className="space-y-3">
-            <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider font-display">
+            <div className="flex justify-between items-center text-xs md:text-sm text-slate-400 font-bold uppercase tracking-wider font-display">
               <span>Density Sync</span>
               <span className="text-primary bg-primary/10 px-2 py-0.5 rounded font-black">{density}%</span>
             </div>
@@ -93,24 +93,24 @@ const App: React.FC = () => {
           </div>
 
           <div className="pt-4 border-t border-white/5 flex flex-col gap-3">
-             <div className="text-[8px] text-slate-500 font-display tracking-[0.3em] uppercase font-black">Control Protocols</div>
+             <div className="text-xs md:text-sm text-slate-500 font-display tracking-[0.3em] uppercase font-black">Control Protocols</div>
              <div className="grid grid-cols-1 gap-2">
                 <button 
                   onClick={handleMorph} 
-                  className="w-full py-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl text-[10px] font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-transparent hover:border-primary/30"
+                  className="w-full py-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl text-xs md:text-sm font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-transparent hover:border-primary/30"
                 >
                   <i className="fas fa-microchip"></i> Morph Grid
                 </button>
                 <button 
                   onClick={handleTogglePause} 
-                  className={`w-full py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 border ${isPaused ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-transparent text-white hover:bg-white/10'}`}
+                  className={`w-full py-3 rounded-xl text-xs md:text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 border ${isPaused ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-transparent text-white hover:bg-white/10'}`}
                 >
                   <i className={`fas ${isPaused ? 'fa-play' : 'fa-snowflake'}`}></i> 
                   {isPaused ? 'Resume Motion' : 'Freeze Flux'}
                 </button>
                 <button 
                   onClick={handleReset} 
-                  className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-xs md:text-sm font-bold text-white uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                 >
                   <i className="fas fa-sync-alt"></i> Reset Camera
                 </button>

@@ -153,7 +153,7 @@ const Technologies: React.FC = () => {
 
                 {/* Legenda Estilo HUD */}
                 <div className="h-12 mt-10 flex items-center justify-center">
-                  <span className="px-6 py-2.5 rounded-lg bg-black/95 border border-primary/50 text-white text-[10px] md:text-xs font-display font-bold tracking-[0.3em] uppercase opacity-0 -translate-y-6 group-hover/item:opacity-100 group-hover/item:translate-y-0 transition-all duration-500 shadow-[0_0_30px_rgba(102,126,234,0.5)] backdrop-blur-2xl">
+                  <span className="px-6 py-2.5 rounded-lg bg-black/95 border border-primary/50 text-white text-xs md:text-sm font-display font-bold tracking-[0.3em] uppercase opacity-0 -translate-y-6 group-hover/item:opacity-100 group-hover/item:translate-y-0 transition-all duration-500 shadow-[0_0_30px_rgba(102,126,234,0.5)] backdrop-blur-2xl">
                     {tech.name}
                   </span>
                 </div>

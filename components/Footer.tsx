@@ -18,25 +18,43 @@ const Footer: React.FC = () => {
           <div className="text-2xl font-display font-bold tracking-widest text-white mb-6">
             Gilvan <span className="text-primary">Sousa</span>
           </div>
-          <p className="text-slate-300 text-sm leading-relaxed max-w-sm mb-8">
+          <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-sm mb-8">
             Elevando os padrões de qualidade e garantindo a excelência em cada entrega digital. Focado em automação, performance e segurança.
           </p>
           <div className="flex gap-4">
-            <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
-              <i className="fab fa-github"></i>
+            <a 
+              href="https://github.com/GilvanS" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="group relative w-14 h-14 md:w-16 md:h-16 rounded-xl glass-panel flex items-center justify-center text-white hover:text-primary border border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.5)]"
+            >
+              <i className="fab fa-github text-xl md:text-2xl transition-transform duration-300 group-hover:scale-110"></i>
+              <div className="absolute inset-0 bg-primary/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
-            <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
-              <i className="fab fa-linkedin"></i>
+            <a 
+              href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="group relative w-14 h-14 md:w-16 md:h-16 rounded-xl glass-panel flex items-center justify-center text-white hover:text-primary border border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.5)]"
+            >
+              <i className="fab fa-linkedin text-xl md:text-2xl transition-transform duration-300 group-hover:scale-110"></i>
+              <div className="absolute inset-0 bg-primary/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
-            <a href="https://wa.me/5511982371339" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-slate-900/50 flex items-center justify-center text-slate-300 hover:text-primary hover:border-primary/40 border border-white/10 transition-all">
-              <i className="fab fa-whatsapp"></i>
+            <a 
+              href="https://wa.me/5511982371339" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="group relative w-14 h-14 md:w-16 md:h-16 rounded-xl glass-panel flex items-center justify-center text-white hover:text-[#25D366] border border-white/10 hover:border-[#25D366]/50 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(37,211,102,0.5)]"
+            >
+              <i className="fab fa-whatsapp text-xl md:text-2xl transition-transform duration-300 group-hover:scale-110"></i>
+              <div className="absolute inset-0 bg-[#25D366]/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
           </div>
         </div>
 
         <div>
-          <h4 className="text-white font-display font-bold text-[11px] tracking-[0.2em] mb-8 uppercase">Navegação</h4>
-          <ul className="space-y-4 text-sm">
+          <h4 className="text-white font-display font-bold text-sm md:text-base tracking-[0.2em] mb-8 uppercase">Navegação</h4>
+          <ul className="space-y-4 text-base md:text-lg">
             <li><button onClick={() => scrollToSection('top')} className="text-slate-400 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Início</button></li>
             <li><button onClick={() => scrollToSection('about')} className="text-slate-400 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">Sobre Mim</button></li>
             <li><button onClick={() => scrollToSection('projects')} className="text-slate-400 hover:text-primary transition-colors font-display tracking-widest uppercase text-left">PROJETOS</button></li>
@@ -61,7 +79,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/10 text-[10px] font-display font-bold tracking-[0.3em] text-slate-500 uppercase">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/10 text-xs md:text-sm font-display font-bold tracking-[0.3em] text-slate-500 uppercase">
         <div>© 2024 Gilvan Sousa. All Rights Reserved.</div>
         <div className="flex items-center gap-2">
           Quality Assured <i className="fas fa-shield-check text-primary/50"></i> For the cosmos

@@ -37,7 +37,7 @@ const About: React.FC = () => {
               </div>
               
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-black border border-primary/40 px-6 py-2 rounded-full whitespace-nowrap shadow-xl z-30">
-                <span className="text-primary font-display text-[10px] font-bold tracking-[0.3em] uppercase flex items-center gap-2">
+                <span className="text-primary font-display text-xs sm:text-sm font-bold tracking-[0.3em] uppercase flex items-center gap-2">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
                   QA SENIOR
                 </span>
@@ -56,7 +56,7 @@ const About: React.FC = () => {
             <div className="space-y-4 md:space-y-6">
               {/* Card principal de introdução - PRETO PROFUNDO */}
               <div className="bg-black/95 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-primary/40 transition-all duration-300 space-y-3 md:space-y-4 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,1)] group">
-                <h4 className="text-primary font-display text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Visão Geral</h4>
+                <h4 className="text-primary font-display text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Visão Geral</h4>
                 <div className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-body leading-relaxed space-y-3 md:space-y-4">
                   <p>
                     Sou <span className="text-white font-bold">Analista de Testes Sênior há 8 anos</span>, especialista em <span className="text-primary font-bold underline underline-offset-2 md:underline-offset-4 decoration-primary/50">Quality Assurance</span> focado em ecossistemas de <span className="text-white font-black">Meios de Pagamento e Varejo</span>.
@@ -70,7 +70,7 @@ const About: React.FC = () => {
 
               {/* Card de Core Especializado - PRETO PROFUNDO */}
               <div className="bg-black/95 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-accent/40 transition-all duration-300 space-y-3 md:space-y-4 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,1)] group">
-                <h4 className="text-accent font-display text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Core Especializado</h4>
+                <h4 className="text-accent font-display text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Core Especializado</h4>
                 <p className="text-white text-sm md:text-base lg:text-lg font-body leading-relaxed">
                   Domínio profundo de <span className="text-white font-black border-b border-accent/50">Vision Plus (Mainframe/Mocha)</span> e injeção transacional <span className="text-white font-black border-b border-accent/50">ISO 8583</span>. Experiência sólida em validação de fluxos financeiros críticos.
                 </p>
@@ -85,7 +85,7 @@ const About: React.FC = () => {
                     <i className={skill.icon}></i>
                   </div>
                   <div className="text-center sm:text-left space-y-1">
-                    <div className="text-[10px] md:text-xs text-slate-400 font-display font-bold tracking-[0.15em] md:tracking-[0.2em] uppercase">
+                    <div className="text-xs md:text-sm text-slate-400 font-display font-bold tracking-[0.15em] md:tracking-[0.2em] uppercase">
                       {skill.label}
                     </div>
                     <div className="text-white font-bold text-sm md:text-base font-body leading-tight">

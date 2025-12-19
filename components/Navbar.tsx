@@ -186,7 +186,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
           Gilvan <span className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(102,126,234,0.8)] transition-all">Sousa</span>
         </div>
         
-        <ul ref={ulRef} className="hidden lg:flex gap-16 text-[11px] font-bold tracking-[0.25em] font-display relative py-2">
+        <ul ref={ulRef} className="hidden lg:flex gap-16 text-sm md:text-base font-bold tracking-[0.25em] font-display relative py-2">
           {menuItems.map((item, idx) => (
             <li key={item.id} className={activeIndex === idx ? 'active' : ''}>
               <button 
@@ -219,7 +219,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
             <li key={item.id}>
               <button 
                 onClick={() => handleNavClick(idx, item.id)}
-                className={`w-full text-left px-6 py-4 text-sm font-display font-bold tracking-widest uppercase transition-all ${
+                className={`w-full text-left px-6 py-4 text-base font-display font-bold tracking-widest uppercase transition-all ${
                   activeIndex === idx 
                     ? 'text-primary bg-primary/10 border-l-4 border-primary' 
                     : 'text-slate-400 hover:text-white hover:bg-white/5'

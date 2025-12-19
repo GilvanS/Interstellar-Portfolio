@@ -17,26 +17,28 @@ const Contact: React.FC = () => {
           
           <div className="grid gap-4 md:gap-6">
             {/* EMAIL CARD */}
-            <div className="glass-panel p-4 md:p-6 flex items-center gap-4 md:gap-6 hover:translate-x-2 transition-all duration-300 active:scale-95">
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-black/40 flex items-center justify-center text-[#a3ff00] border border-[#a3ff00]/30 shadow-[0_0_20px_rgba(163,255,0,0.2)] flex-shrink-0">
-                <i className="fas fa-envelope text-xl md:text-3xl"></i>
+            <div className="glass-panel p-4 md:p-6 flex items-center gap-4 md:gap-6 hover:translate-x-2 transition-all duration-300 active:scale-95 group">
+              <div className="relative w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover:shadow-[0_0_50px_rgba(102,126,234,0.6)] flex-shrink-0 transition-all duration-300 group-hover:scale-110">
+                <i className="fas fa-envelope text-2xl md:text-4xl"></i>
+                <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <div className="space-y-1 min-w-0">
-                <p className="text-[9px] md:text-[10px] font-display font-bold text-slate-500 tracking-[0.2em] md:tracking-[0.3em] uppercase">E-mail Oficial</p>
-                <a href="mailto:gillvanjs@gmail.com" className="text-slate-200 text-base sm:text-lg md:text-xl lg:text-2xl font-body hover:text-[#a3ff00] transition-colors break-all">
+              <div className="space-y-2 min-w-0">
+                <p className="text-sm md:text-base font-display font-bold text-primary/80 tracking-[0.2em] md:tracking-[0.3em] uppercase">E-mail Oficial</p>
+                <a href="mailto:gillvanjs@gmail.com" className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-display font-semibold hover:text-primary transition-colors break-all">
                   gillvanjs@gmail.com
                 </a>
               </div>
             </div>
 
             {/* PHONE CARD */}
-            <div className="glass-panel p-4 md:p-6 flex items-center gap-4 md:gap-6 hover:translate-x-2 transition-all duration-300 active:scale-95">
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-black/40 flex items-center justify-center text-[#a3ff00] border border-[#a3ff00]/30 shadow-[0_0_20px_rgba(163,255,0,0.2)] flex-shrink-0">
-                <i className="fas fa-mobile-screen-button text-xl md:text-3xl"></i>
+            <div className="glass-panel p-4 md:p-6 flex items-center gap-4 md:gap-6 hover:translate-x-2 transition-all duration-300 active:scale-95 group">
+              <div className="relative w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover:shadow-[0_0_50px_rgba(102,126,234,0.6)] flex-shrink-0 transition-all duration-300 group-hover:scale-110">
+                <i className="fas fa-mobile-screen-button text-2xl md:text-4xl"></i>
+                <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <div className="space-y-1 min-w-0">
-                <p className="text-[9px] md:text-[10px] font-display font-bold text-slate-500 tracking-[0.2em] md:tracking-[0.3em] uppercase">Telefone / Celular</p>
-                <a href="tel:+5511982371339" className="text-slate-200 text-base sm:text-lg md:text-xl lg:text-2xl font-body hover:text-[#a3ff00] transition-colors">
+              <div className="space-y-2 min-w-0">
+                <p className="text-sm md:text-base font-display font-bold text-primary/80 tracking-[0.2em] md:tracking-[0.3em] uppercase">Telefone / Celular</p>
+                <a href="tel:+5511982371339" className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-display font-semibold hover:text-primary transition-colors">
                   +55 11 98237-1339
                 </a>
               </div>
@@ -48,18 +50,30 @@ const Contact: React.FC = () => {
               href="https://wa.me/5511982371339" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 md:gap-4 px-6 md:px-10 py-3.5 md:py-5 bg-[#25D366] text-black font-display font-black tracking-widest text-[10px] md:text-xs rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_10px_20px_rgba(37,211,102,0.2)]"
+              className="inline-flex items-center justify-center gap-3 md:gap-4 px-6 md:px-10 py-3.5 md:py-5 bg-[#25D366] text-black font-display font-black tracking-widest text-sm md:text-base rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_10px_20px_rgba(37,211,102,0.2)]"
             >
               <i className="fab fa-whatsapp text-lg md:text-xl"></i>
               WHATSAPP AGORA
             </a>
 
-            <div className="flex gap-3 md:gap-4 justify-center sm:justify-start">
-              <a href="https://github.com/GilvanS" target="_blank" rel="noopener noreferrer" className="w-12 h-12 md:w-14 md:h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all active:scale-95">
-                <i className="fab fa-github text-xl md:text-2xl"></i>
+            <div className="flex gap-4 md:gap-6 justify-center sm:justify-start">
+              <a 
+                href="https://github.com/GilvanS" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group relative w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl glass-panel flex items-center justify-center text-white hover:text-primary border border-white/10 hover:border-primary/50 transition-all duration-300 active:scale-95 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.5)]"
+              >
+                <i className="fab fa-github text-2xl md:text-3xl transition-transform duration-300 group-hover:scale-110"></i>
+                <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
-              <a href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" target="_blank" rel="noopener noreferrer" className="w-12 h-12 md:w-14 md:h-14 rounded-full glass-panel flex items-center justify-center text-white hover:text-[#a3ff00] transition-all active:scale-95">
-                <i className="fab fa-linkedin-in text-xl md:text-2xl"></i>
+              <a 
+                href="https://www.linkedin.com/in/gilvan-sousa-4a9755a9" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group relative w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl glass-panel flex items-center justify-center text-white hover:text-primary border border-white/10 hover:border-primary/50 transition-all duration-300 active:scale-95 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.5)]"
+              >
+                <i className="fab fa-linkedin-in text-2xl md:text-3xl transition-transform duration-300 group-hover:scale-110"></i>
+                <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
             </div>
           </div>

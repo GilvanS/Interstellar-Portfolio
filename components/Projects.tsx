@@ -76,7 +76,7 @@ const Projects: React.FC = () => {
             
             {/* Conteúdo do Card */}
             <div className="p-6 md:p-8 space-y-4 md:space-y-5 flex-grow flex flex-col relative">
-              <div className={`inline-block w-fit px-3 md:px-4 py-1 md:py-1.5 rounded-full border font-display font-bold text-[9px] md:text-[10px] tracking-[0.15em] md:tracking-[0.2em] ${colorMap[p.color]}`}>
+              <div className={`inline-block w-fit px-3 md:px-4 py-1 md:py-1.5 rounded-full border font-display font-bold text-xs md:text-sm tracking-[0.15em] md:tracking-[0.2em] ${colorMap[p.color]}`}>
                 {p.tech}
               </div>
               
@@ -94,15 +94,15 @@ const Projects: React.FC = () => {
                   href={p.github} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex-1 py-2.5 md:py-3 text-[10px] md:text-xs font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
                 >
                   <i className="fab fa-github text-sm md:text-base"></i> CODE
                 </a>
                 <a 
                   href={p.demo} 
-                  className={`flex-1 py-2.5 md:py-3 text-[10px] md:text-xs font-bold font-display border text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 ${buttonColorMap[p.color]}`}
+                  className={`flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 ${buttonColorMap[p.color]}`}
                 >
-                  DEMO <i className="fas fa-external-link-alt text-[9px] md:text-[10px]"></i>
+                  DEMO <i className="fas fa-external-link-alt text-xs md:text-sm"></i>
                 </a>
               </div>
             </div>
