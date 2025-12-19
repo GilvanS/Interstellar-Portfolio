@@ -44,8 +44,6 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
   const pausedRef = useRef(false);
   const animationIdRef = useRef<number | null>(null);
   const clockRef = useRef<THREE.Clock>(new THREE.Clock());
-  const isUserInteractingRef = useRef(false);
-  const autoRotateTimeoutRef = useRef<number | null>(null);
 
   const parameters = {
     count,
@@ -157,181 +155,10 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
     cameraRef.current = camera;
     scene.add(camera);
 
-    // Controls
+    // Controls - desabilitados para animação automática apenas
     const controls = new OrbitControls(camera, canvasRef.current);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.enableZoom = true;
-    controls.enablePan = false;
-    controls.minDistance = 2;
-    controls.maxDistance = 10;
-    
-    // Função para verificar se o elemento é interativo
-    const isInteractiveElement = (element: HTMLElement | null): boolean => {
-      if (!element || element === canvasRef.current || element === containerRef.current) return false;
-      // Verificar se é um elemento interativo
-      const tagName = element.tagName;
-      if (
-        tagName === 'BUTTON' ||
-        tagName === 'A' ||
-        tagName === 'INPUT' ||
-        tagName === 'TEXTAREA' ||
-        tagName === 'SELECT' ||
-        element.closest('button') ||
-        element.closest('a') ||
-        element.closest('nav')
-      ) {
-        return true;
-      }
-      // Verificar se está dentro de um elemento com pointer-events-auto
-      const computedStyle = window.getComputedStyle(element);
-      if (computedStyle.pointerEvents === 'auto' && element !== canvasRef.current) {
-        return true;
-      }
-      return false;
-    };
-    
-    // Handler para passar eventos para o canvas quando não estão sobre elementos interativos
-    const handleGlobalMouseDown = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      // Se não for um elemento interativo, passar evento para o canvas
-      if (!isInteractiveElement(target) && canvasRef.current && target !== canvasRef.current) {
-        const rect = canvasRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Criar evento sintético no canvas
-        const syntheticEvent = new MouseEvent('mousedown', {
-          bubbles: true,
-          cancelable: true,
-          clientX: e.clientX,
-          clientY: e.clientY,
-          button: e.button,
-          buttons: e.buttons,
-          ctrlKey: e.ctrlKey,
-          shiftKey: e.shiftKey,
-          altKey: e.altKey,
-          metaKey: e.metaKey
-        });
-        canvasRef.current.dispatchEvent(syntheticEvent);
-        
-        isUserInteractingRef.current = true;
-        if (autoRotateTimeoutRef.current) {
-          clearTimeout(autoRotateTimeoutRef.current);
-        }
-        if (canvasRef.current) {
-          canvasRef.current.style.cursor = 'grabbing';
-        }
-      }
-    };
-    
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!isInteractiveElement(target) && canvasRef.current && target !== canvasRef.current) {
-        const syntheticEvent = new MouseEvent('mousemove', {
-          bubbles: true,
-          cancelable: true,
-          clientX: e.clientX,
-          clientY: e.clientY,
-          button: e.button,
-          buttons: e.buttons,
-          ctrlKey: e.ctrlKey,
-          shiftKey: e.shiftKey,
-          altKey: e.altKey,
-          metaKey: e.metaKey
-        });
-        canvasRef.current.dispatchEvent(syntheticEvent);
-      }
-    };
-    
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!isInteractiveElement(target) && canvasRef.current && target !== canvasRef.current) {
-        const syntheticEvent = new MouseEvent('mouseup', {
-          bubbles: true,
-          cancelable: true,
-          clientX: e.clientX,
-          clientY: e.clientY,
-          button: e.button,
-          buttons: e.buttons
-        });
-        canvasRef.current.dispatchEvent(syntheticEvent);
-      }
-      // Retomar rotação automática após 3 segundos sem interação
-      autoRotateTimeoutRef.current = window.setTimeout(() => {
-        isUserInteractingRef.current = false;
-      }, 3000);
-      if (canvasRef.current) {
-        canvasRef.current.style.cursor = 'grab';
-      }
-    };
-    
-    const handleGlobalWheel = (e: WheelEvent) => {
-      const target = e.target as HTMLElement;
-      if (!isInteractiveElement(target) && canvasRef.current && target !== canvasRef.current) {
-        const syntheticEvent = new WheelEvent('wheel', {
-          bubbles: true,
-          cancelable: true,
-          clientX: e.clientX,
-          clientY: e.clientY,
-          deltaX: e.deltaX,
-          deltaY: e.deltaY,
-          deltaZ: e.deltaZ,
-          deltaMode: e.deltaMode,
-          ctrlKey: e.ctrlKey,
-          shiftKey: e.shiftKey,
-          altKey: e.altKey,
-          metaKey: e.metaKey
-        });
-        canvasRef.current.dispatchEvent(syntheticEvent);
-        
-        isUserInteractingRef.current = true;
-        if (autoRotateTimeoutRef.current) {
-          clearTimeout(autoRotateTimeoutRef.current);
-        }
-      }
-    };
-    
-    // Detectar interação direta no canvas
-    const onCanvasMouseDown = () => {
-      isUserInteractingRef.current = true;
-      if (autoRotateTimeoutRef.current) {
-        clearTimeout(autoRotateTimeoutRef.current);
-      }
-      if (canvasRef.current) {
-        canvasRef.current.style.cursor = 'grabbing';
-      }
-    };
-    
-    const onCanvasMouseUp = () => {
-      autoRotateTimeoutRef.current = window.setTimeout(() => {
-        isUserInteractingRef.current = false;
-      }, 3000);
-      if (canvasRef.current) {
-        canvasRef.current.style.cursor = 'grab';
-      }
-    };
-    
-    const onCanvasWheel = () => {
-      isUserInteractingRef.current = true;
-      if (autoRotateTimeoutRef.current) {
-        clearTimeout(autoRotateTimeoutRef.current);
-      }
-    };
-    
-    // Adicionar listeners no canvas para interações diretas
-    if (canvasRef.current) {
-      canvasRef.current.addEventListener('mousedown', onCanvasMouseDown);
-      canvasRef.current.addEventListener('mouseup', onCanvasMouseUp);
-      canvasRef.current.addEventListener('wheel', onCanvasWheel);
-      canvasRef.current.style.cursor = 'grab';
-    }
-    
-    // Adicionar listeners globais para capturar eventos sobre elementos sobrepostos
-    window.addEventListener('mousedown', handleGlobalMouseDown, true);
-    window.addEventListener('mousemove', handleGlobalMouseMove, true);
-    window.addEventListener('mouseup', handleGlobalMouseUp, true);
-    window.addEventListener('wheel', handleGlobalWheel, true);
+    controls.enableDamping = false;
+    controls.enabled = false; // Desabilitar controles de mouse para usar apenas animação automática
     
     controlsRef.current = controls;
 
@@ -353,21 +180,57 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
     const clock = new THREE.Clock();
     clockRef.current = clock;
 
+    // Animação automática da câmera - viagem espacial suave e lenta
+    const animateCamera = (time: number) => {
+      // Duração total do ciclo: ~50 segundos (bem lento para transição suave)
+      const cycleDuration = 50;
+      const t = (time % cycleDuration) / cycleDuration;
+
+      let targetX = 0;
+      let targetY = 0;
+      let targetZ = 0;
+      
+      // Função de easing muito suave (ease-in-out cubic)
+      const easeInOutCubic = (t: number) => {
+        return t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+      
+      // Segmento 1 (0-0.5): Viajando para frente através da galáxia
+      if (t < 0.5) {
+        const segmentT = easeInOutCubic(t / 0.5);
+        // Começa de longe (3, 3, 3) e viaja através da galáxia até (0, 0, -5)
+        targetX = THREE.MathUtils.lerp(3, 0, segmentT);
+        targetY = THREE.MathUtils.lerp(3, 0, segmentT);
+        targetZ = THREE.MathUtils.lerp(3, -5, segmentT);
+      }
+      // Segmento 2 (0.5-1.0): Voltando para trás suavemente
+      else {
+        const segmentT = easeInOutCubic((t - 0.5) / 0.5);
+        // Volta para a posição inicial (3, 3, 3)
+        targetX = THREE.MathUtils.lerp(0, 3, segmentT);
+        targetY = THREE.MathUtils.lerp(0, 3, segmentT);
+        targetZ = THREE.MathUtils.lerp(-5, 3, segmentT);
+      }
+
+      // Aplicar suavização (lerp) para movimento extremamente fluido
+      const lerpSpeed = 0.03; // Bem lento para movimento muito suave
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, lerpSpeed);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, lerpSpeed);
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, lerpSpeed);
+      
+      // Sempre olhar para o centro da galáxia
+      camera.lookAt(0, 0, 0);
+      controls.target.set(0, 0, 0);
+    };
+
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
 
       if (!pausedRef.current) {
-        // Update controls
-        controls.update();
-
-        // Animate camera apenas se o usuário não estiver interagindo
-        if (!isUserInteractingRef.current) {
-          camera.position.x = Math.cos(elapsedTime * 0.05) * 3;
-          camera.position.z = Math.sin(elapsedTime * 0.05) * 3;
-          camera.lookAt(0, 0, 0);
-          // Atualizar os controles para refletir a nova posição
-          controls.target.set(0, 0, 0);
-        }
+        // Animar câmera automaticamente
+        animateCamera(elapsedTime);
       }
 
       // Render
@@ -395,18 +258,6 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousedown', handleGlobalMouseDown, true);
-      window.removeEventListener('mousemove', handleGlobalMouseMove, true);
-      window.removeEventListener('mouseup', handleGlobalMouseUp, true);
-      window.removeEventListener('wheel', handleGlobalWheel, true);
-      if (canvasRef.current) {
-        canvasRef.current.removeEventListener('mousedown', onCanvasMouseDown);
-        canvasRef.current.removeEventListener('mouseup', onCanvasMouseUp);
-        canvasRef.current.removeEventListener('wheel', onCanvasWheel);
-      }
-      if (autoRotateTimeoutRef.current) {
-        clearTimeout(autoRotateTimeoutRef.current);
-      }
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
       }
@@ -425,7 +276,7 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
   }, [count, size, radius, branches, spin, randomness, randomnessPower, insideColor, outsideColor]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-0 bg-black" style={{ cursor: 'grab' }}>
+    <div ref={containerRef} className="fixed inset-0 z-0 bg-black">
       <canvas 
         ref={canvasRef} 
         className="webgl w-full h-full block" 
