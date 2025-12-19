@@ -83,16 +83,16 @@ const Technologies: React.FC = () => {
       </div>
 
       {/* Área de movimento centralizada - Ícones flutuando no meio */}
-      <div className="relative py-16 w-full z-10">
+      <div className="relative py-8 sm:py-12 md:py-16 w-full z-10">
         <div className="relative flex overflow-x-hidden group">
-          <div className="animate-marquee flex items-center gap-24 md:gap-48 whitespace-nowrap px-10">
+          <div className="animate-marquee flex items-center gap-8 sm:gap-12 md:gap-24 lg:gap-48 whitespace-nowrap px-4 sm:px-6 md:px-10">
             {doubleTechs.map((tech, idx) => (
               <div 
                 key={idx} 
                 className="flex flex-col items-center group/item cursor-pointer"
               >
                 {/* Container do ícone - Padding generoso para não cortar nada */}
-                <div className={`relative flex items-center justify-center w-24 h-24 md:w-36 md:h-36 p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''} ${tech.name === 'Playwright' ? 'overflow-visible' : ''}`}>
+                <div className={`relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 p-3 sm:p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''} ${tech.name === 'Playwright' ? 'overflow-visible' : ''}`}>
                   {/* Fundo sutil para destacar os ícones */}
                   <div className="absolute inset-0 bg-white/5 rounded-2xl opacity-60 group-hover/item:opacity-100 group-hover/item:bg-white/10 transition-all duration-500 blur-sm"></div>
                   <img 
@@ -146,9 +146,9 @@ const Technologies: React.FC = () => {
                   />
                   
                   {/* Brilho radial no hover para dar profundidade espacial */}
-                  <div className="absolute inset-0 bg-primary/30 blur-[50px] rounded-full opacity-30 group-hover/item:opacity-100 transition-opacity duration-700 -z-10"></div>
-                  {/* Brilho constante sutil para melhor visibilidade */}
-                  <div className="absolute inset-0 bg-white/10 blur-[30px] rounded-full opacity-20 -z-10"></div>
+                  <div className="absolute inset-0 bg-primary/30 blur-[50px] rounded-full opacity-30 group-hover/item:opacity-100 transition-opacity duration-700 -z-10 hidden sm:block"></div>
+                  {/* Brilho constante sutil para melhor visibilidade - reduzido no mobile */}
+                  <div className="absolute inset-0 bg-white/10 blur-[30px] rounded-full opacity-10 sm:opacity-20 -z-10"></div>
                 </div>
 
                 {/* Legenda Estilo HUD */}
@@ -174,9 +174,27 @@ const Technologies: React.FC = () => {
         }
         .animate-marquee {
           animation: marquee 50s linear infinite;
+          transform: translateZ(0);
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
+        }
+        
+        /* Otimização para mobile - animação mais rápida */
+        @media (max-width: 768px) {
+          .animate-marquee {
+            animation: marquee 20s linear infinite;
+          }
+        }
+        
+        /* Otimização para telas muito pequenas - ainda mais rápido */
+        @media (max-width: 640px) {
+          .animate-marquee {
+            animation: marquee 15s linear infinite;
+          }
         }
         
         /* Estilos específicos para ícone do Playwright */
