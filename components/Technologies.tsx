@@ -93,10 +93,12 @@ const Technologies: React.FC = () => {
               >
                 {/* Container do ícone - Padding generoso para não cortar nada */}
                 <div className={`relative flex items-center justify-center w-24 h-24 md:w-36 md:h-36 p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''} ${tech.name === 'Playwright' ? 'overflow-visible' : ''}`}>
+                  {/* Fundo sutil para destacar os ícones */}
+                  <div className="absolute inset-0 bg-white/5 rounded-2xl opacity-60 group-hover/item:opacity-100 group-hover/item:bg-white/10 transition-all duration-500 blur-sm"></div>
                   <img 
                     src={tech.icon} 
                     alt={tech.name} 
-                    className={`max-w-full max-h-full object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.7)] transition-all duration-500 ${tech.name === 'Playwright' ? 'w-full h-full p-2' : ''}`}
+                    className={`relative z-10 max-w-full max-h-full object-contain brightness-110 contrast-125 saturate-110 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.9)] group-hover/item:brightness-125 group-hover/item:contrast-150 transition-all duration-500 ${tech.name === 'Playwright' ? 'w-full h-full p-2' : ''}`}
                     loading="lazy"
                     crossOrigin="anonymous"
                     onError={(e) => {
@@ -144,7 +146,9 @@ const Technologies: React.FC = () => {
                   />
                   
                   {/* Brilho radial no hover para dar profundidade espacial */}
-                  <div className="absolute inset-0 bg-primary/20 blur-[50px] rounded-full opacity-0 group-hover/item:opacity-100 transition-opacity duration-700 -z-10"></div>
+                  <div className="absolute inset-0 bg-primary/30 blur-[50px] rounded-full opacity-30 group-hover/item:opacity-100 transition-opacity duration-700 -z-10"></div>
+                  {/* Brilho constante sutil para melhor visibilidade */}
+                  <div className="absolute inset-0 bg-white/10 blur-[30px] rounded-full opacity-20 -z-10"></div>
                 </div>
 
                 {/* Legenda Estilo HUD */}
@@ -191,6 +195,22 @@ const Technologies: React.FC = () => {
           min-height: 0;
           max-width: 100%;
           max-height: 100%;
+        }
+        
+        /* Melhorar visibilidade de todos os ícones */
+        .animate-marquee img {
+          opacity: 0.95;
+          transition: opacity 0.3s ease;
+        }
+        
+        .animate-marquee img:hover,
+        .group-hover .animate-marquee img {
+          opacity: 1;
+        }
+        
+        /* Adicionar contraste extra para ícones SVG */
+        .animate-marquee img[src$=".svg"] {
+          filter: brightness(1.15) contrast(1.2) saturate(1.1) drop-shadow(0 0 15px rgba(255,255,255,0.6)) drop-shadow(0 0 25px rgba(102,126,234,0.4));
         }
       `}</style>
     </section>
