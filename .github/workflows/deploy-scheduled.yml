@@ -109,3 +109,4 @@ jobs:
           echo "✅ Deploy realizado com sucesso!"
           echo "📦 Branch: ${{ needs.determine-branch.outputs.branch }}"
           echo "🌐 URL: ${{ steps.deployment.outputs.page_url }}"
+

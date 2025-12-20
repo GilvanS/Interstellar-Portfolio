@@ -7,7 +7,8 @@ export interface Project {
   image: string;
   icon: string;
   color: string;
-  github: string;
+  github?: string;
+  gitlab?: string;
   demo: string;
 }
 
