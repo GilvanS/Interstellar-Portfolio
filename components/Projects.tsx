@@ -12,6 +12,7 @@ const projects: Project[] = [
     icon: 'fas fa-vault',
     color: 'primary',
     github: 'https://github.com/GilvanS/FintechBankApp',
+    gitlab: 'https://gitlab.com/GilvanS/poc-fintech-cypress/-/tree/main',
     demo: '#'
   },
   {
@@ -90,14 +91,26 @@ const Projects: React.FC = () => {
               
               {/* Botões de Ação Padronizados */}
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4">
-                <a 
-                  href={p.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
-                >
-                  <i className="fab fa-github text-sm md:text-base"></i> CODE
-                </a>
+                {p.github && (
+                  <a 
+                    href={p.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                  >
+                    <i className="fab fa-github text-sm md:text-base"></i> GITHUB
+                  </a>
+                )}
+                {p.gitlab && (
+                  <a 
+                    href={p.gitlab} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                  >
+                    <i className="fab fa-gitlab text-sm md:text-base"></i> GITLAB
+                  </a>
+                )}
                 <a 
                   href={p.demo} 
                   className={`flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 ${buttonColorMap[p.color]}`}
