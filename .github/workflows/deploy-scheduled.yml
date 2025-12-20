@@ -1,0 +1,112 @@
+name: Deploy Scheduled - Branch Rotation
+
+on:
+  schedule:
+    # Executa a cada 6 horas (0h, 6h, 12h, 18h UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch para fazer deploy (main ou alternative)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - main
+          - alternative
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: write
+
+concurrency:
+  group: "pages-scheduled"
+  cancel-in-progress: false
+
+jobs:
+  determine-branch:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.set-branch.outputs.branch }}
+    steps:
+      - name: Determine which branch to deploy
+        id: set-branch
+        run: |
+          # Se foi passado manualmente, usa o valor
+          if [ "${{ github.event.inputs.branch }}" != "" ] && [ "${{ github.event.inputs.branch }}" != "auto" ]; then
+            echo "branch=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Calcula qual branch usar baseado na hora atual (UTC)
+          HOUR=$(date +%H)
+          
+          # Alterna entre branches a cada 6 horas
+          # 0-5h: main, 6-11h: alternative, 12-17h: main, 18-23h: alternative
+          if [ $HOUR -ge 0 ] && [ $HOUR -lt 6 ]; then
+            echo "branch=main" >> $GITHUB_OUTPUT
+            echo "⏰ Hora UTC: $HOUR - Deploying: main"
+          elif [ $HOUR -ge 6 ] && [ $HOUR -lt 12 ]; then
+            echo "branch=alternative" >> $GITHUB_OUTPUT
+            echo "⏰ Hora UTC: $HOUR - Deploying: alternative"
+          elif [ $HOUR -ge 12 ] && [ $HOUR -lt 18 ]; then
+            echo "branch=main" >> $GITHUB_OUTPUT
+            echo "⏰ Hora UTC: $HOUR - Deploying: main"
+          else
+            echo "branch=alternative" >> $GITHUB_OUTPUT
+            echo "⏰ Hora UTC: $HOUR - Deploying: alternative"
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    needs: determine-branch
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.determine-branch.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [determine-branch, build]
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      
+      - name: Notify deployment
+        run: |
+          echo "✅ Deploy realizado com sucesso!"
+          echo "📦 Branch: ${{ needs.determine-branch.outputs.branch }}"
+          echo "🌐 URL: ${{ steps.deployment.outputs.page_url }}"
+
