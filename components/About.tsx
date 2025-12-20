@@ -55,7 +55,9 @@ const About: React.FC = () => {
             
             <div className="space-y-4 md:space-y-6">
               {/* Card principal de introdução - PRETO PROFUNDO */}
-              <div className="bg-black/95 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-primary/40 transition-all duration-300 space-y-3 md:space-y-4 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,1)] group">
+              <div className="glass-panel p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-primary/40 transition-all duration-300 space-y-3 md:space-y-4 shadow-[0_20px_50px_rgba(0,0,0,1)] hover:shadow-[0_0_50px_rgba(102,126,234,0.2)] group relative">
+                <div className="absolute inset-0 bg-primary/5 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div className="relative z-10">
                 <h4 className="text-primary font-display text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Visão Geral</h4>
                 <div className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-body leading-relaxed space-y-3 md:space-y-4">
                   <p>
@@ -66,23 +68,28 @@ const About: React.FC = () => {
                     Minha expertise abrange todo o ciclo de vida do software, desde testes manuais até arquiteturas complexas de automação Web/Mobile e core bancário em Mainframe (Vision Plus). Minha missão é garantir que cada linha de código resista aos testes mais rigorosos antes de chegar ao usuário final.
                   </p>
                 </div>
+                </div>
               </div>
 
               {/* Card de Core Especializado - PRETO PROFUNDO */}
-              <div className="bg-black/95 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-accent/40 transition-all duration-300 space-y-3 md:space-y-4 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,1)] group">
+              <div className="glass-panel p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl border border-white/10 hover:border-accent/40 transition-all duration-300 space-y-3 md:space-y-4 shadow-[0_20px_50px_rgba(0,0,0,1)] hover:shadow-[0_0_50px_rgba(255,77,77,0.2)] group relative">
+                <div className="absolute inset-0 bg-accent/5 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div className="relative z-10">
                 <h4 className="text-accent font-display text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase font-black group-hover:tracking-[0.4em] md:group-hover:tracking-[0.5em] transition-all">Core Especializado</h4>
                 <p className="text-white text-sm md:text-base lg:text-lg font-body leading-relaxed">
                   Domínio profundo de <span className="text-white font-black border-b border-accent/50">Vision Plus (Mainframe/Mocha)</span> e injeção transacional <span className="text-white font-black border-b border-accent/50">ISO 8583</span>. Experiência sólida em validação de fluxos financeiros críticos.
                 </p>
+                </div>
               </div>
             </div>
             
             {/* Grid de Habilidades - PADRONIZADO E LEGÍVEL */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pt-4 md:pt-6">
               {skills.map((skill, idx) => (
-                <div key={idx} className="bg-black p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-primary/60 transition-all group hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-                  <div className={`${skill.color} text-2xl md:text-3xl mb-3 md:mb-4 group-hover:scale-110 transition-transform flex justify-center sm:justify-start`}>
-                    <i className={skill.icon}></i>
+                <div key={idx} className="glass-panel p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/10 hover:border-primary/60 transition-all group hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(102,126,234,0.2)]">
+                  <div className={`relative w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center ${skill.color} border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover:shadow-[0_0_50px_rgba(102,126,234,0.6)] flex-shrink-0 transition-all duration-300 group-hover:scale-110 mb-3 md:mb-4`}>
+                    <i className={`${skill.icon} text-2xl md:text-3xl`}></i>
+                    <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                   <div className="text-center sm:text-left space-y-1">
                     <div className="text-xs md:text-sm text-slate-400 font-display font-bold tracking-[0.15em] md:tracking-[0.2em] uppercase">

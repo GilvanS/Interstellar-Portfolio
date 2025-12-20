@@ -73,7 +73,7 @@ const Projects: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
         {projects.map((p) => (
-          <div key={p.id} className="group relative bg-black/95 backdrop-blur-3xl rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30 hover:shadow-[0_0_50px_rgba(102,126,234,0.2)]">
+          <div key={p.id} className="group relative glass-panel rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30 hover:shadow-[0_0_50px_rgba(102,126,234,0.2)]">
             
             {/* Imagem do Projeto com Overlay */}
             <div className="relative h-64 overflow-hidden">

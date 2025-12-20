@@ -144,11 +144,6 @@ const Technologies: React.FC = () => {
                       }
                     }}
                   />
-                  
-                  {/* Brilho radial no hover para dar profundidade espacial */}
-                  <div className="absolute inset-0 bg-primary/30 blur-[50px] rounded-full opacity-30 group-hover/item:opacity-100 transition-opacity duration-700 -z-10 hidden sm:block"></div>
-                  {/* Brilho constante sutil para melhor visibilidade - reduzido no mobile */}
-                  <div className="absolute inset-0 bg-white/10 blur-[30px] rounded-full opacity-10 sm:opacity-20 -z-10"></div>
                 </div>
 
                 {/* Legenda Estilo HUD */}
