@@ -62,7 +62,7 @@ const Projects: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
         {projects.map((p) => (
-          <div key={p.id} className="group relative bg-black/95 backdrop-blur-3xl rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30">
+          <div key={p.id} className="group relative bg-black/95 backdrop-blur-3xl rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,1)] border border-white/10 hover:border-primary/30 hover:shadow-[0_0_50px_rgba(102,126,234,0.2)]">
             
             {/* Imagem do Projeto com Overlay */}
             <div className="relative h-64 overflow-hidden">
@@ -70,8 +70,9 @@ const Projects: React.FC = () => {
               <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-20"></div>
               
-              <div className={`absolute top-6 right-6 w-14 h-14 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-2xl z-30 transition-all group-hover:border-primary/50 shadow-xl`}>
+              <div className={`absolute top-6 right-6 w-14 h-14 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-2xl z-30 transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover:scale-110 relative`}>
                 <i className={`${p.icon} ${p.color === 'primary' ? 'text-primary' : p.color === 'secondary' ? 'text-secondary' : 'text-accent'}`}></i>
+                <div className={`absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${p.color === 'primary' ? 'bg-primary/10' : p.color === 'secondary' ? 'bg-secondary/10' : 'bg-accent/10'}`}></div>
               </div>
             </div>
             
@@ -96,9 +97,10 @@ const Projects: React.FC = () => {
                     href={p.github} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                    className="group relative flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 hover:border-primary/50 active:scale-95 text-center rounded-lg md:rounded-xl transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(102,126,234,0.4)]"
                   >
                     <i className="fab fa-github text-sm md:text-base"></i> GITHUB
+                    <div className="absolute inset-0 bg-primary/10 rounded-lg md:rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </a>
                 )}
                 {p.gitlab && (
@@ -106,9 +108,10 @@ const Projects: React.FC = () => {
                     href={p.gitlab} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 active:scale-95 text-center rounded-lg md:rounded-xl transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                    className="group relative flex-1 py-2.5 md:py-3 text-xs md:text-sm font-bold font-display border border-white/10 text-white hover:bg-white/10 hover:border-primary/50 active:scale-95 text-center rounded-lg md:rounded-xl transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(102,126,234,0.4)]"
                   >
                     <i className="fab fa-gitlab text-sm md:text-base"></i> GITLAB
+                    <div className="absolute inset-0 bg-primary/10 rounded-lg md:rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </a>
                 )}
                 <a 
@@ -120,8 +123,9 @@ const Projects: React.FC = () => {
               </div>
             </div>
 
-            {/* Brilho sutil no hover */}
-            <div className="absolute -inset-px bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            {/* Brilho sutil no hover - iluminação transparente */}
+            <div className={`absolute -inset-px bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none blur-xl ${p.color === 'primary' ? 'via-primary/10' : p.color === 'secondary' ? 'via-secondary/10' : 'via-accent/10'}`}></div>
+            <div className={`absolute inset-0 bg-primary/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${p.color === 'primary' ? 'bg-primary/5' : p.color === 'secondary' ? 'bg-secondary/5' : 'bg-accent/5'}`}></div>
           </div>
         ))}
       </div>
