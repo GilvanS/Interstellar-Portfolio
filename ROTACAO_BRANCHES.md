@@ -9,6 +9,16 @@ O workflow `.github/workflows/deploy-scheduled.yml` alterna automaticamente entr
 - **12h-17h UTC**: Deploy da branch `main`
 - **18h-23h UTC**: Deploy da branch `alternative`
 
+### ⚠️ Importante: URL Compartilhado
+
+**Todas as branches compartilham o mesmo URL do GitHub Pages:**
+
+```
+https://gilvans.github.io/Interstellar-Portfolio/
+```
+
+O URL não muda - apenas o **conteúdo exibido** muda conforme a branch deployada. Quando uma branch é deployada, ela substitui o conteúdo anterior no mesmo URL.
+
 ## 🚀 Configuração Inicial
 
 ### 1. Criar a segunda branch
