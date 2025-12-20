@@ -19,10 +19,14 @@ const About: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-center">
           <div className="w-full lg:w-1/3 flex justify-center">
             <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 group">
-              <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute -inset-2 border border-dashed border-primary/30 rounded-full animate-[spin_25s_linear_infinite]"></div>
+              {/* Efeito de iluminação transparente dos modais - atrás da foto */}
+              <div className="absolute inset-0 glass-panel rounded-full border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300 -z-10"></div>
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
               
-              <div className="relative w-full h-full rounded-full border-4 border-slate-800 overflow-hidden shadow-[0_0_40px_rgba(0,195,255,0.15)] group-hover:shadow-[0_0_60px_rgba(0,195,255,0.3)] transition-all duration-500 bg-black">
+              <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"></div>
+              <div className="absolute -inset-2 border border-dashed border-primary/30 rounded-full animate-[spin_25s_linear_infinite] -z-10"></div>
+              
+              <div className="relative w-full h-full rounded-full border-4 border-slate-800 overflow-hidden shadow-[0_0_40px_rgba(0,195,255,0.15)] group-hover:shadow-[0_0_60px_rgba(0,195,255,0.3)] transition-all duration-500 bg-black z-10">
                 <img 
                   src="/images/profile.jpg" 
                   alt="Gilvan Sousa Profile" 
