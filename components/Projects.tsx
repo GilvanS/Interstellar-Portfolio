@@ -17,6 +17,17 @@ const projects: Project[] = [
   },
   {
     id: '2',
+    title: 'POC FINTECH CYPRESS',
+    description: 'Prova de Conceito de automação de testes para aplicação Fintech utilizando Cypress. Foco em testes end-to-end, integração contínua e validação de fluxos críticos de transações bancárias.',
+    tech: 'CYPRESS / JAVASCRIPT / E2E',
+    image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=800&h=500',
+    icon: 'fas fa-vial',
+    color: 'primary',
+    gitlab: 'https://gitlab.com/GilvanS/poc-fintech-cypress/-/tree/main',
+    demo: '#'
+  },
+  {
+    id: '3',
     title: 'GERADOR DE MASSAS',
     description: 'Framework em Java para criação de dados sintéticos complexos. Desenvolvido para acelerar o ciclo de vida do QA, permitindo testes de carga e estresse com massas realistas e seguras.',
     tech: 'JAVA / AUTOMATION',
@@ -27,7 +38,7 @@ const projects: Project[] = [
     demo: '#'
   },
   {
-    id: '3',
+    id: '4',
     title: 'AUTOMACAO REST API',
     description: 'Solução completa de automação para APIs REST (CMS). Implementação de testes de contrato, funcionalidade e performance, garantindo a integridade dos endpoints e payloads JSON.',
     tech: 'JAVA / REST ASSURED / API',
