@@ -97,24 +97,6 @@ const Technologies: React.FC = () => {
   
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
-  
-  // Função helper para construir URL correta da imagem
-  const getImageSrc = (imageUrl: string): string => {
-    // No Vite, arquivos da pasta public são servidos diretamente
-    // Codifica apenas os espaços e caracteres especiais no nome do arquivo
-    const parts = imageUrl.split('/');
-    const filename = parts[parts.length - 1];
-    
-    if (filename && filename.includes(' ')) {
-      // Substitui espaços por %20 no nome do arquivo
-      const encodedFilename = filename.replace(/ /g, '%20');
-      parts[parts.length - 1] = encodedFilename;
-      return parts.join('/');
-    }
-    
-    return imageUrl;
-  };
   
   // Funções de navegação do carousel
   const nextCert = () => {
@@ -127,52 +109,6 @@ const Technologies: React.FC = () => {
   
   const goToCert = (index: number) => {
     setCurrentCertIndex(index);
-  };
-  
-  // Função para lidar com erro de carregamento
-  const handleImageError = (index: number, imageUrl: string, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('❌ Erro ao carregar imagem:', imageUrl);
-    console.error('  Índice:', index);
-    
-    // Adiciona o índice ao conjunto de erros
-    setImageErrors(prev => new Set(prev).add(index));
-    
-    const target = event.currentTarget;
-    target.style.display = 'none';
-    
-    const parent = target.parentElement;
-    if (parent && !parent.querySelector('.error-fallback')) {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error-fallback w-full h-full flex items-center justify-center text-primary text-sm md:text-xl font-bold text-center px-4';
-      errorDiv.textContent = 'Erro ao carregar imagem';
-      parent.appendChild(errorDiv);
-    }
-  };
-  
-  // Função para lidar com sucesso no carregamento
-  const handleImageLoad = (index: number, imageUrl: string, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log('✓ Imagem carregada com sucesso:', imageUrl);
-    console.log('  Índice:', index);
-    console.log('  Dimensões naturais:', event.currentTarget.naturalWidth, 'x', event.currentTarget.naturalHeight);
-    
-    // Remove o índice do conjunto de erros se existir
-    setImageErrors(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(index);
-      return newSet;
-    });
-    
-    // Remove error-fallback se existir
-    const parent = event.currentTarget.parentElement;
-    if (parent) {
-      const errorFallback = parent.querySelector('.error-fallback');
-      if (errorFallback) {
-        errorFallback.remove();
-      }
-    }
-    
-    // Garante que a imagem esteja visível
-    event.currentTarget.style.display = 'block';
   };
 
   return (
@@ -272,93 +208,91 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      {/* Seção de Certificados - Carousel */}
+      {/* Seção de Certificados - Carousel Simples */}
       {certificates.length > 0 && (
-        <>
-          <div className="container mx-auto px-4 mb-16 text-center z-10 relative mt-32">
-            <div className="inline-block relative">
-              <h3 className="text-4xl md:text-6xl font-display font-black text-white tracking-[0.4em] uppercase drop-shadow-[0_0_30px_rgba(102,126,234,0.3)]">
-                <span className="text-primary">CERTIF</span>ICADOS
-              </h3>
-              {/* Brilho sutil atrás do texto */}
-              <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full -z-10"></div>
-            </div>
-            <div className="w-40 h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-8 rounded-full shadow-[0_0_15px_rgba(102,126,234,0.6)]"></div>
-          </div>
-
-          {/* Container do Carousel */}
-          <div className="relative max-w-6xl mx-auto px-4 py-8 z-10">
-            {/* Nome do curso atual */}
+        <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
+          <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
+          
+          <div className="relative max-w-5xl mx-auto">
+            {/* Nome do certificado atual */}
             <div className="text-center mb-6">
-              <p className="text-xl md:text-2xl font-display font-bold text-white/80 tracking-wider uppercase">
+              <p className="text-xl md:text-2xl font-bold text-white/90">
                 {certificates[currentCertIndex]?.name}
               </p>
             </div>
 
-            {/* Container do certificado com frame */}
-            <div className="relative flex items-center justify-center py-8">
-              {/* Botão anterior */}
-              <button
-                onClick={prevCert}
-                className="absolute left-0 md:-left-16 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/80 border-2 border-primary/50 hover:border-primary hover:bg-black text-white flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.6)]"
-                aria-label="Certificado anterior"
+            {/* Slides Container */}
+            <div className="relative overflow-hidden" style={{ minHeight: '500px' }}>
+              <div 
+                className="slides flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
               >
-                <i className="fas fa-chevron-left text-lg md:text-xl"></i>
-              </button>
-
-              {/* Frame do certificado com borda brilhante - formato retrato (certificado) - dimensões adequadas */}
-              <div className="relative w-full mx-auto" style={{ maxWidth: '500px', aspectRatio: '3/4' }}>
-                {/* Borda brilhante azul-roxo com efeito glow */}
-                <div className="absolute -inset-[3px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-90 blur-sm"></div>
-                <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_40px_rgba(102,126,234,0.8)]"></div>
-                
-                {/* Fundo branco limpo para o certificado */}
-                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-3 md:p-4">
-                  {certificates[currentCertIndex]?.imageUrl && (
-                    <img 
-                      key={`cert-${currentCertIndex}-${certificates[currentCertIndex].imageUrl}`}
-                      src={getImageSrc(certificates[currentCertIndex].imageUrl)} 
-                      alt={certificates[currentCertIndex].name}
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'contain',
-                        display: imageErrors.has(currentCertIndex) ? 'none' : 'block'
-                      }}
-                      onError={(e) => handleImageError(currentCertIndex, certificates[currentCertIndex].imageUrl, e)}
-                      onLoad={(e) => handleImageLoad(currentCertIndex, certificates[currentCertIndex].imageUrl, e)}
-                    />
-                  )}
-                </div>
+                {certificates.map((cert, index) => (
+                  <div 
+                    key={index}
+                    className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-4"
+                  >
+                    <div className="certification-course">
+                      <img 
+                        src={cert.imageUrl} 
+                        alt={cert.name}
+                        style={{
+                          maxWidth: '90%',
+                          maxHeight: '500px',
+                          height: 'auto',
+                          boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
+                          borderRadius: '8px',
+                          borderWidth: '2px',
+                          borderStyle: 'solid',
+                          borderColor: 'rgba(102, 126, 234, 0.5)',
+                          display: 'block',
+                          margin: '0 auto'
+                        }}
+                        onError={(e) => {
+                          console.error('Erro ao carregar:', cert.imageUrl);
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              {/* Botão próximo */}
-              <button
-                onClick={nextCert}
-                className="absolute right-0 md:-right-16 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/80 border-2 border-primary/50 hover:border-primary hover:bg-black text-white flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.6)]"
-                aria-label="Próximo certificado"
-              >
-                <i className="fas fa-chevron-right text-lg md:text-xl"></i>
-              </button>
             </div>
 
-            {/* Indicadores (dots) */}
-            <div className="flex justify-center items-center gap-3 mt-8">
+            {/* Botões de navegação */}
+            <button 
+              className="prev absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-20 shadow-lg"
+              onClick={prevCert}
+              aria-label="Certificado anterior"
+            >
+              <i className="fas fa-chevron-left text-xl"></i>
+            </button>
+            
+            <button 
+              className="next absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-20 shadow-lg"
+              onClick={nextCert}
+              aria-label="Próximo certificado"
+            >
+              <i className="fas fa-chevron-right text-xl"></i>
+            </button>
+
+            {/* Indicadores */}
+            <div className="indicators flex justify-center items-center gap-3 mt-8">
               {certificates.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToCert(index)}
-                  className={`transition-all duration-300 ${
+                  className={`transition-all duration-300 rounded-full ${
                     index === currentCertIndex
-                      ? 'w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(102,126,234,0.8)] scale-125'
-                      : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60 rounded-full hover:scale-110'
+                      ? 'w-3 h-3 bg-primary shadow-[0_0_15px_rgba(102,126,234,0.8)]'
+                      : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
                   }`}
                   aria-label={`Ir para certificado ${index + 1}`}
                 />
               ))}
             </div>
           </div>
-        </>
+        </section>
       )}
 
       <style>{`
