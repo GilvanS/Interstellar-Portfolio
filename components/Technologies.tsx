@@ -24,8 +24,8 @@ const CertificateThumbnail: React.FC<{ cert: Certificate }> = ({ cert }) => {
       <img 
         src={cert.imageUrl} 
         alt={cert.name}
-        className="relative z-10 w-full h-full object-contain rounded-lg shadow-xl"
-        style={{ maxWidth: '100%', maxHeight: '100%' }}
+        className="relative z-10 w-full h-full object-contain"
+        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
         onError={(e) => {
           console.error('Erro ao carregar imagem do certificado:', cert.imageUrl);
           // Mostrar fallback
@@ -167,8 +167,8 @@ const PDFThumbnail: React.FC<{ pdfUrl: string; alt: string }> = ({ pdfUrl, alt }
       <img 
         src={thumbnailUrl} 
         alt={alt}
-        className="relative z-10 w-full h-full object-contain rounded-lg shadow-xl"
-        style={{ maxWidth: '100%', maxHeight: '100%' }}
+        className="relative z-10 w-full h-full object-contain"
+        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
       />
     );
   }
@@ -439,14 +439,14 @@ const Technologies: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex flex-col items-center group/item cursor-pointer"
                   >
-                    {/* Container do certificado - maior para mostrar melhor o conteúdo */}
-                    <div className="relative flex items-center justify-center w-48 h-64 sm:w-56 sm:h-80 md:w-64 md:h-96 p-2 sm:p-3 md:p-4 transition-all duration-500 group-hover/item:scale-105">
-                      {/* Fundo com efeito glass-panel e iluminação */}
-                      <div className="absolute inset-0 glass-panel rounded-xl md:rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
-                      <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
+                    {/* Container do certificado - estilo frame com borda brilhante */}
+                    <div className="relative flex items-center justify-center w-56 h-80 sm:w-64 sm:h-96 md:w-72 md:h-[28rem] transition-all duration-500 group-hover/item:scale-105">
+                      {/* Borda brilhante azul-roxo com efeito glow */}
+                      <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-80 group-hover/item:opacity-100 transition-opacity duration-300 blur-sm"></div>
+                      <div className="absolute -inset-[1px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary group-hover/item:shadow-[0_0_30px_rgba(102,126,234,0.8)] transition-all duration-300"></div>
                       
-                      {/* Thumbnail do certificado - JPEG ou PDF */}
-                      <div className="relative z-10 w-full h-full flex items-center justify-center bg-white/95 rounded-lg md:rounded-xl overflow-hidden p-1">
+                      {/* Fundo branco limpo para o certificado */}
+                      <div className="relative z-10 w-full h-full flex items-center justify-center bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl">
                         <CertificateThumbnail cert={cert} />
                       </div>
                     </div>
