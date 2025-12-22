@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 // Interface para certificados
 interface Certificate {
   name: string;
-  pdfUrl: string;
+  pdfUrl?: string; // URL do PDF (opcional)
+  imageUrl?: string; // URL da imagem JPEG/PNG (opcional)
   issuer?: string; // Opcional: instituição emissora
 }
 
@@ -14,6 +15,38 @@ declare global {
     pdfjsLib?: any;
   }
 }
+
+// Componente para renderizar thumbnail do certificado (PDF ou imagem)
+const CertificateThumbnail: React.FC<{ cert: Certificate }> = ({ cert }) => {
+  // Se tiver imageUrl, usar imagem diretamente
+  if (cert.imageUrl) {
+    return (
+      <img 
+        src={cert.imageUrl} 
+        alt={cert.name}
+        className="relative z-10 w-full h-full object-contain rounded-lg shadow-xl"
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
+        onError={(e) => {
+          console.error('Erro ao carregar imagem do certificado:', cert.imageUrl);
+          // Mostrar fallback
+          e.currentTarget.style.display = 'none';
+        }}
+      />
+    );
+  }
+
+  // Se tiver pdfUrl, usar componente PDF
+  if (cert.pdfUrl) {
+    return <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />;
+  }
+
+  // Fallback se não tiver nenhum
+  return (
+    <div className="relative z-10 flex items-center justify-center w-full h-full">
+      <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)]"></i>
+    </div>
+  );
+};
 
 // Componente para renderizar thumbnail do PDF usando PDF.js
 const PDFThumbnail: React.FC<{ pdfUrl: string; alt: string }> = ({ pdfUrl, alt }) => {
@@ -210,9 +243,10 @@ const technologies = [
 ];
 
 // Lista de certificados - Adicione seus certificados aqui
-// IMPORTANTE: Coloque os arquivos PDF na pasta /public/certificates/
-// Exemplo: se o PDF estiver em /public/certificates/meu-certificado.pdf,
-// use: pdfUrl: '/certificates/meu-certificado.pdf'
+// IMPORTANTE: 
+// - Para JPEGs/PNGs: use imageUrl: '/certificates/nome-da-imagem.jpg'
+// - Para PDFs: use pdfUrl: '/certificates/nome-do-pdf.pdf'
+// Você pode usar imageUrl OU pdfUrl (ou ambos, imageUrl tem prioridade)
 const certificates: Certificate[] = [
   {
     name: 'Aprenda BDD com Cucumber em JAVA',
@@ -224,6 +258,7 @@ const certificates: Certificate[] = [
   },
   {
     name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
+    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.jpg',
     pdfUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.pdf',
   },
   {
@@ -252,6 +287,7 @@ const certificates: Certificate[] = [
   },
   {
     name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
+    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.jpg',
     pdfUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.pdf',
   },
   {
@@ -398,7 +434,7 @@ const Technologies: React.FC = () => {
                 {doubleCertificates.map((cert, idx) => (
                   <a
                     key={idx}
-                    href={cert.pdfUrl}
+                    href={cert.pdfUrl || cert.imageUrl || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-col items-center group/item cursor-pointer"
@@ -409,9 +445,9 @@ const Technologies: React.FC = () => {
                       <div className="absolute inset-0 glass-panel rounded-xl md:rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
                       <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
                       
-                      {/* Thumbnail do PDF - mostrará a primeira página do certificado */}
+                      {/* Thumbnail do certificado - JPEG ou PDF */}
                       <div className="relative z-10 w-full h-full flex items-center justify-center bg-white/95 rounded-lg md:rounded-xl overflow-hidden p-1">
-                        <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />
+                        <CertificateThumbnail cert={cert} />
                       </div>
                     </div>
 
