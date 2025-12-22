@@ -243,22 +243,41 @@ const Technologies: React.FC = () => {
               </button>
 
               {/* Frame do certificado com borda brilhante */}
-              <div className="relative w-full max-w-lg md:max-w-2xl aspect-[3/4] mx-auto">
+              <div className="relative w-full max-w-md md:max-w-2xl mx-auto" style={{ aspectRatio: '3/4' }}>
                 {/* Borda brilhante azul-roxo com efeito glow */}
                 <div className="absolute -inset-[3px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-90 blur-sm"></div>
                 <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_40px_rgba(102,126,234,0.8)]"></div>
                 
                 {/* Fundo branco limpo para o certificado */}
-                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-2 md:p-4">
-                  <img 
-                    src={certificates[currentCertIndex]?.imageUrl} 
-                    alt={certificates[currentCertIndex]?.name}
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      console.error('Erro ao carregar imagem do certificado:', certificates[currentCertIndex]?.imageUrl);
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
+                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center">
+                  {certificates[currentCertIndex]?.imageUrl && (
+                    <img 
+                      src={certificates[currentCertIndex].imageUrl} 
+                      alt={certificates[currentCertIndex].name}
+                      className="object-contain"
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        display: 'block',
+                        objectFit: 'contain'
+                      }}
+                      onError={(e) => {
+                        console.error('Erro ao carregar imagem:', certificates[currentCertIndex]?.imageUrl);
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent && !parent.querySelector('.error-fallback')) {
+                          parent.insertAdjacentHTML('beforeend', 
+                            `<div class="error-fallback w-full h-full flex items-center justify-center text-primary text-xl font-bold">Erro ao carregar</div>`
+                          );
+                        }
+                      }}
+                      onLoad={(e) => {
+                        console.log('✓ Imagem carregada:', certificates[currentCertIndex]?.imageUrl);
+                        console.log('  Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
 
