@@ -98,11 +98,21 @@ const Technologies: React.FC = () => {
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
   
-  // Função helper para codificar URL corretamente (apenas espaços, como no profile)
+  // Função helper para codificar URL corretamente
   const getCertificateImageUrl = (url: string): string => {
+    // Usa o base URL do Vite para garantir que funcione em produção (GitHub Pages)
+    // import.meta.env.BASE_URL já inclui a barra final, ex: '/Interstellar-Portfolio/'
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    
+    // Remove a barra inicial do URL se já tiver
+    const cleanUrl = url.startsWith('/') ? url.slice(1) : url;
+    
+    // Combina baseUrl + cleanUrl
+    // Exemplo: '/Interstellar-Portfolio/' + 'certificates/arquivo.png' = '/Interstellar-Portfolio/certificates/arquivo.png'
+    const fullUrl = baseUrl === '/' ? `/${cleanUrl}` : `${baseUrl}${cleanUrl}`;
+    
     // Substitui apenas espaços por %20, mantém outros caracteres como estão
-    // Isso é o mesmo comportamento do profile.jpg que funciona
-    return url.replace(/ /g, '%20');
+    return fullUrl.replace(/ /g, '%20');
   };
   
   // Funções de navegação do carousel
