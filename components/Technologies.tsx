@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Interface para certificados
 interface Certificate {
@@ -7,6 +7,145 @@ interface Certificate {
   pdfUrl: string;
   issuer?: string; // Opcional: instituição emissora
 }
+
+// Declaração global para PDF.js
+declare global {
+  interface Window {
+    pdfjsLib?: any;
+  }
+}
+
+// Componente para renderizar thumbnail do PDF usando PDF.js
+const PDFThumbnail: React.FC<{ pdfUrl: string; alt: string }> = ({ pdfUrl, alt }) => {
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    let scriptElement: HTMLScriptElement | null = null;
+
+    const loadPDFThumbnail = async () => {
+      try {
+        // Carregar PDF.js via script se ainda não estiver carregado
+        const loadPDFJS = (): Promise<any> => {
+          return new Promise((resolve, reject) => {
+            // Verificar se já está carregado globalmente
+            if ((window as any).pdfjsLib) {
+              resolve((window as any).pdfjsLib);
+              return;
+            }
+
+            // Verificar se o script já existe
+            const existingScript = document.querySelector('script[src*="pdf.min.js"]') as HTMLScriptElement;
+            if (existingScript) {
+              existingScript.addEventListener('load', () => {
+                if ((window as any).pdfjsLib) {
+                  resolve((window as any).pdfjsLib);
+                } else {
+                  reject(new Error('PDF.js não foi carregado'));
+                }
+              });
+              return;
+            }
+
+            // Criar e adicionar script
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            script.async = true;
+            
+            script.onload = () => {
+              const pdfjsLib = (window as any).pdfjsLib;
+              if (pdfjsLib) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                resolve(pdfjsLib);
+              } else {
+                reject(new Error('PDF.js não foi carregado corretamente'));
+              }
+            };
+            script.onerror = () => reject(new Error('Falha ao carregar PDF.js'));
+            
+            document.head.appendChild(script);
+            scriptElement = script;
+          });
+        };
+
+        const pdfjsLib = await loadPDFJS();
+
+        // Carregar o PDF usando fetch para obter o blob
+        const response = await fetch(pdfUrl);
+        const blob = await response.blob();
+        
+        // Carregar o PDF
+        const loadingTask = pdfjsLib.getDocument({ data: blob });
+        const pdf = await loadingTask.promise;
+
+        // Renderizar a primeira página
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        // Criar canvas temporário
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (!context) {
+          throw new Error('Não foi possível obter contexto do canvas');
+        }
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        // Renderizar página no canvas
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+
+        // Converter canvas para URL de imagem
+        const imageUrl = canvas.toDataURL('image/png');
+        
+        if (isMounted) {
+          setThumbnailUrl(imageUrl);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar thumbnail do PDF:', error);
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadPDFThumbnail();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [pdfUrl]);
+
+  if (isLoading) {
+    return (
+      <div className="relative z-10 flex items-center justify-center w-full h-full">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (thumbnailUrl) {
+    return (
+      <img 
+        src={thumbnailUrl} 
+        alt={alt}
+        className="relative z-10 max-w-full max-h-full object-contain rounded-lg brightness-110 contrast-125"
+      />
+    );
+  }
+
+  // Fallback para ícone de PDF se não conseguir carregar
+  return (
+    <div className="relative z-10 flex items-center justify-center w-full h-full">
+      <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)]"></i>
+    </div>
+  );
+};
 
 const technologies = [
   { 
@@ -269,10 +408,8 @@ const Technologies: React.FC = () => {
                       <div className="absolute inset-0 glass-panel rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
                       <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
                       
-                      {/* Ícone de PDF */}
-                      <div className="relative z-10 flex items-center justify-center w-full h-full">
-                        <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.9)] transition-all duration-500"></i>
-                      </div>
+                      {/* Thumbnail do PDF */}
+                      <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />
                     </div>
 
                     {/* Legenda Estilo HUD */}
