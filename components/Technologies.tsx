@@ -213,7 +213,7 @@ const Technologies: React.FC = () => {
         <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
           
-          <div className="relative max-w-5xl mx-auto">
+          <div className="relative max-w-6xl mx-auto">
             {/* Nome do certificado atual */}
             <div className="text-center mb-6">
               <p className="text-xl md:text-2xl font-bold text-white/90">
@@ -222,7 +222,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container */}
-            <div className="relative overflow-hidden" style={{ minHeight: '500px' }}>
+            <div className="relative overflow-hidden" style={{ minHeight: '700px' }}>
               <div 
                 className="slides flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
@@ -232,13 +232,14 @@ const Technologies: React.FC = () => {
                     key={index}
                     className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-4"
                   >
-                    <div className="certification-course">
+                    <div className="certification-course w-full flex justify-center">
                       <img 
                         src={cert.imageUrl} 
                         alt={cert.name}
                         style={{
-                          maxWidth: '90%',
-                          maxHeight: '500px',
+                          maxWidth: '100%',
+                          maxHeight: '700px',
+                          width: 'auto',
                           height: 'auto',
                           boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
                           borderRadius: '8px',
@@ -246,7 +247,8 @@ const Technologies: React.FC = () => {
                           borderStyle: 'solid',
                           borderColor: 'rgba(102, 126, 234, 0.5)',
                           display: 'block',
-                          margin: '0 auto'
+                          margin: '0 auto',
+                          objectFit: 'contain'
                         }}
                         onError={(e) => {
                           console.error('Erro ao carregar:', cert.imageUrl);
