@@ -1,6 +1,13 @@
 
 import React from 'react';
 
+// Interface para certificados
+interface Certificate {
+  name: string;
+  pdfUrl: string;
+  issuer?: string; // Opcional: instituição emissora
+}
+
 const technologies = [
   { 
     name: 'Java', 
@@ -62,9 +69,28 @@ const technologies = [
   },
 ];
 
+// Lista de certificados - Adicione seus certificados aqui
+// IMPORTANTE: Coloque os arquivos PDF na pasta /public/certificates/
+// Exemplo: se o PDF estiver em /public/certificates/meu-certificado.pdf,
+// use: pdfUrl: '/certificates/meu-certificado.pdf'
+const certificates: Certificate[] = [
+  // Exemplo de como adicionar certificados:
+  // {
+  //   name: 'Certificado de Testes Automatizados',
+  //   pdfUrl: '/certificates/certificado-teste.pdf',
+  //   issuer: 'Instituição XYZ' // Opcional
+  // },
+  // {
+  //   name: 'ISTQB Foundation Level',
+  //   pdfUrl: '/certificates/istqb-foundation.pdf',
+  // },
+  // Adicione seus certificados abaixo:
+];
+
 const Technologies: React.FC = () => {
   // Duplicamos a lista para criar o efeito de loop infinito perfeito
   const doubleTechs = [...technologies, ...technologies];
+  const doubleCertificates = [...certificates, ...certificates];
 
   return (
     <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
@@ -162,6 +188,62 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
+      {/* Seção de Certificados */}
+      {certificates.length > 0 && (
+        <>
+          <div className="container mx-auto px-4 mb-24 text-center z-10 relative mt-32">
+            <div className="inline-block relative">
+              <h3 className="text-4xl md:text-6xl font-display font-black text-white tracking-[0.4em] uppercase drop-shadow-[0_0_30px_rgba(102,126,234,0.3)]">
+                <span className="text-primary">CERTIF</span>ICADOS
+              </h3>
+              {/* Brilho sutil atrás do texto */}
+              <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full -z-10"></div>
+            </div>
+            <div className="w-40 h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-8 rounded-full shadow-[0_0_15px_rgba(102,126,234,0.6)]"></div>
+          </div>
+
+          {/* Área de movimento dos certificados */}
+          <div className="relative py-8 sm:py-12 md:py-16 w-full z-10">
+            <div className="relative flex overflow-x-hidden group">
+              <div className="animate-marquee-certificates flex items-center gap-8 sm:gap-12 md:gap-24 lg:gap-48 whitespace-nowrap px-4 sm:px-6 md:px-10">
+                {doubleCertificates.map((cert, idx) => (
+                  <a
+                    key={idx}
+                    href={cert.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center group/item cursor-pointer"
+                  >
+                    {/* Container do certificado */}
+                    <div className="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 p-3 sm:p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110">
+                      {/* Fundo com efeito glass-panel e iluminação */}
+                      <div className="absolute inset-0 glass-panel rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
+                      <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
+                      
+                      {/* Ícone de PDF */}
+                      <div className="relative z-10 flex items-center justify-center w-full h-full">
+                        <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)] group-hover/item:drop-shadow-[0_0_30px_rgba(102,126,234,0.9)] transition-all duration-500"></i>
+                      </div>
+                    </div>
+
+                    {/* Legenda Estilo HUD */}
+                    <div className="h-12 mt-10 flex items-center justify-center">
+                      <span className="px-6 py-2.5 rounded-lg bg-black/95 border border-primary/50 text-white text-xs md:text-sm font-display font-bold tracking-[0.3em] uppercase opacity-0 -translate-y-6 group-hover/item:opacity-100 group-hover/item:translate-y-0 transition-all duration-500 shadow-[0_0_30px_rgba(102,126,234,0.5)] backdrop-blur-2xl text-center max-w-[200px] truncate">
+                        {cert.name}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              {/* Gradientes de desfoque nas bordas (Vignette) */}
+              <div className="absolute inset-y-0 left-0 w-64 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
+              <div className="absolute inset-y-0 right-0 w-64 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
+            </div>
+          </div>
+        </>
+      )}
+
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -224,6 +306,36 @@ const Technologies: React.FC = () => {
         /* Adicionar contraste extra para ícones SVG */
         .animate-marquee img[src$=".svg"] {
           filter: brightness(1.15) contrast(1.2) saturate(1.1) drop-shadow(0 0 15px rgba(255,255,255,0.6)) drop-shadow(0 0 25px rgba(102,126,234,0.4));
+        }
+
+        /* Animação para certificados */
+        @keyframes marquee-certificates {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-certificates {
+          animation: marquee-certificates 50s linear infinite;
+          transform: translateZ(0);
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+        .animate-marquee-certificates:hover {
+          animation-play-state: paused;
+        }
+        
+        /* Otimização para mobile - animação mais rápida */
+        @media (max-width: 768px) {
+          .animate-marquee-certificates {
+            animation: marquee-certificates 20s linear infinite;
+          }
+        }
+        
+        /* Otimização para telas muito pequenas - ainda mais rápido */
+        @media (max-width: 640px) {
+          .animate-marquee-certificates {
+            animation: marquee-certificates 15s linear infinite;
+          }
         }
       `}</style>
     </section>

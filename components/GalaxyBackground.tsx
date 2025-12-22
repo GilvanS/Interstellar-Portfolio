@@ -182,8 +182,8 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
 
     // Animação automática da câmera - viagem espacial suave e lenta
     const animateCamera = (time: number) => {
-      // Duração total do ciclo: ~50 segundos (bem lento para transição suave)
-      const cycleDuration = 50;
+      // Duração total do ciclo: ~60 segundos (bem lento para transição suave)
+      const cycleDuration = 60;
       const t = (time % cycleDuration) / cycleDuration;
 
       let targetX = 0;
@@ -197,21 +197,37 @@ const GalaxyBackground = forwardRef<GalaxyBackgroundRef, GalaxyBackgroundProps>(
           : 1 - Math.pow(-2 * t + 2, 3) / 2;
       };
       
-      // Segmento 1 (0-0.5): Viajando para frente através da galáxia
-      if (t < 0.5) {
-        const segmentT = easeInOutCubic(t / 0.5);
+      // Segmento 1 (0-0.25): Viajando para frente através da galáxia
+      if (t < 0.25) {
+        const segmentT = easeInOutCubic(t / 0.25);
         // Começa de longe (3, 3, 3) e viaja através da galáxia até (0, 0, -5)
         targetX = THREE.MathUtils.lerp(3, 0, segmentT);
         targetY = THREE.MathUtils.lerp(3, 0, segmentT);
         targetZ = THREE.MathUtils.lerp(3, -5, segmentT);
       }
-      // Segmento 2 (0.5-1.0): Voltando para trás suavemente
+      // Segmento 2 (0.25-0.5): Movendo para baixo (visualização por baixo)
+      else if (t < 0.5) {
+        const segmentT = easeInOutCubic((t - 0.25) / 0.25);
+        // Move para baixo da galáxia (0, -4, 0) para ver por baixo
+        targetX = THREE.MathUtils.lerp(0, 0, segmentT);
+        targetY = THREE.MathUtils.lerp(0, -4, segmentT);
+        targetZ = THREE.MathUtils.lerp(-5, 0, segmentT);
+      }
+      // Segmento 3 (0.5-0.75): Movendo para cima (visualização por cima)
+      else if (t < 0.75) {
+        const segmentT = easeInOutCubic((t - 0.5) / 0.25);
+        // Move para cima da galáxia (0, 4, 0) para ver por cima
+        targetX = THREE.MathUtils.lerp(0, 0, segmentT);
+        targetY = THREE.MathUtils.lerp(-4, 4, segmentT);
+        targetZ = THREE.MathUtils.lerp(0, 0, segmentT);
+      }
+      // Segmento 4 (0.75-1.0): Voltando para a posição inicial
       else {
-        const segmentT = easeInOutCubic((t - 0.5) / 0.5);
+        const segmentT = easeInOutCubic((t - 0.75) / 0.25);
         // Volta para a posição inicial (3, 3, 3)
         targetX = THREE.MathUtils.lerp(0, 3, segmentT);
-        targetY = THREE.MathUtils.lerp(0, 3, segmentT);
-        targetZ = THREE.MathUtils.lerp(-5, 3, segmentT);
+        targetY = THREE.MathUtils.lerp(4, 3, segmentT);
+        targetZ = THREE.MathUtils.lerp(0, 3, segmentT);
       }
 
       // Aplicar suavização (lerp) para movimento extremamente fluido
