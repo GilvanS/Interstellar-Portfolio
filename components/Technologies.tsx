@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Interface para certificados - apenas imagens
 interface Certificate {
@@ -97,6 +97,7 @@ const Technologies: React.FC = () => {
   
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   
   // Funções de navegação do carousel
   const nextCert = () => {
@@ -110,6 +111,26 @@ const Technologies: React.FC = () => {
   const goToCert = (index: number) => {
     setCurrentCertIndex(index);
   };
+  
+  // Auto-play do carousel - passa automaticamente a cada 5 segundos
+  useEffect(() => {
+    // Limpa o intervalo anterior se existir
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+    }
+    
+    // Define novo intervalo para passar automaticamente
+    autoPlayRef.current = setInterval(() => {
+      setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+    }, 5000);
+    
+    // Limpa o intervalo quando o componente desmontar ou índice mudar
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+      }
+    };
+  }, [currentCertIndex]);
 
   return (
     <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
@@ -230,7 +251,7 @@ const Technologies: React.FC = () => {
                 {certificates.map((cert, index) => (
                   <div 
                     key={index}
-                    className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-4"
+                    className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-20 md:px-24"
                   >
                     <div className="certification-course w-full flex justify-center items-center">
                       <img 
@@ -241,7 +262,6 @@ const Technologies: React.FC = () => {
                           return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
                         })()} 
                         alt={cert.name}
-                        className="w-auto h-auto max-w-full max-h-[900px] object-contain"
                         style={{
                           maxWidth: '100%',
                           maxHeight: '900px',
@@ -253,7 +273,8 @@ const Technologies: React.FC = () => {
                           borderStyle: 'solid',
                           borderColor: 'rgba(102, 126, 234, 0.5)',
                           display: 'block',
-                          margin: '0 auto'
+                          margin: '0 auto',
+                          objectFit: 'contain'
                         }}
                         onError={(e) => {
                           console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
@@ -273,7 +294,7 @@ const Technologies: React.FC = () => {
 
             {/* Botões de navegação */}
             <button 
-              className="prev absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-20 shadow-lg"
+              className="prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
               onClick={prevCert}
               aria-label="Certificado anterior"
             >
@@ -281,7 +302,7 @@ const Technologies: React.FC = () => {
             </button>
             
             <button 
-              className="next absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-20 shadow-lg"
+              className="next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
               onClick={nextCert}
               aria-label="Próximo certificado"
             >
