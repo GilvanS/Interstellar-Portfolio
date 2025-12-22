@@ -258,7 +258,7 @@ const certificates: Certificate[] = [
   },
   {
     name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
-    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.jpg',
+    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
     pdfUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.pdf',
   },
   {
@@ -287,7 +287,7 @@ const certificates: Certificate[] = [
   },
   {
     name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
-    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.jpg',
+    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
     pdfUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.pdf',
   },
   {
