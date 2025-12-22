@@ -98,6 +98,22 @@ const Technologies: React.FC = () => {
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
   
+  // Função helper para codificar URL corretamente
+  const getCertificateImageUrl = (url: string): string => {
+    // Divide o caminho em partes
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    
+    // Codifica apenas o nome do arquivo (que pode ter espaços)
+    if (filename) {
+      const encodedFilename = encodeURIComponent(filename);
+      parts[parts.length - 1] = encodedFilename;
+      return parts.join('/');
+    }
+    
+    return url;
+  };
+  
   // Funções de navegação do carousel
   const nextCert = () => {
     setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
@@ -234,7 +250,7 @@ const Technologies: React.FC = () => {
                   >
                     <div className="certification-course w-full flex justify-center items-center">
                       <img 
-                        src={cert.imageUrl} 
+                        src={getCertificateImageUrl(cert.imageUrl)} 
                         alt={cert.name}
                         className="w-auto h-auto max-w-full max-h-[900px] object-contain"
                         style={{
@@ -251,13 +267,20 @@ const Technologies: React.FC = () => {
                           margin: '0 auto'
                         }}
                         onError={(e) => {
-                          console.error('Erro ao carregar imagem:', cert.imageUrl);
-                          // Mesmo tratamento simples do profile
+                          console.error('❌ Erro ao carregar:', cert.imageUrl);
+                          console.error('   URL tentada:', e.currentTarget.src);
+                          // Mesmo tratamento simples do profile - sem fallback complexo
                           const target = e.currentTarget;
-                          // Tenta codificar espaços se necessário
-                          if (target.src.includes(' ') && !target.src.includes('%20')) {
-                            target.src = target.src.replace(/ /g, '%20');
+                          // Se tiver espaços, tenta codificar
+                          const currentSrc = target.src;
+                          if (currentSrc.includes(' ') && !currentSrc.includes('%20')) {
+                            console.log('   Tentando codificar espaços...');
+                            target.src = currentSrc.replace(/ /g, '%20');
                           }
+                        }}
+                        onLoad={(e) => {
+                          console.log('✓ Imagem carregada:', cert.imageUrl);
+                          console.log('   Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
                         }}
                       />
                     </div>
