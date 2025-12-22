@@ -234,9 +234,9 @@ const Technologies: React.FC = () => {
         <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
           
-          <div className="relative max-w-7xl mx-auto">
+          <div className="relative w-full mx-auto">
             {/* Nome do certificado atual */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-6 px-4">
               <p className="text-xl md:text-2xl font-bold text-white/90">
                 {certificates[currentCertIndex]?.name}
               </p>
@@ -253,9 +253,9 @@ const Technologies: React.FC = () => {
                   {certificates.map((cert, index) => (
                     <div 
                       key={index}
-                      className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-8"
+                      className="conteudo min-w-full flex-shrink-0 flex justify-center items-center"
                     >
-                      <div className="certification-course w-full flex justify-center items-center">
+                      <div className="certification-course w-full h-full flex justify-center items-center">
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
@@ -265,10 +265,11 @@ const Technologies: React.FC = () => {
                           })()} 
                           alt={cert.name}
                           style={{
+                            width: '100%',
                             maxWidth: '100%',
                             maxHeight: '900px',
-                            width: 'auto',
                             height: 'auto',
+                            minWidth: '0',
                             boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
                             borderRadius: '8px',
                             borderWidth: '2px',
@@ -276,7 +277,8 @@ const Technologies: React.FC = () => {
                             borderColor: 'rgba(102, 126, 234, 0.5)',
                             display: 'block',
                             margin: '0 auto',
-                            objectFit: 'contain'
+                            objectFit: 'contain',
+                            objectPosition: 'center'
                           }}
                           onError={(e) => {
                             console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
