@@ -222,7 +222,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container */}
-            <div className="relative overflow-hidden" style={{ minHeight: '700px' }}>
+            <div className="relative overflow-hidden flex items-center justify-center" style={{ minHeight: '900px' }}>
               <div 
                 className="slides flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
@@ -232,13 +232,14 @@ const Technologies: React.FC = () => {
                     key={index}
                     className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-4"
                   >
-                    <div className="certification-course w-full flex justify-center">
+                    <div className="certification-course w-full flex justify-center items-center">
                       <img 
                         src={cert.imageUrl} 
                         alt={cert.name}
+                        className="w-auto h-auto max-w-full max-h-[900px] object-contain"
                         style={{
                           maxWidth: '100%',
-                          maxHeight: '700px',
+                          maxHeight: '900px',
                           width: 'auto',
                           height: 'auto',
                           boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
@@ -247,12 +248,16 @@ const Technologies: React.FC = () => {
                           borderStyle: 'solid',
                           borderColor: 'rgba(102, 126, 234, 0.5)',
                           display: 'block',
-                          margin: '0 auto',
-                          objectFit: 'contain'
+                          margin: '0 auto'
                         }}
                         onError={(e) => {
-                          console.error('Erro ao carregar:', cert.imageUrl);
-                          e.currentTarget.style.display = 'none';
+                          console.error('Erro ao carregar imagem:', cert.imageUrl);
+                          // Mesmo tratamento simples do profile
+                          const target = e.currentTarget;
+                          // Tenta codificar espaços se necessário
+                          if (target.src.includes(' ') && !target.src.includes('%20')) {
+                            target.src = target.src.replace(/ /g, '%20');
+                          }
                         }}
                       />
                     </div>
