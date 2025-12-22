@@ -97,6 +97,14 @@ const Technologies: React.FC = () => {
   
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+  
+  // Função helper para construir URL correta da imagem
+  const getImageSrc = (imageUrl: string): string => {
+    // No Vite, arquivos da pasta public são servidos diretamente
+    // Vamos garantir que o caminho está correto
+    return imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+  };
   
   // Funções de navegação do carousel
   const nextCert = () => {
@@ -109,6 +117,52 @@ const Technologies: React.FC = () => {
   
   const goToCert = (index: number) => {
     setCurrentCertIndex(index);
+  };
+  
+  // Função para lidar com erro de carregamento
+  const handleImageError = (index: number, imageUrl: string, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('❌ Erro ao carregar imagem:', imageUrl);
+    console.error('  Índice:', index);
+    
+    // Adiciona o índice ao conjunto de erros
+    setImageErrors(prev => new Set(prev).add(index));
+    
+    const target = event.currentTarget;
+    target.style.display = 'none';
+    
+    const parent = target.parentElement;
+    if (parent && !parent.querySelector('.error-fallback')) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-fallback w-full h-full flex items-center justify-center text-primary text-sm md:text-xl font-bold text-center px-4';
+      errorDiv.textContent = 'Erro ao carregar imagem';
+      parent.appendChild(errorDiv);
+    }
+  };
+  
+  // Função para lidar com sucesso no carregamento
+  const handleImageLoad = (index: number, imageUrl: string, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log('✓ Imagem carregada com sucesso:', imageUrl);
+    console.log('  Índice:', index);
+    console.log('  Dimensões naturais:', event.currentTarget.naturalWidth, 'x', event.currentTarget.naturalHeight);
+    
+    // Remove o índice do conjunto de erros se existir
+    setImageErrors(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(index);
+      return newSet;
+    });
+    
+    // Remove error-fallback se existir
+    const parent = event.currentTarget.parentElement;
+    if (parent) {
+      const errorFallback = parent.querySelector('.error-fallback');
+      if (errorFallback) {
+        errorFallback.remove();
+      }
+    }
+    
+    // Garante que a imagem esteja visível
+    event.currentTarget.style.display = 'block';
   };
 
   return (
@@ -252,30 +306,17 @@ const Technologies: React.FC = () => {
                 <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-3 md:p-4">
                   {certificates[currentCertIndex]?.imageUrl && (
                     <img 
-                      src={certificates[currentCertIndex].imageUrl.replace(/\s/g, '%20')} 
+                      key={`cert-${currentCertIndex}-${certificates[currentCertIndex].imageUrl}`}
+                      src={getImageSrc(certificates[currentCertIndex].imageUrl)} 
                       alt={certificates[currentCertIndex].name}
                       style={{ 
                         width: '100%', 
                         height: '100%', 
                         objectFit: 'contain',
-                        display: 'block'
+                        display: imageErrors.has(currentCertIndex) ? 'none' : 'block'
                       }}
-                      onError={(e) => {
-                        console.error('❌ Erro ao carregar imagem:', certificates[currentCertIndex]?.imageUrl);
-                        const target = e.currentTarget;
-                        target.style.display = 'none';
-                        const parent = target.parentElement;
-                        if (parent && !parent.querySelector('.error-fallback')) {
-                          const errorDiv = document.createElement('div');
-                          errorDiv.className = 'error-fallback w-full h-full flex items-center justify-center text-primary text-sm md:text-xl font-bold text-center px-4';
-                          errorDiv.textContent = 'Erro ao carregar imagem';
-                          parent.appendChild(errorDiv);
-                        }
-                      }}
-                      onLoad={(e) => {
-                        console.log('✓ Imagem carregada:', certificates[currentCertIndex]?.imageUrl);
-                        console.log('  Dimensões naturais:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
-                      }}
+                      onError={(e) => handleImageError(currentCertIndex, certificates[currentCertIndex].imageUrl, e)}
+                      onLoad={(e) => handleImageLoad(currentCertIndex, certificates[currentCertIndex].imageUrl, e)}
                     />
                   )}
                 </div>
