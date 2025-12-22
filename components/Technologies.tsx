@@ -98,20 +98,11 @@ const Technologies: React.FC = () => {
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
   
-  // Função helper para codificar URL corretamente
+  // Função helper para codificar URL corretamente (apenas espaços, como no profile)
   const getCertificateImageUrl = (url: string): string => {
-    // Divide o caminho em partes
-    const parts = url.split('/');
-    const filename = parts[parts.length - 1];
-    
-    // Codifica apenas o nome do arquivo (que pode ter espaços)
-    if (filename) {
-      const encodedFilename = encodeURIComponent(filename);
-      parts[parts.length - 1] = encodedFilename;
-      return parts.join('/');
-    }
-    
-    return url;
+    // Substitui apenas espaços por %20, mantém outros caracteres como estão
+    // Isso é o mesmo comportamento do profile.jpg que funciona
+    return url.replace(/ /g, '%20');
   };
   
   // Funções de navegação do carousel
