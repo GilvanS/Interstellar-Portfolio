@@ -242,39 +242,39 @@ const Technologies: React.FC = () => {
                 <i className="fas fa-chevron-left text-lg md:text-xl"></i>
               </button>
 
-              {/* Frame do certificado com borda brilhante */}
-              <div className="relative w-full max-w-md md:max-w-2xl mx-auto" style={{ aspectRatio: '3/4' }}>
+              {/* Frame do certificado com borda brilhante - formato retrato (certificado) */}
+              <div className="relative w-full max-w-xs md:max-w-lg mx-auto" style={{ aspectRatio: '2/3', minHeight: '600px' }}>
                 {/* Borda brilhante azul-roxo com efeito glow */}
                 <div className="absolute -inset-[3px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-90 blur-sm"></div>
                 <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_40px_rgba(102,126,234,0.8)]"></div>
                 
                 {/* Fundo branco limpo para o certificado */}
-                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center">
+                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-2 md:p-3">
                   {certificates[currentCertIndex]?.imageUrl && (
                     <img 
-                      src={certificates[currentCertIndex].imageUrl} 
+                      src={encodeURI(certificates[currentCertIndex].imageUrl)} 
                       alt={certificates[currentCertIndex].name}
-                      className="object-contain"
                       style={{ 
                         width: '100%', 
                         height: '100%', 
-                        display: 'block',
-                        objectFit: 'contain'
+                        objectFit: 'contain',
+                        display: 'block'
                       }}
                       onError={(e) => {
-                        console.error('Erro ao carregar imagem:', certificates[currentCertIndex]?.imageUrl);
+                        console.error('❌ Erro ao carregar imagem:', certificates[currentCertIndex]?.imageUrl);
                         const target = e.currentTarget;
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent && !parent.querySelector('.error-fallback')) {
-                          parent.insertAdjacentHTML('beforeend', 
-                            `<div class="error-fallback w-full h-full flex items-center justify-center text-primary text-xl font-bold">Erro ao carregar</div>`
-                          );
+                          const errorDiv = document.createElement('div');
+                          errorDiv.className = 'error-fallback w-full h-full flex items-center justify-center text-primary text-sm md:text-xl font-bold text-center px-4';
+                          errorDiv.textContent = 'Erro ao carregar imagem';
+                          parent.appendChild(errorDiv);
                         }
                       }}
                       onLoad={(e) => {
                         console.log('✓ Imagem carregada:', certificates[currentCertIndex]?.imageUrl);
-                        console.log('  Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
+                        console.log('  Dimensões naturais:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
                       }}
                     />
                   )}
