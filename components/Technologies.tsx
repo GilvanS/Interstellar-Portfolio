@@ -1,185 +1,11 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
-// Interface para certificados
+// Interface para certificados - apenas imagens
 interface Certificate {
   name: string;
-  pdfUrl?: string; // URL do PDF (opcional)
-  imageUrl?: string; // URL da imagem JPEG/PNG (opcional)
-  issuer?: string; // Opcional: instituição emissora
+  imageUrl: string; // URL da imagem (obrigatório)
 }
-
-// Declaração global para PDF.js
-declare global {
-  interface Window {
-    pdfjsLib?: any;
-  }
-}
-
-// Componente para renderizar thumbnail do certificado (PDF ou imagem)
-const CertificateThumbnail: React.FC<{ cert: Certificate }> = ({ cert }) => {
-  // Se tiver imageUrl, usar imagem diretamente
-  if (cert.imageUrl) {
-    return (
-      <img 
-        src={cert.imageUrl} 
-        alt={cert.name}
-        className="relative z-10 w-full h-full object-contain"
-        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-        onError={(e) => {
-          console.error('Erro ao carregar imagem do certificado:', cert.imageUrl);
-          // Mostrar fallback
-          e.currentTarget.style.display = 'none';
-        }}
-      />
-    );
-  }
-
-  // Se tiver pdfUrl, usar componente PDF
-  if (cert.pdfUrl) {
-    return <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />;
-  }
-
-  // Fallback se não tiver nenhum
-  return (
-    <div className="relative z-10 flex items-center justify-center w-full h-full">
-      <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)]"></i>
-    </div>
-  );
-};
-
-// Componente para renderizar thumbnail do PDF usando PDF.js
-const PDFThumbnail: React.FC<{ pdfUrl: string; alt: string }> = ({ pdfUrl, alt }) => {
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    let scriptElement: HTMLScriptElement | null = null;
-
-    const loadPDFThumbnail = async () => {
-      try {
-        // Carregar PDF.js via script se ainda não estiver carregado
-        const loadPDFJS = (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            // Verificar se já está carregado globalmente
-            if ((window as any).pdfjsLib) {
-              resolve((window as any).pdfjsLib);
-              return;
-            }
-
-            // Verificar se o script já existe
-            const existingScript = document.querySelector('script[src*="pdf.min.js"]') as HTMLScriptElement;
-            if (existingScript) {
-              existingScript.addEventListener('load', () => {
-                if ((window as any).pdfjsLib) {
-                  resolve((window as any).pdfjsLib);
-                } else {
-                  reject(new Error('PDF.js não foi carregado'));
-                }
-              });
-              return;
-            }
-
-            // Criar e adicionar script
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-            script.async = true;
-            
-            script.onload = () => {
-              const pdfjsLib = (window as any).pdfjsLib;
-              if (pdfjsLib) {
-                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                resolve(pdfjsLib);
-              } else {
-                reject(new Error('PDF.js não foi carregado corretamente'));
-              }
-            };
-            script.onerror = () => reject(new Error('Falha ao carregar PDF.js'));
-            
-            document.head.appendChild(script);
-            scriptElement = script;
-          });
-        };
-
-        const pdfjsLib = await loadPDFJS();
-
-        // Carregar o PDF usando fetch para obter o blob
-        const response = await fetch(pdfUrl);
-        const blob = await response.blob();
-        
-        // Carregar o PDF
-        const loadingTask = pdfjsLib.getDocument({ data: blob });
-        const pdf = await loadingTask.promise;
-
-        // Renderizar a primeira página
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1.5 });
-
-        // Criar canvas temporário
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        if (!context) {
-          throw new Error('Não foi possível obter contexto do canvas');
-        }
-
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        // Renderizar página no canvas
-        await page.render({
-          canvasContext: context,
-          viewport: viewport
-        }).promise;
-
-        // Converter canvas para URL de imagem
-        const imageUrl = canvas.toDataURL('image/png');
-        
-        if (isMounted) {
-          setThumbnailUrl(imageUrl);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Erro ao carregar thumbnail do PDF:', error);
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    loadPDFThumbnail();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [pdfUrl]);
-
-  if (isLoading) {
-    return (
-      <div className="relative z-10 flex items-center justify-center w-full h-full">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (thumbnailUrl) {
-    return (
-      <img 
-        src={thumbnailUrl} 
-        alt={alt}
-        className="relative z-10 w-full h-full object-contain"
-        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-      />
-    );
-  }
-
-  // Fallback para ícone de PDF se não conseguir carregar
-  return (
-    <div className="relative z-10 flex items-center justify-center w-full h-full">
-      <i className="fas fa-file-pdf text-4xl sm:text-5xl md:text-7xl text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] drop-shadow-[0_0_25px_rgba(102,126,234,0.4)]"></i>
-    </div>
-  );
-};
 
 const technologies = [
   { 
@@ -242,80 +68,48 @@ const technologies = [
   },
 ];
 
-// Lista de certificados - Adicione seus certificados aqui
-// IMPORTANTE: 
-// - Para JPEGs/PNGs: use imageUrl: '/certificates/nome-da-imagem.jpg'
-// - Para PDFs: use pdfUrl: '/certificates/nome-do-pdf.pdf'
-// Você pode usar imageUrl OU pdfUrl (ou ambos, imageUrl tem prioridade)
+// Lista de certificados - APENAS imagens PNG/JPG
+// IMPORTANTE: Coloque as imagens na pasta /public/certificates/
+// Use apenas imageUrl com arquivos .png ou .jpg
 const certificates: Certificate[] = [
-  {
-    name: 'Aprenda BDD com Cucumber em JAVA',
-    pdfUrl: '/certificates/Aprenda BDD com Cucumber em JAVA_UC-1098a8cd-eb6b-43fa-ad7d-e38c0f1b9c58.pdf',
-  },
-  {
-    name: 'Automação de Testes com Sikuli',
-    pdfUrl: '/certificates/Automação de Testes com Sikuli_UC-960a467c-50b2-4e71-98ec-82acc85435f7.pdf',
-  },
   {
     name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
     imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
-    pdfUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.pdf',
-  },
-  {
-    name: 'Cypress eXpress',
-    pdfUrl: '/certificates/Cypress eXpress_UC-8efb6ad3-f20c-4e90-922a-a2ba44b1ab8d.pdf',
-  },
-  {
-    name: 'Data Science de A a Z - Extração e Exibição dos Dados',
-    pdfUrl: '/certificates/Data Science de A a Z - Extraçao e Exibição dos Dados_UC-A91GGTG4.pdf',
-  },
-  {
-    name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
-    pdfUrl: '/certificates/Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.pdf',
   },
   {
     name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
-    pdfUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.pdf',
-  },
-  {
-    name: 'Produtividade de Testes de Software com Uso do ChatGPT',
-    pdfUrl: '/certificates/Produtividade de Testes de Software com Uso do ChatGPT_UC-b6ffecaf-5b1b-4e42-8b70-08098ba1dc14.pdf',
-  },
-  {
-    name: 'Robot Framework e Appium para Android e iOS',
-    pdfUrl: '/certificates/Robot Framework e Appium para Android e iOS_UC-9ce88a48-878b-40cd-b73d-5c64ef7eb259.pdf',
+    imageUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
   },
   {
     name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
     imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
-    pdfUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.pdf',
   },
-  {
-    name: 'Testes Automáticos + Curso COMPLETO de Teste de Software',
-    pdfUrl: '/certificates/Testes Automáticos + Curso COMPLETO de Teste de Software_UC-346KXKF3.pdf',
-  },
-  {
-    name: 'Testes contínuos em Cypress no Github Actions',
-    pdfUrl: '/certificates/Testes contínuos em Cypress no Github Actions_UC-82beedc1-de15-4b80-9953-cadb268c16ca.pdf',
-  },
-  {
-    name: 'TESTES DE SOFTWARE NA PRÁTICA E AUTOMAÇÃO - CURSO COMPLETO',
-    pdfUrl: '/certificates/TESTES DE SOFTWARE NA PRÁTICA E AUTOMAÇÃO - CURSO COMPLETO_UC-KJ4H6ZF7.pdf',
-  },
-  {
-    name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
-    pdfUrl: '/certificates/Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.pdf',
-  },
-  {
-    name: 'Testes funcionais de aplicações Android com Appium',
-    pdfUrl: '/certificates/Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.pdf',
-  },
+  // Adicione mais certificados aqui quando tiver as imagens PNG/JPG:
+  // {
+  //   name: 'Nome do Certificado',
+  //   imageUrl: '/certificates/nome-do-arquivo.png',
+  // },
 ];
 
 const Technologies: React.FC = () => {
   // Duplicamos a lista para criar o efeito de loop infinito perfeito
   const doubleTechs = [...technologies, ...technologies];
-  const doubleCertificates = [...certificates, ...certificates];
+  
+  // Estado para o carousel de certificados
+  const [currentCertIndex, setCurrentCertIndex] = useState(0);
+  
+  // Funções de navegação do carousel
+  const nextCert = () => {
+    setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+  };
+  
+  const prevCert = () => {
+    setCurrentCertIndex((prev) => (prev - 1 + certificates.length) % certificates.length);
+  };
+  
+  const goToCert = (index: number) => {
+    setCurrentCertIndex(index);
+  };
 
   return (
     <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
@@ -344,8 +138,9 @@ const Technologies: React.FC = () => {
               >
                 {/* Container do ícone - Padding generoso para não cortar nada */}
                 <div className={`relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 p-3 sm:p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110 ${tech.scale || ''} ${tech.name === 'Playwright' ? 'overflow-visible' : ''}`}>
-                  {/* Fundo sutil para destacar os ícones */}
-                  <div className="absolute inset-0 bg-white/5 rounded-2xl opacity-60 group-hover/item:opacity-100 group-hover/item:bg-white/10 transition-all duration-500 blur-sm"></div>
+                  {/* Fundo com efeito glass-panel e iluminação */}
+                  <div className="absolute inset-0 glass-panel rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
+                  <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
                   <img 
                     src={tech.icon} 
                     alt={tech.name} 
@@ -413,10 +208,10 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      {/* Seção de Certificados */}
+      {/* Seção de Certificados - Carousel */}
       {certificates.length > 0 && (
         <>
-          <div className="container mx-auto px-4 mb-24 text-center z-10 relative mt-32">
+          <div className="container mx-auto px-4 mb-16 text-center z-10 relative mt-32">
             <div className="inline-block relative">
               <h3 className="text-4xl md:text-6xl font-display font-black text-white tracking-[0.4em] uppercase drop-shadow-[0_0_30px_rgba(102,126,234,0.3)]">
                 <span className="text-primary">CERTIF</span>ICADOS
@@ -427,43 +222,70 @@ const Technologies: React.FC = () => {
             <div className="w-40 h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-8 rounded-full shadow-[0_0_15px_rgba(102,126,234,0.6)]"></div>
           </div>
 
-          {/* Área de movimento dos certificados */}
-          <div className="relative py-8 sm:py-12 md:py-16 w-full z-10">
-            <div className="relative flex overflow-x-hidden group">
-              <div className="animate-marquee-certificates flex items-center gap-8 sm:gap-12 md:gap-24 lg:gap-48 whitespace-nowrap px-4 sm:px-6 md:px-10">
-                {doubleCertificates.map((cert, idx) => (
-                  <a
-                    key={idx}
-                    href={cert.pdfUrl || cert.imageUrl || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center group/item cursor-pointer"
-                  >
-                    {/* Container do certificado - estilo frame com borda brilhante */}
-                    <div className="relative flex items-center justify-center w-56 h-80 sm:w-64 sm:h-96 md:w-72 md:h-[28rem] transition-all duration-500 group-hover/item:scale-105">
-                      {/* Borda brilhante azul-roxo com efeito glow */}
-                      <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-80 group-hover/item:opacity-100 transition-opacity duration-300 blur-sm"></div>
-                      <div className="absolute -inset-[1px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary group-hover/item:shadow-[0_0_30px_rgba(102,126,234,0.8)] transition-all duration-300"></div>
-                      
-                      {/* Fundo branco limpo para o certificado */}
-                      <div className="relative z-10 w-full h-full flex items-center justify-center bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl">
-                        <CertificateThumbnail cert={cert} />
-                      </div>
-                    </div>
+          {/* Container do Carousel */}
+          <div className="relative max-w-5xl mx-auto px-4 py-8 z-10">
+            {/* Nome do curso atual */}
+            <div className="text-center mb-6">
+              <p className="text-xl md:text-2xl font-display font-bold text-white/80 tracking-wider uppercase">
+                {certificates[currentCertIndex]?.name}
+              </p>
+            </div>
 
-                    {/* Legenda Estilo HUD */}
-                    <div className="h-12 mt-10 flex items-center justify-center">
-                      <span className="px-6 py-2.5 rounded-lg bg-black/95 border border-primary/50 text-white text-xs md:text-sm font-display font-bold tracking-[0.3em] uppercase opacity-0 -translate-y-6 group-hover/item:opacity-100 group-hover/item:translate-y-0 transition-all duration-500 shadow-[0_0_30px_rgba(102,126,234,0.5)] backdrop-blur-2xl text-center max-w-[200px] truncate">
-                        {cert.name}
-                      </span>
-                    </div>
-                  </a>
-                ))}
+            {/* Container do certificado com frame */}
+            <div className="relative flex items-center justify-center">
+              {/* Botão anterior */}
+              <button
+                onClick={prevCert}
+                className="absolute left-0 md:-left-16 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/80 border-2 border-primary/50 hover:border-primary hover:bg-black text-white flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.6)]"
+                aria-label="Certificado anterior"
+              >
+                <i className="fas fa-chevron-left text-lg md:text-xl"></i>
+              </button>
+
+              {/* Frame do certificado com borda brilhante */}
+              <div className="relative w-full max-w-lg md:max-w-2xl aspect-[3/4] mx-auto">
+                {/* Borda brilhante azul-roxo com efeito glow */}
+                <div className="absolute -inset-[3px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-90 blur-sm"></div>
+                <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_40px_rgba(102,126,234,0.8)]"></div>
+                
+                {/* Fundo branco limpo para o certificado */}
+                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-2 md:p-4">
+                  <img 
+                    src={certificates[currentCertIndex]?.imageUrl} 
+                    alt={certificates[currentCertIndex]?.name}
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      console.error('Erro ao carregar imagem do certificado:', certificates[currentCertIndex]?.imageUrl);
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
               </div>
 
-              {/* Gradientes de desfoque nas bordas (Vignette) */}
-              <div className="absolute inset-y-0 left-0 w-64 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
-              <div className="absolute inset-y-0 right-0 w-64 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
+              {/* Botão próximo */}
+              <button
+                onClick={nextCert}
+                className="absolute right-0 md:-right-16 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/80 border-2 border-primary/50 hover:border-primary hover:bg-black text-white flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(102,126,234,0.6)]"
+                aria-label="Próximo certificado"
+              >
+                <i className="fas fa-chevron-right text-lg md:text-xl"></i>
+              </button>
+            </div>
+
+            {/* Indicadores (dots) */}
+            <div className="flex justify-center items-center gap-3 mt-8">
+              {certificates.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToCert(index)}
+                  className={`transition-all duration-300 ${
+                    index === currentCertIndex
+                      ? 'w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(102,126,234,0.8)] scale-125'
+                      : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60 rounded-full hover:scale-110'
+                  }`}
+                  aria-label={`Ir para certificado ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </>
@@ -531,36 +353,6 @@ const Technologies: React.FC = () => {
         /* Adicionar contraste extra para ícones SVG */
         .animate-marquee img[src$=".svg"] {
           filter: brightness(1.15) contrast(1.2) saturate(1.1) drop-shadow(0 0 15px rgba(255,255,255,0.6)) drop-shadow(0 0 25px rgba(102,126,234,0.4));
-        }
-
-        /* Animação para certificados */
-        @keyframes marquee-certificates {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee-certificates {
-          animation: marquee-certificates 50s linear infinite;
-          transform: translateZ(0);
-          will-change: transform;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-        }
-        .animate-marquee-certificates:hover {
-          animation-play-state: paused;
-        }
-        
-        /* Otimização para mobile - animação mais rápida */
-        @media (max-width: 768px) {
-          .animate-marquee-certificates {
-            animation: marquee-certificates 20s linear infinite;
-          }
-        }
-        
-        /* Otimização para telas muito pequenas - ainda mais rápido */
-        @media (max-width: 640px) {
-          .animate-marquee-certificates {
-            animation: marquee-certificates 15s linear infinite;
-          }
         }
       `}</style>
     </section>
