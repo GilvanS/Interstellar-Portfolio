@@ -234,7 +234,7 @@ const Technologies: React.FC = () => {
         <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
           
-          <div className="relative max-w-6xl mx-auto">
+          <div className="relative max-w-7xl mx-auto">
             {/* Nome do certificado atual */}
             <div className="text-center mb-6">
               <p className="text-xl md:text-2xl font-bold text-white/90">
@@ -242,72 +242,75 @@ const Technologies: React.FC = () => {
               </p>
             </div>
 
-            {/* Slides Container */}
-            <div className="relative overflow-hidden flex items-center justify-center" style={{ minHeight: '900px' }}>
-              <div 
-                className="slides flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
-              >
-                {certificates.map((cert, index) => (
-                  <div 
-                    key={index}
-                    className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-20 md:px-24"
-                  >
-                    <div className="certification-course w-full flex justify-center items-center">
-                      <img 
-                        src={(() => {
-                          // Usa BASE_URL do Vite se disponível, senão usa '/'
-                          const baseUrl = (import.meta as any).env?.BASE_URL || '/';
-                          const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
-                          return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
-                        })()} 
-                        alt={cert.name}
-                        style={{
-                          maxWidth: '100%',
-                          maxHeight: '900px',
-                          width: 'auto',
-                          height: 'auto',
-                          boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
-                          borderRadius: '8px',
-                          borderWidth: '2px',
-                          borderStyle: 'solid',
-                          borderColor: 'rgba(102, 126, 234, 0.5)',
-                          display: 'block',
-                          margin: '0 auto',
-                          objectFit: 'contain'
-                        }}
-                        onError={(e) => {
-                          console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
-                          console.error('   URL tentada:', e.currentTarget.src);
-                          console.error('   Verifique se o arquivo existe em public/certificates/');
-                        }}
-                        onLoad={(e) => {
-                          console.log('✓ Imagem carregada:', cert.imageUrl);
-                          console.log('   Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
-                        }}
-                      />
+            {/* Slides Container - estrutura reorganizada para botões fora */}
+            <div className="relative flex items-center justify-center" style={{ minHeight: '900px', paddingLeft: '100px', paddingRight: '100px' }}>
+              {/* Container interno com overflow-hidden */}
+              <div className="relative overflow-hidden w-full">
+                <div 
+                  className="slides flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
+                >
+                  {certificates.map((cert, index) => (
+                    <div 
+                      key={index}
+                      className="conteudo min-w-full flex-shrink-0 flex justify-center items-center px-8"
+                    >
+                      <div className="certification-course w-full flex justify-center items-center">
+                        <img 
+                          src={(() => {
+                            // Usa BASE_URL do Vite se disponível, senão usa '/'
+                            const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+                            const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
+                            return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
+                          })()} 
+                          alt={cert.name}
+                          style={{
+                            maxWidth: '100%',
+                            maxHeight: '900px',
+                            width: 'auto',
+                            height: 'auto',
+                            boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
+                            borderRadius: '8px',
+                            borderWidth: '2px',
+                            borderStyle: 'solid',
+                            borderColor: 'rgba(102, 126, 234, 0.5)',
+                            display: 'block',
+                            margin: '0 auto',
+                            objectFit: 'contain'
+                          }}
+                          onError={(e) => {
+                            console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
+                            console.error('   URL tentada:', e.currentTarget.src);
+                            console.error('   Verifique se o arquivo existe em public/certificates/');
+                          }}
+                          onLoad={(e) => {
+                            console.log('✓ Imagem carregada:', cert.imageUrl);
+                            console.log('   Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+              
+              {/* Botões de navegação - completamente fora do overflow-hidden */}
+              <button 
+                className="prev absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                onClick={prevCert}
+                aria-label="Certificado anterior"
+              >
+                <i className="fas fa-chevron-left text-xl"></i>
+              </button>
+              
+              <button 
+                className="next absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                onClick={nextCert}
+                aria-label="Próximo certificado"
+              >
+                <i className="fas fa-chevron-right text-xl"></i>
+              </button>
             </div>
-
-            {/* Botões de navegação */}
-            <button 
-              className="prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
-              onClick={prevCert}
-              aria-label="Certificado anterior"
-            >
-              <i className="fas fa-chevron-left text-xl"></i>
-            </button>
-            
-            <button 
-              className="next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
-              onClick={nextCert}
-              aria-label="Próximo certificado"
-            >
-              <i className="fas fa-chevron-right text-xl"></i>
-            </button>
 
             {/* Indicadores */}
             <div className="indicators flex justify-center items-center gap-3 mt-8">
