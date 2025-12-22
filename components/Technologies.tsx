@@ -134,7 +134,8 @@ const PDFThumbnail: React.FC<{ pdfUrl: string; alt: string }> = ({ pdfUrl, alt }
       <img 
         src={thumbnailUrl} 
         alt={alt}
-        className="relative z-10 max-w-full max-h-full object-contain rounded-lg brightness-110 contrast-125"
+        className="relative z-10 w-full h-full object-contain rounded-lg shadow-xl"
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
       />
     );
   }
@@ -402,14 +403,16 @@ const Technologies: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex flex-col items-center group/item cursor-pointer"
                   >
-                    {/* Container do certificado */}
-                    <div className="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 p-3 sm:p-4 md:p-6 transition-all duration-500 group-hover/item:scale-110">
+                    {/* Container do certificado - maior para mostrar melhor o conteúdo */}
+                    <div className="relative flex items-center justify-center w-48 h-64 sm:w-56 sm:h-80 md:w-64 md:h-96 p-2 sm:p-3 md:p-4 transition-all duration-500 group-hover/item:scale-105">
                       {/* Fundo com efeito glass-panel e iluminação */}
-                      <div className="absolute inset-0 glass-panel rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
-                      <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 glass-panel rounded-xl md:rounded-2xl border border-primary/40 shadow-[0_0_30px_rgba(102,126,234,0.4)] group-hover/item:shadow-[0_0_50px_rgba(102,126,234,0.6)] transition-all duration-300"></div>
+                      <div className="absolute inset-0 bg-primary/10 rounded-xl md:rounded-2xl blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
                       
-                      {/* Thumbnail do PDF */}
-                      <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />
+                      {/* Thumbnail do PDF - mostrará a primeira página do certificado */}
+                      <div className="relative z-10 w-full h-full flex items-center justify-center bg-white/95 rounded-lg md:rounded-xl overflow-hidden p-1">
+                        <PDFThumbnail pdfUrl={cert.pdfUrl} alt={cert.name} />
+                      </div>
                     </div>
 
                     {/* Legenda Estilo HUD */}
