@@ -74,17 +74,66 @@ const technologies = [
 // Exemplo: se o PDF estiver em /public/certificates/meu-certificado.pdf,
 // use: pdfUrl: '/certificates/meu-certificado.pdf'
 const certificates: Certificate[] = [
-  // Exemplo de como adicionar certificados:
-  // {
-  //   name: 'Certificado de Testes Automatizados',
-  //   pdfUrl: '/certificates/certificado-teste.pdf',
-  //   issuer: 'Instituição XYZ' // Opcional
-  // },
-  // {
-  //   name: 'ISTQB Foundation Level',
-  //   pdfUrl: '/certificates/istqb-foundation.pdf',
-  // },
-  // Adicione seus certificados abaixo:
+  {
+    name: 'Aprenda BDD com Cucumber em JAVA',
+    pdfUrl: '/certificates/Aprenda BDD com Cucumber em JAVA_UC-1098a8cd-eb6b-43fa-ad7d-e38c0f1b9c58.pdf',
+  },
+  {
+    name: 'Automação de Testes com Sikuli',
+    pdfUrl: '/certificates/Automação de Testes com Sikuli_UC-960a467c-50b2-4e71-98ec-82acc85435f7.pdf',
+  },
+  {
+    name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
+    pdfUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.pdf',
+  },
+  {
+    name: 'Cypress eXpress',
+    pdfUrl: '/certificates/Cypress eXpress_UC-8efb6ad3-f20c-4e90-922a-a2ba44b1ab8d.pdf',
+  },
+  {
+    name: 'Data Science de A a Z - Extração e Exibição dos Dados',
+    pdfUrl: '/certificates/Data Science de A a Z - Extraçao e Exibição dos Dados_UC-A91GGTG4.pdf',
+  },
+  {
+    name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
+    pdfUrl: '/certificates/Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.pdf',
+  },
+  {
+    name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
+    pdfUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.pdf',
+  },
+  {
+    name: 'Produtividade de Testes de Software com Uso do ChatGPT',
+    pdfUrl: '/certificates/Produtividade de Testes de Software com Uso do ChatGPT_UC-b6ffecaf-5b1b-4e42-8b70-08098ba1dc14.pdf',
+  },
+  {
+    name: 'Robot Framework e Appium para Android e iOS',
+    pdfUrl: '/certificates/Robot Framework e Appium para Android e iOS_UC-9ce88a48-878b-40cd-b73d-5c64ef7eb259.pdf',
+  },
+  {
+    name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
+    pdfUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.pdf',
+  },
+  {
+    name: 'Testes Automáticos + Curso COMPLETO de Teste de Software',
+    pdfUrl: '/certificates/Testes Automáticos + Curso COMPLETO de Teste de Software_UC-346KXKF3.pdf',
+  },
+  {
+    name: 'Testes contínuos em Cypress no Github Actions',
+    pdfUrl: '/certificates/Testes contínuos em Cypress no Github Actions_UC-82beedc1-de15-4b80-9953-cadb268c16ca.pdf',
+  },
+  {
+    name: 'TESTES DE SOFTWARE NA PRÁTICA E AUTOMAÇÃO - CURSO COMPLETO',
+    pdfUrl: '/certificates/TESTES DE SOFTWARE NA PRÁTICA E AUTOMAÇÃO - CURSO COMPLETO_UC-KJ4H6ZF7.pdf',
+  },
+  {
+    name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
+    pdfUrl: '/certificates/Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.pdf',
+  },
+  {
+    name: 'Testes funcionais de aplicações Android com Appium',
+    pdfUrl: '/certificates/Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.pdf',
+  },
 ];
 
 const Technologies: React.FC = () => {
