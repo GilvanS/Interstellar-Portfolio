@@ -98,23 +98,6 @@ const Technologies: React.FC = () => {
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
   
-  // Função helper para codificar URL corretamente
-  const getCertificateImageUrl = (url: string): string => {
-    // Usa o base URL do Vite para garantir que funcione em produção (GitHub Pages)
-    // import.meta.env.BASE_URL já inclui a barra final, ex: '/Interstellar-Portfolio/'
-    const baseUrl = import.meta.env.BASE_URL || '/';
-    
-    // Remove a barra inicial do URL se já tiver
-    const cleanUrl = url.startsWith('/') ? url.slice(1) : url;
-    
-    // Combina baseUrl + cleanUrl
-    // Exemplo: '/Interstellar-Portfolio/' + 'certificates/arquivo.png' = '/Interstellar-Portfolio/certificates/arquivo.png'
-    const fullUrl = baseUrl === '/' ? `/${cleanUrl}` : `${baseUrl}${cleanUrl}`;
-    
-    // Substitui apenas espaços por %20, mantém outros caracteres como estão
-    return fullUrl.replace(/ /g, '%20');
-  };
-  
   // Funções de navegação do carousel
   const nextCert = () => {
     setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
@@ -251,7 +234,12 @@ const Technologies: React.FC = () => {
                   >
                     <div className="certification-course w-full flex justify-center items-center">
                       <img 
-                        src={getCertificateImageUrl(cert.imageUrl)} 
+                        src={(() => {
+                          // Usa BASE_URL do Vite se disponível, senão usa '/'
+                          const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+                          const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
+                          return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
+                        })()} 
                         alt={cert.name}
                         className="w-auto h-auto max-w-full max-h-[900px] object-contain"
                         style={{
@@ -268,16 +256,9 @@ const Technologies: React.FC = () => {
                           margin: '0 auto'
                         }}
                         onError={(e) => {
-                          console.error('❌ Erro ao carregar:', cert.imageUrl);
+                          console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
                           console.error('   URL tentada:', e.currentTarget.src);
-                          // Mesmo tratamento simples do profile - sem fallback complexo
-                          const target = e.currentTarget;
-                          // Se tiver espaços, tenta codificar
-                          const currentSrc = target.src;
-                          if (currentSrc.includes(' ') && !currentSrc.includes('%20')) {
-                            console.log('   Tentando codificar espaços...');
-                            target.src = currentSrc.replace(/ /g, '%20');
-                          }
+                          console.error('   Verifique se o arquivo existe em public/certificates/');
                         }}
                         onLoad={(e) => {
                           console.log('✓ Imagem carregada:', cert.imageUrl);
