@@ -102,8 +102,18 @@ const Technologies: React.FC = () => {
   // Função helper para construir URL correta da imagem
   const getImageSrc = (imageUrl: string): string => {
     // No Vite, arquivos da pasta public são servidos diretamente
-    // Vamos garantir que o caminho está correto
-    return imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+    // Codifica apenas os espaços e caracteres especiais no nome do arquivo
+    const parts = imageUrl.split('/');
+    const filename = parts[parts.length - 1];
+    
+    if (filename && filename.includes(' ')) {
+      // Substitui espaços por %20 no nome do arquivo
+      const encodedFilename = filename.replace(/ /g, '%20');
+      parts[parts.length - 1] = encodedFilename;
+      return parts.join('/');
+    }
+    
+    return imageUrl;
   };
   
   // Funções de navegação do carousel
