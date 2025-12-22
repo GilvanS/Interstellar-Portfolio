@@ -223,7 +223,7 @@ const Technologies: React.FC = () => {
           </div>
 
           {/* Container do Carousel */}
-          <div className="relative max-w-5xl mx-auto px-4 py-8 z-10">
+          <div className="relative max-w-6xl mx-auto px-4 py-8 z-10">
             {/* Nome do curso atual */}
             <div className="text-center mb-6">
               <p className="text-xl md:text-2xl font-display font-bold text-white/80 tracking-wider uppercase">
@@ -232,7 +232,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Container do certificado com frame */}
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex items-center justify-center" style={{ minHeight: '700px' }}>
               {/* Botão anterior */}
               <button
                 onClick={prevCert}
@@ -242,14 +242,14 @@ const Technologies: React.FC = () => {
                 <i className="fas fa-chevron-left text-lg md:text-xl"></i>
               </button>
 
-              {/* Frame do certificado com borda brilhante - formato retrato (certificado) */}
-              <div className="relative w-full max-w-lg md:max-w-2xl mx-auto" style={{ aspectRatio: '3/4' }}>
+              {/* Frame do certificado com borda brilhante - formato retrato (certificado) - dimensões fixas adequadas */}
+              <div className="relative w-full mx-auto" style={{ maxWidth: '700px', width: '90%', aspectRatio: '3/4' }}>
                 {/* Borda brilhante azul-roxo com efeito glow */}
                 <div className="absolute -inset-[3px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 opacity-90 blur-sm"></div>
                 <div className="absolute -inset-[2px] rounded-xl md:rounded-2xl bg-gradient-to-r from-primary via-accent to-primary shadow-[0_0_40px_rgba(102,126,234,0.8)]"></div>
                 
                 {/* Fundo branco limpo para o certificado */}
-                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-3 md:p-4">
+                <div className="relative z-10 w-full h-full bg-white rounded-lg md:rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-4 md:p-6">
                   {certificates[currentCertIndex]?.imageUrl && (
                     <img 
                       src={certificates[currentCertIndex].imageUrl} 
