@@ -248,14 +248,18 @@ const Technologies: React.FC = () => {
               <div className="relative overflow-hidden w-full">
                 <div 
                   className="slides flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
+                  style={{ 
+                    transform: `translateX(-${currentCertIndex * 100}%)`,
+                    width: `${certificates.length * 100}%`
+                  }}
                 >
                   {certificates.map((cert, index) => (
                     <div 
                       key={index}
-                      className="conteudo min-w-full flex-shrink-0 flex justify-center items-center"
+                      className="conteudo flex-shrink-0 flex justify-center items-center"
+                      style={{ width: '100%', minWidth: '100%' }}
                     >
-                      <div className="certification-course w-full h-full flex justify-center items-center">
+                      <div className="certification-course w-full flex justify-center items-center" style={{ padding: '0 20px' }}>
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
@@ -265,11 +269,10 @@ const Technologies: React.FC = () => {
                           })()} 
                           alt={cert.name}
                           style={{
-                            width: '100%',
                             maxWidth: '100%',
                             maxHeight: '900px',
+                            width: 'auto',
                             height: 'auto',
-                            minWidth: '0',
                             boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
                             borderRadius: '8px',
                             borderWidth: '2px',
