@@ -243,7 +243,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container - estrutura reorganizada para botões fora */}
-            <div className="relative flex items-center justify-center px-8 md:px-20 lg:px-28" style={{ minHeight: '900px' }}>
+            <div className="relative flex items-center justify-center px-16 md:px-24 lg:px-32" style={{ minHeight: '900px' }}>
               {/* Container interno com overflow-hidden */}
               <div className="relative overflow-hidden w-full">
                 <div 
@@ -256,7 +256,8 @@ const Technologies: React.FC = () => {
                       className="conteudo flex-shrink-0 flex justify-center items-center"
                       style={{ minWidth: '100%' }}
                     >
-                      <div className="certification-course w-full flex justify-center items-center">
+                      {/* Frame branco como no exemplo */}
+                      <div className="certificate-frame w-full bg-white rounded-lg shadow-2xl p-4 md:p-6 lg:p-8 flex items-center justify-center">
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
@@ -267,16 +268,11 @@ const Technologies: React.FC = () => {
                           alt={cert.name}
                           className="certificate-image"
                           style={{
-                            width: '100%',
                             maxWidth: '100%',
+                            maxHeight: '800px',
+                            width: 'auto',
                             height: 'auto',
-                            boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
-                            borderRadius: '8px',
-                            borderWidth: '2px',
-                            borderStyle: 'solid',
-                            borderColor: 'rgba(102, 126, 234, 0.5)',
                             display: 'block',
-                            margin: '0 auto',
                             objectFit: 'contain',
                             objectPosition: 'center'
                           }}
@@ -296,7 +292,7 @@ const Technologies: React.FC = () => {
                 </div>
               </div>
               
-              {/* Botões de navegação - completamente fora do overflow-hidden, puxados para as bordas mas visíveis */}
+              {/* Botões de navegação - completamente fora do overflow-hidden, nas bordas do container */}
               <button 
                 className="carousel-btn carousel-btn-prev absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
                 onClick={prevCert}
@@ -349,54 +345,44 @@ const Technologies: React.FC = () => {
           animation-play-state: paused;
         }
         
-        /* Tamanho da imagem do certificado - Mobile (ok, mantém como está) */
-        .certificate-image {
-          max-height: 600px;
+        /* Frame do certificado - estilo como no exemplo */
+        .certificate-frame {
+          min-height: 600px;
         }
         
-        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade, estica mais) */
+        /* Tamanho da imagem do certificado - Mobile */
+        .certificate-image {
+          max-height: 500px;
+          max-width: 100%;
+        }
+        
+        /* Tamanho da imagem do certificado - Desktop/Web (ajusta dentro do frame) */
         @media (min-width: 768px) {
+          .certificate-frame {
+            min-height: 700px;
+          }
           .certificate-image {
-            max-height: 900px;
-            width: 100% !important;
-            max-width: 100% !important;
-            object-fit: contain !important;
+            max-height: 650px;
+            max-width: 100%;
           }
         }
         
         @media (min-width: 1024px) {
+          .certificate-frame {
+            min-height: 800px;
+          }
           .certificate-image {
-            max-height: 1000px;
-            width: 100% !important;
-            max-width: 100% !important;
-            object-fit: contain !important;
+            max-height: 750px;
+            max-width: 100%;
           }
         }
         
-        /* Botões de navegação - mobile: próximos ao conteúdo, desktop: nas bordas mas visíveis */
+        /* Botões de navegação - posicionados nas bordas do container, completamente visíveis */
         .carousel-btn-prev {
-          left: 8px;
+          left: 0;
         }
         .carousel-btn-next {
-          right: 8px;
-        }
-        
-        @media (min-width: 768px) {
-          .carousel-btn-prev {
-            left: -48px;
-          }
-          .carousel-btn-next {
-            right: -48px;
-          }
-        }
-        
-        @media (min-width: 1024px) {
-          .carousel-btn-prev {
-            left: -56px;
-          }
-          .carousel-btn-next {
-            right: -56px;
-          }
+          right: 0;
         }
         
         /* Otimização para mobile - animação mais rápida */
