@@ -248,18 +248,15 @@ const Technologies: React.FC = () => {
               <div className="relative overflow-hidden w-full">
                 <div 
                   className="slides flex transition-transform duration-500 ease-in-out"
-                  style={{ 
-                    transform: `translateX(-${currentCertIndex * 100}%)`,
-                    width: `${certificates.length * 100}%`
-                  }}
+                  style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
                 >
                   {certificates.map((cert, index) => (
                     <div 
                       key={index}
                       className="conteudo flex-shrink-0 flex justify-center items-center"
-                      style={{ width: '100%', minWidth: '100%' }}
+                      style={{ minWidth: '100%' }}
                     >
-                      <div className="certification-course w-full flex justify-center items-center" style={{ padding: '0 20px' }}>
+                      <div className="certification-course w-full flex justify-center items-center px-4">
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
