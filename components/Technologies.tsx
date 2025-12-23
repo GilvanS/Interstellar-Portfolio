@@ -1,11 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-
-// Interface para certificados - apenas imagens
-interface Certificate {
-  name: string;
-  imageUrl: string; // URL da imagem (obrigatório)
-}
+import React from 'react';
 
 const technologies = [
   { 
@@ -68,69 +62,9 @@ const technologies = [
   },
 ];
 
-// Lista de certificados - APENAS imagens PNG/JPG
-// IMPORTANTE: Coloque as imagens na pasta /public/certificates/
-// Use apenas imageUrl com arquivos .png ou .jpg
-const certificates: Certificate[] = [
-  {
-    name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
-    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
-  },
-  {
-    name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
-    imageUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
-  },
-  {
-    name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
-    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
-  },
-  // Adicione mais certificados aqui quando tiver as imagens PNG/JPG:
-  // {
-  //   name: 'Nome do Certificado',
-  //   imageUrl: '/certificates/nome-do-arquivo.png',
-  // },
-];
-
 const Technologies: React.FC = () => {
   // Duplicamos a lista para criar o efeito de loop infinito perfeito
   const doubleTechs = [...technologies, ...technologies];
-  
-  // Estado para o carousel de certificados
-  const [currentCertIndex, setCurrentCertIndex] = useState(0);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Funções de navegação do carousel
-  const nextCert = () => {
-    setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
-  };
-  
-  const prevCert = () => {
-    setCurrentCertIndex((prev) => (prev - 1 + certificates.length) % certificates.length);
-  };
-  
-  const goToCert = (index: number) => {
-    setCurrentCertIndex(index);
-  };
-  
-  // Auto-play do carousel - passa automaticamente a cada 5 segundos
-  useEffect(() => {
-    // Limpa o intervalo anterior se existir
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-    }
-    
-    // Define novo intervalo para passar automaticamente
-    autoPlayRef.current = setInterval(() => {
-      setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
-    }, 5000);
-    
-    // Limpa o intervalo quando o componente desmontar ou índice mudar
-    return () => {
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-      }
-    };
-  }, [currentCertIndex]);
 
   return (
     <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
@@ -229,106 +163,6 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      {/* Seção de Certificados - Carousel Simples */}
-      {certificates.length > 0 && (
-        <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
-          <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
-          
-          <div className="relative w-full mx-auto px-2 md:px-8 lg:px-12">
-            {/* Nome do certificado atual */}
-            <div className="text-center mb-6 px-4">
-              <p className="text-xl md:text-2xl font-bold text-white/90">
-                {certificates[currentCertIndex]?.name}
-              </p>
-            </div>
-
-            {/* Slides Container - estrutura reorganizada para botões fora */}
-            <div className="relative flex items-center justify-center px-16 md:px-24 lg:px-32" style={{ minHeight: '900px' }}>
-              {/* Container interno com overflow-hidden */}
-              <div className="relative overflow-hidden w-full">
-                <div 
-                  className="slides flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
-                >
-                  {certificates.map((cert, index) => (
-                    <div 
-                      key={index}
-                      className="conteudo flex-shrink-0 flex justify-center items-center"
-                      style={{ minWidth: '100%' }}
-                    >
-                      {/* Frame branco como no exemplo */}
-                      <div className="certificate-frame w-full bg-white rounded-lg shadow-2xl p-4 md:p-6 lg:p-8 flex items-center justify-center">
-                        <img 
-                          src={(() => {
-                            // Usa BASE_URL do Vite se disponível, senão usa '/'
-                            const baseUrl = (import.meta as any).env?.BASE_URL || '/';
-                            const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
-                            return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
-                          })()} 
-                          alt={cert.name}
-                          className="certificate-image"
-                          style={{
-                            maxWidth: '100%',
-                            maxHeight: '800px',
-                            width: 'auto',
-                            height: 'auto',
-                            display: 'block',
-                            objectFit: 'contain',
-                            objectPosition: 'center'
-                          }}
-                          onError={(e) => {
-                            console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
-                            console.error('   URL tentada:', e.currentTarget.src);
-                            console.error('   Verifique se o arquivo existe em public/certificates/');
-                          }}
-                          onLoad={(e) => {
-                            console.log('✓ Imagem carregada:', cert.imageUrl);
-                            console.log('   Dimensões:', e.currentTarget.naturalWidth, 'x', e.currentTarget.naturalHeight);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Botões de navegação - completamente fora do overflow-hidden, nas bordas do container */}
-              <button 
-                className="carousel-btn carousel-btn-prev absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
-                onClick={prevCert}
-                aria-label="Certificado anterior"
-              >
-                <i className="fas fa-chevron-left text-xl"></i>
-              </button>
-              
-              <button 
-                className="carousel-btn carousel-btn-next absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
-                onClick={nextCert}
-                aria-label="Próximo certificado"
-              >
-                <i className="fas fa-chevron-right text-xl"></i>
-              </button>
-            </div>
-
-            {/* Indicadores */}
-            <div className="indicators flex justify-center items-center gap-3 mt-8">
-              {certificates.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToCert(index)}
-                  className={`transition-all duration-300 rounded-full ${
-                    index === currentCertIndex
-                      ? 'w-3 h-3 bg-primary shadow-[0_0_15px_rgba(102,126,234,0.8)]'
-                      : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
-                  }`}
-                  aria-label={`Ir para certificado ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -345,45 +179,6 @@ const Technologies: React.FC = () => {
           animation-play-state: paused;
         }
         
-        /* Frame do certificado - estilo como no exemplo */
-        .certificate-frame {
-          min-height: 600px;
-        }
-        
-        /* Tamanho da imagem do certificado - Mobile */
-        .certificate-image {
-          max-height: 500px;
-          max-width: 100%;
-        }
-        
-        /* Tamanho da imagem do certificado - Desktop/Web (ajusta dentro do frame) */
-        @media (min-width: 768px) {
-          .certificate-frame {
-            min-height: 700px;
-          }
-          .certificate-image {
-            max-height: 650px;
-            max-width: 100%;
-          }
-        }
-        
-        @media (min-width: 1024px) {
-          .certificate-frame {
-            min-height: 800px;
-          }
-          .certificate-image {
-            max-height: 750px;
-            max-width: 100%;
-          }
-        }
-        
-        /* Botões de navegação - posicionados nas bordas do container, completamente visíveis */
-        .carousel-btn-prev {
-          left: 0;
-        }
-        .carousel-btn-next {
-          right: 0;
-        }
         
         /* Otimização para mobile - animação mais rápida */
         @media (max-width: 768px) {
