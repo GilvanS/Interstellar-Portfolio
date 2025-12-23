@@ -130,12 +130,12 @@ const allCertificates: Certificate[] = [
   },
   {
     name: 'Introdução ao Desenvolvimento Moderno de Software',
-    imageUrl: '/certificates/Introdução ao Desenvolvimento Moderno de Software_9XXGKSU1.png',
+    imageUrl: '/certificates/DIO - Introdução ao Desenvolvimento Moderno de Software_9XXGKSU1.png',
     platform: 'dio'
   },
   {
     name: 'Testes funcionais de aplicações Android com Appium',
-    imageUrl: '/certificates/Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.png',
+    imageUrl: '/certificates/DIO - Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.png',
     platform: 'dio'
   },
 ];
