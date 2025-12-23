@@ -1,34 +1,118 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // Interface para certificados
 interface Certificate {
   name: string;
   imageUrl: string;
+  platform: 'alura' | 'udemy' | 'dio';
 }
 
-// Lista de certificados
-const certificates: Certificate[] = [
+// Lista completa de certificados organizados por plataforma
+const allCertificates: Certificate[] = [
+  // Certificados Alura
   {
     name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
+    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
+    platform: 'alura'
+  },
+  {
+    name: 'AWS CodeWhisperer - Generative AI para Testes',
     imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
+    platform: 'alura'
   },
   {
     name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
     imageUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
+    platform: 'alura'
   },
   {
     name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
     imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
+    platform: 'alura'
   },
   {
     name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
     imageUrl: '/certificates/Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.png',
+    platform: 'alura'
   },
   {
     name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
     imageUrl: '/certificates/Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.png',
+    platform: 'alura'
   },
+  {
+    name: 'Appium - compreenda e aplique testes de interface',
+    imageUrl: '/certificates/Appium - compreenda e aplique testes de interface.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Aprenda BDD com Cucumber em JAVA',
+    imageUrl: '/certificates/Aprenda BDD com Cucumber em JAVA_UC-1098a8cd-eb6b-43fa-ad7d-e38c0f1b9c58.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Automação de Testes com Sikuli',
+    imageUrl: '/certificates/Automação de Testes com Sikuli_UC-960a467c-50b2-4e71-98ec-82acc85435f7.png',
+    platform: 'alura'
+  },
+  {
+    name: 'BDD e Java - Behavior Driven Development com Cucumber',
+    imageUrl: '/certificates/BDD e Java - Behavior Driven Development com Cucumber.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Cypress eXpress',
+    imageUrl: '/certificates/Cypress eXpress_UC-8efb6ad3-f20c-4e90-922a-a2ba44b1ab8d.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Data Science de A a Z - Extração e Exibição dos Dados',
+    imageUrl: '/certificates/Data Science de A a Z - Extraçao e Exibição dos Dados_UC-A91GGTG4.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Engenharia de Prompt - criando prompts eficazes para IA Generativa',
+    imageUrl: '/certificates/Engenharia de Prompt - criando prompts eficazes para IA Generativa.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Gemini e Node.js - integrando sua aplicação com a API do Google',
+    imageUrl: '/certificates/Gemini e Node.js - integrando sua aplicação com a API do Google.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Java - aplicando a Orientação a Objetos',
+    imageUrl: '/certificates/Java - aplicando a Orientação a Objetos.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Java - consumindo API, gravando arquivos e lidando com erros',
+    imageUrl: '/certificates/Java - consumindo API, gravando arquivos e lidando com erros.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Java - criando a sua primeira aplicação',
+    imageUrl: '/certificates/Java - criando a sua primeira aplicação.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Java - trabalhando com listas e coleções de dados',
+    imageUrl: '/certificates/Java - trabalhando com listas e coleções de dados.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Java e refatoração - melhorando códigos com boas práticas',
+    imageUrl: '/certificates/Java e refatoração - melhorando códigos com boas práticas.png',
+    platform: 'alura'
+  },
+  {
+    name: 'Produtividade de Testes de Software com Uso do ChatGPT',
+    imageUrl: '/certificates/Produtividade de Testes de Software com Uso do ChatGPT_UC-b6ffecaf-5b1b-4e42-8b70-08098ba1dc14.png',
+    platform: 'alura'
+  },
+  // Certificados Udemy (adicionar quando tiver)
+  // Certificados DIO (adicionar quando tiver)
 ];
 
 const technologies = [
@@ -96,16 +180,44 @@ const Technologies: React.FC = () => {
   // Duplicamos a lista para criar o efeito de loop infinito perfeito
   const doubleTechs = [...technologies, ...technologies];
   
+  // Estado para plataforma selecionada
+  const [selectedPlatform, setSelectedPlatform] = useState<'alura' | 'udemy' | 'dio' | 'random'>('random');
+  
   // Estado para o carousel de certificados
   const [currentCertIndex, setCurrentCertIndex] = useState(0);
 
+  // Função para misturar array aleatoriamente (Fisher-Yates)
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Filtrar certificados baseado na plataforma selecionada
+  const getFilteredCertificates = (): Certificate[] => {
+    if (selectedPlatform === 'random') {
+      return shuffleArray(allCertificates);
+    }
+    return allCertificates.filter(cert => cert.platform === selectedPlatform);
+  };
+
+  const filteredCertificates = getFilteredCertificates();
+
+  // Resetar índice quando mudar a plataforma
+  useEffect(() => {
+    setCurrentCertIndex(0);
+  }, [selectedPlatform]);
+
   // Funções de navegação do carousel
   const nextCert = () => {
-    setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+    setCurrentCertIndex((prev) => (prev + 1) % filteredCertificates.length);
   };
 
   const prevCert = () => {
-    setCurrentCertIndex((prev) => (prev - 1 + certificates.length) % certificates.length);
+    setCurrentCertIndex((prev) => (prev - 1 + filteredCertificates.length) % filteredCertificates.length);
   };
 
   const goToCert = (index: number) => {
@@ -114,11 +226,12 @@ const Technologies: React.FC = () => {
 
   // Auto-play do carousel
   useEffect(() => {
+    if (filteredCertificates.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+      setCurrentCertIndex((prev) => (prev + 1) % filteredCertificates.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentCertIndex]);
+  }, [filteredCertificates.length]);
 
   return (
     <>
@@ -294,35 +407,87 @@ const Technologies: React.FC = () => {
         <div className="w-40 h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-8 rounded-full shadow-[0_0_15px_rgba(102,126,234,0.6)]"></div>
       </div>
 
+      {/* Abas de seleção de plataforma */}
+      <div className="flex flex-wrap justify-center gap-4 mb-8 md:mb-12">
+        <button
+          onClick={() => setSelectedPlatform('random')}
+          className={`px-6 md:px-8 py-3 md:py-4 rounded-xl font-display font-bold text-sm md:text-base uppercase tracking-wider transition-all duration-300 ${
+            selectedPlatform === 'random'
+              ? 'bg-primary text-black shadow-[0_0_30px_rgba(102,126,234,0.8)] scale-105'
+              : 'bg-black/40 text-white border border-white/20 hover:border-primary/50 hover:bg-primary/20'
+          }`}
+        >
+          Aleatório
+        </button>
+        <button
+          onClick={() => setSelectedPlatform('alura')}
+          className={`px-6 md:px-8 py-3 md:py-4 rounded-xl font-display font-bold text-sm md:text-base uppercase tracking-wider transition-all duration-300 ${
+            selectedPlatform === 'alura'
+              ? 'bg-primary text-black shadow-[0_0_30px_rgba(102,126,234,0.8)] scale-105'
+              : 'bg-black/40 text-white border border-white/20 hover:border-primary/50 hover:bg-primary/20'
+          }`}
+        >
+          Alura
+        </button>
+        <button
+          onClick={() => setSelectedPlatform('udemy')}
+          className={`px-6 md:px-8 py-3 md:py-4 rounded-xl font-display font-bold text-sm md:text-base uppercase tracking-wider transition-all duration-300 ${
+            selectedPlatform === 'udemy'
+              ? 'bg-primary text-black shadow-[0_0_30px_rgba(102,126,234,0.8)] scale-105'
+              : 'bg-black/40 text-white border border-white/20 hover:border-primary/50 hover:bg-primary/20'
+          }`}
+        >
+          Udemy
+        </button>
+        <button
+          onClick={() => setSelectedPlatform('dio')}
+          className={`px-6 md:px-8 py-3 md:py-4 rounded-xl font-display font-bold text-sm md:text-base uppercase tracking-wider transition-all duration-300 ${
+            selectedPlatform === 'dio'
+              ? 'bg-primary text-black shadow-[0_0_30px_rgba(102,126,234,0.8)] scale-105'
+              : 'bg-black/40 text-white border border-white/20 hover:border-primary/50 hover:bg-primary/20'
+          }`}
+        >
+          DIO
+        </button>
+      </div>
+
       <div className="slide relative max-w-6xl mx-auto">
         <div className="slides relative overflow-hidden rounded-lg">
           <div 
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
           >
-            {certificates.map((cert, index) => (
-              <div key={index} className="conteudo min-w-full flex-shrink-0">
-                <div className="course-information-slide text-center mb-6">
-                  <p className="text-xl md:text-2xl font-bold text-white/90">
-                    {cert.name}
-                  </p>
-                </div>
-                <div className="certification-course bg-white rounded-lg shadow-2xl p-4 md:p-6 flex items-center justify-center">
-                  <img 
-                    src={(() => {
-                      const baseUrl = (import.meta as any).env?.BASE_URL || '/';
-                      const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
-                      return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
-                    })()} 
-                    alt={cert.name}
-                    className="max-w-full max-h-[600px] md:max-h-[700px] object-contain"
-                    onError={(e) => {
-                      console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
-                    }}
-                  />
-                </div>
+            {filteredCertificates.length === 0 ? (
+              <div className="min-w-full flex-shrink-0 flex items-center justify-center py-20">
+                <p className="text-white/60 text-xl md:text-2xl font-display">
+                  Nenhum certificado encontrado para esta plataforma
+                </p>
               </div>
-            ))}
+            ) : (
+              filteredCertificates.map((cert, index) => (
+                <div key={index} className="conteudo min-w-full flex-shrink-0">
+                  <div className="course-information-slide text-center mb-6">
+                    <p className="text-xl md:text-2xl font-bold text-white/90">
+                      {cert.name}
+                    </p>
+                  </div>
+                  <div className="certification-course bg-white rounded-lg shadow-2xl p-4 md:p-6 flex items-center justify-center">
+                    <img 
+                      src={(() => {
+                        const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+                        const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
+                        return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
+                      })()} 
+                      alt={cert.name}
+                      className="max-w-full max-h-[600px] md:max-h-[700px] object-contain"
+                      onError={(e) => {
+                        console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
+                      }}
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
         
@@ -344,20 +509,22 @@ const Technologies: React.FC = () => {
         </button>
         
         {/* Indicadores */}
-        <div className="indicators flex justify-center items-center gap-3 mt-8">
-          {certificates.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToCert(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentCertIndex
-                  ? 'w-3 h-3 bg-primary shadow-[0_0_15px_rgba(102,126,234,0.8)]'
-                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
-              }`}
-              aria-label={`Ir para certificado ${index + 1}`}
-            />
-          ))}
-        </div>
+        {filteredCertificates.length > 0 && (
+          <div className="indicators flex justify-center items-center gap-3 mt-8">
+            {filteredCertificates.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToCert(index)}
+                className={`transition-all duration-300 rounded-full ${
+                  index === currentCertIndex
+                    ? 'w-3 h-3 bg-primary shadow-[0_0_15px_rgba(102,126,234,0.8)]'
+                    : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
+                }`}
+                aria-label={`Ir para certificado ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
     </>
