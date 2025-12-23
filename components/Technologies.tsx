@@ -489,8 +489,11 @@ const Technologies: React.FC = () => {
                       src={(() => {
                         const baseUrl = (import.meta as any).env?.BASE_URL || '/';
                         const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
-                        // Codificar todos os caracteres especiais, incluindo espaços e #
-                        return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20').replace(/#/g, '%23');
+                        // Dividir o caminho e codificar apenas o nome do arquivo (última parte)
+                        const pathParts = cleanUrl.split('/');
+                        const lastIndex = pathParts.length - 1;
+                        pathParts[lastIndex] = encodeURIComponent(pathParts[lastIndex]);
+                        return `${baseUrl}${pathParts.join('/')}`;
                       })()} 
                       alt={cert.name}
                       className="max-w-full max-h-[600px] md:max-h-[700px] object-contain"
