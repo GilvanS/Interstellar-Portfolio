@@ -12,107 +12,122 @@ interface Certificate {
 const allCertificates: Certificate[] = [
   // Certificados Alura
   {
-    name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
-    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
-    platform: 'alura'
-  },
-  {
-    name: 'AWS CodeWhisperer - Generative AI para Testes',
-    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
-    imageUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
-    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
-    imageUrl: '/certificates/Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
-    imageUrl: '/certificates/Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.png',
-    platform: 'alura'
-  },
-  {
     name: 'Appium - compreenda e aplique testes de interface',
-    imageUrl: '/certificates/Appium - compreenda e aplique testes de interface.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Aprenda BDD com Cucumber em JAVA',
-    imageUrl: '/certificates/Aprenda BDD com Cucumber em JAVA_UC-1098a8cd-eb6b-43fa-ad7d-e38c0f1b9c58.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Automação de Testes com Sikuli',
-    imageUrl: '/certificates/Automação de Testes com Sikuli_UC-960a467c-50b2-4e71-98ec-82acc85435f7.png',
+    imageUrl: '/certificates/ALURA - Appium - compreenda e aplique testes de interface.png',
     platform: 'alura'
   },
   {
     name: 'BDD e Java - Behavior Driven Development com Cucumber',
-    imageUrl: '/certificates/BDD e Java - Behavior Driven Development com Cucumber.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Cypress eXpress',
-    imageUrl: '/certificates/Cypress eXpress_UC-8efb6ad3-f20c-4e90-922a-a2ba44b1ab8d.png',
-    platform: 'alura'
-  },
-  {
-    name: 'Data Science de A a Z - Extração e Exibição dos Dados',
-    imageUrl: '/certificates/Data Science de A a Z - Extraçao e Exibição dos Dados_UC-A91GGTG4.png',
+    imageUrl: '/certificates/ALURA - BDD e Java - Behavior Driven Development com Cucumber.png',
     platform: 'alura'
   },
   {
     name: 'Engenharia de Prompt - criando prompts eficazes para IA Generativa',
-    imageUrl: '/certificates/Engenharia de Prompt - criando prompts eficazes para IA Generativa.png',
+    imageUrl: '/certificates/ALURA - Engenharia de Prompt - criando prompts eficazes para IA Generativa.png',
     platform: 'alura'
   },
   {
     name: 'Gemini e Node.js - integrando sua aplicação com a API do Google',
-    imageUrl: '/certificates/Gemini e Node.js - integrando sua aplicação com a API do Google.png',
+    imageUrl: '/certificates/ALURA - Gemini e Node.js - integrando sua aplicação com a API do Google.png',
     platform: 'alura'
   },
   {
     name: 'Java - aplicando a Orientação a Objetos',
-    imageUrl: '/certificates/Java - aplicando a Orientação a Objetos.png',
+    imageUrl: '/certificates/ALURA - Java - aplicando a Orientação a Objetos.png',
     platform: 'alura'
   },
   {
     name: 'Java - consumindo API, gravando arquivos e lidando com erros',
-    imageUrl: '/certificates/Java - consumindo API, gravando arquivos e lidando com erros.png',
+    imageUrl: '/certificates/ALURA - Java - consumindo API, gravando arquivos e lidando com erros.png',
     platform: 'alura'
   },
   {
     name: 'Java - criando a sua primeira aplicação',
-    imageUrl: '/certificates/Java - criando a sua primeira aplicação.png',
+    imageUrl: '/certificates/ALURA - Java - criando a sua primeira aplicação.png',
     platform: 'alura'
   },
   {
     name: 'Java - trabalhando com listas e coleções de dados',
-    imageUrl: '/certificates/Java - trabalhando com listas e coleções de dados.png',
+    imageUrl: '/certificates/ALURA - Java - trabalhando com listas e coleções de dados.png',
     platform: 'alura'
   },
   {
     name: 'Java e refatoração - melhorando códigos com boas práticas',
-    imageUrl: '/certificates/Java e refatoração - melhorando códigos com boas práticas.png',
+    imageUrl: '/certificates/ALURA - Java e refatoração - melhorando códigos com boas práticas.png',
     platform: 'alura'
   },
   {
-    name: 'Produtividade de Testes de Software com Uso do ChatGPT',
-    imageUrl: '/certificates/Produtividade de Testes de Software com Uso do ChatGPT_UC-b6ffecaf-5b1b-4e42-8b70-08098ba1dc14.png',
+    name: 'Quality Assurance - plano de testes e gestão de bugs',
+    imageUrl: '/certificates/ALURA - Quality Assurance - plano de testes e gestão de bugs.png',
     platform: 'alura'
   },
-  // Certificados Udemy (adicionar quando tiver)
-  // Certificados DIO (adicionar quando tiver)
+  // Certificados Udemy
+  {
+    name: 'Aprenda BDD com Cucumber em JAVA',
+    imageUrl: '/certificates/UDEMY - Aprenda BDD com Cucumber em JAVA_UC-1098a8cd-eb6b-43fa-ad7d-e38c0f1b9c58.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Automação de Testes com Sikuli',
+    imageUrl: '/certificates/UDEMY - Automação de Testes com Sikuli_UC-960a467c-50b2-4e71-98ec-82acc85435f7.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
+    imageUrl: '/certificates/UDEMY - AWS CodeWhisperer - Generative AI para Testes Automatizados_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'AWS CodeWhisperer - Generative AI para Testes',
+    imageUrl: '/certificates/UDEMY - AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Cypress eXpress',
+    imageUrl: '/certificates/UDEMY - Cypress eXpress_UC-8efb6ad3-f20c-4e90-922a-a2ba44b1ab8d.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Data Science de A a Z - Extração e Exibição dos Dados',
+    imageUrl: '/certificates/UDEMY - Data Science de A a Z - Extraçao e Exibição dos Dados_UC-A91GGTG4.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
+    imageUrl: '/certificates/UDEMY - Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
+    imageUrl: '/certificates/UDEMY - Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Produtividade de Testes de Software com Uso do ChatGPT',
+    imageUrl: '/certificates/UDEMY - Produtividade de Testes de Software com Uso do ChatGPT_UC-b6ffecaf-5b1b-4e42-8b70-08098ba1dc14.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Robot Framework e Appium para Android e iOS',
+    imageUrl: '/certificates/UDEMY - Robot Framework e Appium para Android e iOS_UC-9ce88a48-878b-40cd-b73d-5c64ef7eb259.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
+    imageUrl: '/certificates/UDEMY - Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
+    platform: 'udemy'
+  },
+  {
+    name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
+    imageUrl: '/certificates/UDEMY - Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.png',
+    platform: 'udemy'
+  },
+  // Certificados DIO
+  {
+    name: 'GFT Quality Assurance #1',
+    imageUrl: '/certificates/DIO -GFT Quality Assurance #1_ZBMZETMN.png',
+    platform: 'dio'
+  },
 ];
 
 const technologies = [
