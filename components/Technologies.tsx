@@ -196,15 +196,13 @@ const Technologies: React.FC = () => {
     return shuffled;
   };
 
-  // Filtrar certificados baseado na plataforma selecionada
-  const getFilteredCertificates = (): Certificate[] => {
+  // Filtrar certificados baseado na plataforma selecionada usando useMemo
+  const filteredCertificates = useMemo(() => {
     if (selectedPlatform === 'random') {
       return shuffleArray(allCertificates);
     }
     return allCertificates.filter(cert => cert.platform === selectedPlatform);
-  };
-
-  const filteredCertificates = getFilteredCertificates();
+  }, [selectedPlatform]);
 
   // Resetar índice quando mudar a plataforma
   useEffect(() => {
