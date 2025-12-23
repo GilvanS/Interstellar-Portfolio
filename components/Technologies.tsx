@@ -243,7 +243,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container - estrutura reorganizada para botões fora */}
-            <div className="relative flex items-center justify-center" style={{ minHeight: '900px', paddingLeft: '100px', paddingRight: '100px' }}>
+            <div className="relative flex items-center justify-center" style={{ minHeight: '900px' }} className="px-4 md:px-24 lg:px-32">
               {/* Container interno com overflow-hidden */}
               <div className="relative overflow-hidden w-full">
                 <div 
@@ -256,7 +256,7 @@ const Technologies: React.FC = () => {
                       className="conteudo flex-shrink-0 flex justify-center items-center"
                       style={{ minWidth: '100%' }}
                     >
-                      <div className="certification-course w-full flex justify-center items-center px-4">
+                      <div className="certification-course w-full flex justify-center items-center px-2 md:px-8">
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
@@ -265,9 +265,8 @@ const Technologies: React.FC = () => {
                             return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
                           })()} 
                           alt={cert.name}
+                          className="certificate-image"
                           style={{
-                            maxWidth: '100%',
-                            maxHeight: '900px',
                             width: 'auto',
                             height: 'auto',
                             boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
@@ -347,6 +346,26 @@ const Technologies: React.FC = () => {
         }
         .animate-marquee:hover {
           animation-play-state: paused;
+        }
+        
+        /* Tamanho da imagem do certificado - Mobile (ok, mantém como está) */
+        .certificate-image {
+          max-height: 600px;
+        }
+        
+        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade) */
+        @media (min-width: 768px) {
+          .certificate-image {
+            max-height: 800px;
+            max-width: 90%;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .certificate-image {
+            max-height: 1000px;
+            max-width: 95%;
+          }
         }
         
         /* Otimização para mobile - animação mais rápida */
