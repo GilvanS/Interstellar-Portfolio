@@ -234,7 +234,7 @@ const Technologies: React.FC = () => {
         <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
           <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-8">CERTIFICADOS</h1>
           
-          <div className="relative w-full mx-auto">
+          <div className="relative w-full mx-auto px-2 md:px-8 lg:px-12">
             {/* Nome do certificado atual */}
             <div className="text-center mb-6 px-4">
               <p className="text-xl md:text-2xl font-bold text-white/90">
@@ -243,7 +243,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container - estrutura reorganizada para botões fora */}
-            <div className="relative flex items-center justify-center px-4 md:px-32 lg:px-40" style={{ minHeight: '900px' }}>
+            <div className="relative flex items-center justify-center px-8 md:px-20 lg:px-28" style={{ minHeight: '900px' }}>
               {/* Container interno com overflow-hidden */}
               <div className="relative overflow-hidden w-full">
                 <div 
@@ -296,21 +296,19 @@ const Technologies: React.FC = () => {
                 </div>
               </div>
               
-              {/* Botões de navegação - completamente fora do overflow-hidden, puxados para as bordas */}
+              {/* Botões de navegação - completamente fora do overflow-hidden, puxados para as bordas mas visíveis */}
               <button 
-                className="prev absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                className="carousel-btn carousel-btn-prev absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
                 onClick={prevCert}
                 aria-label="Certificado anterior"
-                style={{ left: '-56px' }}
               >
                 <i className="fas fa-chevron-left text-xl"></i>
               </button>
               
               <button 
-                className="next absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                className="carousel-btn carousel-btn-next absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
                 onClick={nextCert}
                 aria-label="Próximo certificado"
-                style={{ right: '-56px' }}
               >
                 <i className="fas fa-chevron-right text-xl"></i>
               </button>
@@ -356,12 +354,13 @@ const Technologies: React.FC = () => {
           max-height: 600px;
         }
         
-        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade, usa toda largura disponível) */
+        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade, estica mais) */
         @media (min-width: 768px) {
           .certificate-image {
             max-height: 900px;
             width: 100% !important;
             max-width: 100% !important;
+            object-fit: contain !important;
           }
         }
         
@@ -370,15 +369,33 @@ const Technologies: React.FC = () => {
             max-height: 1000px;
             width: 100% !important;
             max-width: 100% !important;
+            object-fit: contain !important;
           }
         }
         
-        /* Botões de navegação - ajuste para mobile */
-        @media (max-width: 768px) {
-          .prev[style*="left: -56px"],
-          .next[style*="right: -56px"] {
-            left: 8px !important;
-            right: 8px !important;
+        /* Botões de navegação - mobile: próximos ao conteúdo, desktop: nas bordas mas visíveis */
+        .carousel-btn-prev {
+          left: 8px;
+        }
+        .carousel-btn-next {
+          right: 8px;
+        }
+        
+        @media (min-width: 768px) {
+          .carousel-btn-prev {
+            left: -48px;
+          }
+          .carousel-btn-next {
+            right: -48px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .carousel-btn-prev {
+            left: -56px;
+          }
+          .carousel-btn-next {
+            right: -56px;
           }
         }
         
