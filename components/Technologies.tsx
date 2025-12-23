@@ -1,5 +1,35 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+// Interface para certificados
+interface Certificate {
+  name: string;
+  imageUrl: string;
+}
+
+// Lista de certificados
+const certificates: Certificate[] = [
+  {
+    name: 'AWS CodeWhisperer - Generative AI para Testes Automatizados',
+    imageUrl: '/certificates/AWS CodeWhisperer - Generative AI para Testes_UC-61e44808-d1e7-4b4e-b314-930bdb70bb71.png',
+  },
+  {
+    name: 'Jira + Xray - Aprenda a criar e gerir seu Plano de Teste',
+    imageUrl: '/certificates/Jira + Xray - Aprenda a criar e gerir seu Plano de Teste_UC-144abdbe-4f41-4d43-a1a8-ad088d8c3083.png',
+  },
+  {
+    name: 'Testando API REST com MongoDB e RabbitMQ em Cypress',
+    imageUrl: '/certificates/Testando API REST com MongoDB e RabbitMQ em Cypress_UC-0d9e3853-5f59-4f7b-a375-668c8ce491e0.png',
+  },
+  {
+    name: 'Testes funcionais com Selenium WebDriver - Do básico ao GRID',
+    imageUrl: '/certificates/Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.png',
+  },
+  {
+    name: 'Databricks Developer Spark, SQL, Python Para Análise de Dados',
+    imageUrl: '/certificates/Databricks Developer Spark,SQL,Python Para Análise de Dados_UC-b7d6c9f9-2157-4386-ab0c-b35a0cbf7e30.png',
+  },
+];
 
 const technologies = [
   { 
@@ -65,9 +95,34 @@ const technologies = [
 const Technologies: React.FC = () => {
   // Duplicamos a lista para criar o efeito de loop infinito perfeito
   const doubleTechs = [...technologies, ...technologies];
+  
+  // Estado para o carousel de certificados
+  const [currentCertIndex, setCurrentCertIndex] = useState(0);
+
+  // Funções de navegação do carousel
+  const nextCert = () => {
+    setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+  };
+
+  const prevCert = () => {
+    setCurrentCertIndex((prev) => (prev - 1 + certificates.length) % certificates.length);
+  };
+
+  const goToCert = (index: number) => {
+    setCurrentCertIndex(index);
+  };
+
+  // Auto-play do carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCertIndex((prev) => (prev + 1) % certificates.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentCertIndex]);
 
   return (
-    <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
+    <>
+      <section className="py-32 overflow-hidden relative min-h-[550px] flex flex-col justify-center">
       {/* Overlay de contraste ESCURO para o título - Aumentado para garantir leitura */}
       <div className="absolute top-0 left-0 w-full h-80 bg-gradient-to-b from-black via-black to-transparent pointer-events-none z-0"></div>
       
@@ -229,6 +284,83 @@ const Technologies: React.FC = () => {
         }
       `}</style>
     </section>
+
+    {/* Seção de Certificados - Baseada no HTML fornecido, adaptada para tema galáxia */}
+    <section className="container mx-auto px-4 py-16 z-10 relative mt-32" id="certificates">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-display font-black text-white tracking-[0.2em] uppercase drop-shadow-[0_0_30px_rgba(102,126,234,0.3)]">
+          CERTIFICADOS
+        </h1>
+        <div className="w-40 h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-8 rounded-full shadow-[0_0_15px_rgba(102,126,234,0.6)]"></div>
+      </div>
+
+      <div className="slide relative max-w-6xl mx-auto">
+        <div className="slides relative overflow-hidden rounded-lg">
+          <div 
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentCertIndex * 100}%)` }}
+          >
+            {certificates.map((cert, index) => (
+              <div key={index} className="conteudo min-w-full flex-shrink-0">
+                <div className="course-information-slide text-center mb-6">
+                  <p className="text-xl md:text-2xl font-bold text-white/90">
+                    {cert.name}
+                  </p>
+                </div>
+                <div className="certification-course bg-white rounded-lg shadow-2xl p-4 md:p-6 flex items-center justify-center">
+                  <img 
+                    src={(() => {
+                      const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+                      const cleanUrl = cert.imageUrl.startsWith('/') ? cert.imageUrl.slice(1) : cert.imageUrl;
+                      return `${baseUrl}${cleanUrl}`.replace(/ /g, '%20');
+                    })()} 
+                    alt={cert.name}
+                    className="max-w-full max-h-[600px] md:max-h-[700px] object-contain"
+                    onError={(e) => {
+                      console.error('❌ Erro ao carregar imagem:', cert.imageUrl);
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Botões de navegação */}
+        <button 
+          className="prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 md:-translate-x-16 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg text-xl md:text-2xl"
+          onClick={prevCert}
+          aria-label="Certificado anterior"
+        >
+          &lt;
+        </button>
+        
+        <button 
+          className="next absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 md:translate-x-16 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg text-xl md:text-2xl"
+          onClick={nextCert}
+          aria-label="Próximo certificado"
+        >
+          &gt;
+        </button>
+        
+        {/* Indicadores */}
+        <div className="indicators flex justify-center items-center gap-3 mt-8">
+          {certificates.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToCert(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentCertIndex
+                  ? 'w-3 h-3 bg-primary shadow-[0_0_15px_rgba(102,126,234,0.8)]'
+                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
+              }`}
+              aria-label={`Ir para certificado ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+    </>
   );
 };
 
