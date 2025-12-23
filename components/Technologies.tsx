@@ -122,20 +122,20 @@ const allCertificates: Certificate[] = [
     imageUrl: '/certificates/UDEMY - Testes funcionais com Selenium WebDriver - Do básico ao GRID_UC-ba4fa402-a3b2-4fab-af88-2a09e66c0630.png',
     platform: 'udemy'
   },
+  {
+    name: 'Testes funcionais de aplicações Android com Appium',
+    imageUrl: '/certificates/UDEMY - Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.png',
+    platform: 'udemy'
+  },
   // Certificados DIO
   {
     name: 'GFT Quality Assurance #1',
-    imageUrl: '/certificates/DIO -GFT Quality Assurance #1_ZBMZETMN.png',
+    imageUrl: '/certificates/DIO - GFT Quality Assurance #1_ZBMZETMN.png',
     platform: 'dio'
   },
   {
     name: 'Introdução ao Desenvolvimento Moderno de Software',
     imageUrl: '/certificates/DIO - Introdução ao Desenvolvimento Moderno de Software_9XXGKSU1.png',
-    platform: 'dio'
-  },
-  {
-    name: 'Testes funcionais de aplicações Android com Appium',
-    imageUrl: '/certificates/UDEMY - Testes funcionais de aplicações Android com Appium_UC-4f6b53eb-7358-4a86-bb31-e1da94401d60.png',
     platform: 'dio'
   },
 ];
