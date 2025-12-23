@@ -47,6 +47,17 @@ const projects: Project[] = [
     color: 'accent',
     github: 'https://github.com/GilvanS/AUTOMACAO-REST-API-cms-for-qas-api',
     demo: '#'
+  },
+  {
+    id: '5',
+    title: 'POC FINTECH PLAYWRIGHT',
+    description: 'Prova de Conceito de automação de testes para aplicação Fintech utilizando Playwright. Foco em testes end-to-end com Node.js/TypeScript, integração contínua e validação de fluxos críticos.',
+    tech: 'PLAYWRIGHT / TYPESCRIPT / E2E',
+    image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=800&h=500',
+    icon: 'fas fa-vial',
+    color: 'primary',
+    github: 'https://github.com/GilvanS/poc-fintech-playwright',
+    demo: '#'
   }
 ];
 
