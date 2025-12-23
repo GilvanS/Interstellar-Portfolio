@@ -243,7 +243,7 @@ const Technologies: React.FC = () => {
             </div>
 
             {/* Slides Container - estrutura reorganizada para botões fora */}
-            <div className="relative flex items-center justify-center" style={{ minHeight: '900px' }} className="px-4 md:px-24 lg:px-32">
+            <div className="relative flex items-center justify-center px-4 md:px-32 lg:px-40" style={{ minHeight: '900px' }}>
               {/* Container interno com overflow-hidden */}
               <div className="relative overflow-hidden w-full">
                 <div 
@@ -256,7 +256,7 @@ const Technologies: React.FC = () => {
                       className="conteudo flex-shrink-0 flex justify-center items-center"
                       style={{ minWidth: '100%' }}
                     >
-                      <div className="certification-course w-full flex justify-center items-center px-2 md:px-8">
+                      <div className="certification-course w-full flex justify-center items-center">
                         <img 
                           src={(() => {
                             // Usa BASE_URL do Vite se disponível, senão usa '/'
@@ -267,7 +267,8 @@ const Technologies: React.FC = () => {
                           alt={cert.name}
                           className="certificate-image"
                           style={{
-                            width: 'auto',
+                            width: '100%',
+                            maxWidth: '100%',
                             height: 'auto',
                             boxShadow: 'rgba(0, 0, 0, 0.3) 0px 4px 8px',
                             borderRadius: '8px',
@@ -295,19 +296,21 @@ const Technologies: React.FC = () => {
                 </div>
               </div>
               
-              {/* Botões de navegação - completamente fora do overflow-hidden */}
+              {/* Botões de navegação - completamente fora do overflow-hidden, puxados para as bordas */}
               <button 
-                className="prev absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                className="prev absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
                 onClick={prevCert}
                 aria-label="Certificado anterior"
+                style={{ left: '-56px' }}
               >
                 <i className="fas fa-chevron-left text-xl"></i>
               </button>
               
               <button 
-                className="next absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
+                className="next absolute top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/80 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 shadow-lg"
                 onClick={nextCert}
                 aria-label="Próximo certificado"
+                style={{ right: '-56px' }}
               >
                 <i className="fas fa-chevron-right text-xl"></i>
               </button>
@@ -353,18 +356,29 @@ const Technologies: React.FC = () => {
           max-height: 600px;
         }
         
-        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade) */
+        /* Tamanho da imagem do certificado - Desktop/Web (maior para legibilidade, usa toda largura disponível) */
         @media (min-width: 768px) {
           .certificate-image {
-            max-height: 800px;
-            max-width: 90%;
+            max-height: 900px;
+            width: 100% !important;
+            max-width: 100% !important;
           }
         }
         
         @media (min-width: 1024px) {
           .certificate-image {
             max-height: 1000px;
-            max-width: 95%;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+        }
+        
+        /* Botões de navegação - ajuste para mobile */
+        @media (max-width: 768px) {
+          .prev[style*="left: -56px"],
+          .next[style*="right: -56px"] {
+            left: 8px !important;
+            right: 8px !important;
           }
         }
         
